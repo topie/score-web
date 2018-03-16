@@ -1,7 +1,7 @@
 {
-  "name": "spring-boot-web",
+  "name": "score-web",
   "version": "1.0.0",
-  "description": "spring-boot-web ace ui",
+  "description": "score-web ace ui",
   "main": "gulpfile.js",
   "dependencies": {
     "gulp": "^3.9.1",

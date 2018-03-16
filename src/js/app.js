@@ -15,8 +15,8 @@
     }
 
     window.App = {
-        token_key: "spring_boot_token",
-        href: "http://sbpn.zt647.com",//测试环境
+        token_key: "score_server_token",
+        href: "http://score.zt647.com",//测试环境
         requestMapping: {}
     };
 
