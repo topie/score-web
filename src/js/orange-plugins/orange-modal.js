@@ -18,7 +18,7 @@
         scroll: true,
         keyboard: true,
         width: "80%",
-        height: "580px",
+        height: "480px",
         maxHeight: "580px",
         minHeight: "480px",
         buttons: [
