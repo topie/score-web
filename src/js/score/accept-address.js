@@ -4,10 +4,10 @@
 ;
 (function ($, window, document, undefined) {
     var uploadMapping = {
-        "/api/score/indicatorItem/list": "scoreIndicatorItem"
+        "/api/score/acceptAddress/list": "scoreAcceptAddress"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
-    App.scoreIndicatorItem = {
+    App.scoreAcceptAddress = {
         page: function (title) {
             window.App.content.empty();
             window.App.title(title);
@@ -29,7 +29,7 @@
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: App.href + "/api/score/indicatorItem/formItems",
+            url: App.href + "/api/score/acceptAddress/formItems",
             success: function (fd) {
                 if (fd.code === 200) {
                     var formItems = fd.data;
@@ -45,7 +45,7 @@
                     });
                     var grid;
                     var options = {
-                        url: App.href + "/api/score/indicatorItem/list",
+                        url: App.href + "/api/score/acceptAddress/list",
                         contentType: "table",
                         contentTypeItems: "table,card,list",
                         pageNum: 1,//当前页码
@@ -73,7 +73,7 @@
                                     id: "edit_form",
                                     name: "edit_form",
                                     method: "POST",
-                                    action: App.href + "/api/score/indicatorItem/update",
+                                    action: App.href + "/api/score/acceptAddress/update",
                                     ajaxSubmit: true,
                                     ajaxSuccess: function () {
                                         modal.hide();
@@ -94,7 +94,7 @@
                                     buttonsAlign: "center",
                                     items: formItems
                                 });
-                                form.loadRemote(App.href + "/api/score/indicatorItem/detail?id=" + d.id);
+                                form.loadRemote(App.href + "/api/score/acceptAddress/detail?id=" + d.id);
                             }
                         }, {
                             text: "删除",
@@ -102,7 +102,7 @@
                             handle: function (index, data) {
                                 bootbox.confirm("确定该操作?", function (result) {
                                     if (result) {
-                                        var requestUrl = App.href + "/api/score/indicatorItem/delete";
+                                        var requestUrl = App.href + "/api/score/acceptAddress/delete";
                                         $.ajax({
                                             type: "POST",
                                             dataType: "json",
@@ -140,7 +140,7 @@
                                         id: "add_form",
                                         name: "add_form",
                                         method: "POST",
-                                        action: App.href + "/api/score/indicatorItem/insert",
+                                        action: App.href + "/api/score/acceptAddress/insert",
                                         ajaxSubmit: true,
                                         ajaxSuccess: function () {
                                             modal.hide();
@@ -187,6 +187,5 @@
                 alert("请求异常。");
             }
         });
-    };
-
+    }
 })(jQuery, window, document);
