@@ -42,9 +42,9 @@
                             };
                             columns.push(column);
                         }
-                        if (dd.name === 'material') {
+                        if (dd.type === 'tree') {
                             dd.items = [];
-                            dd.url = App.href + '/api/score/materialInfo/treeNodes';
+                            dd.url = App.href + dd.url;
                         }
                     });
                     var grid;
