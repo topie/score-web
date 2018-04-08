@@ -89,7 +89,8 @@
         resetText: "重置",
         showReset: true,
         isValidate: true,
-        viewMode: false
+        viewMode: false,
+        showAction: true
     };
     Form.statics = {
         formTmpl: '<form id="${id_}" name="${name_}" action="${action_}" method="${method_}" enctype="multipart/form-data" class="${cls_}"></form>',
@@ -256,12 +257,15 @@
             this._renderFormElements(formBody);
 
             // formAction
-            var formAction = $.tmpl(Form.statics.formActionTmpl, {
-                "align_": that._buttonsAlign === undefined ? "left"
-                    : that._buttonsAlign
-            });
-            this.$form.append(formAction);
-            this._renderActionButtons(formAction);
+            if (this._options.showAction === true) {
+                var formAction = $.tmpl(Form.statics.formActionTmpl, {
+                    "align_": that._buttonsAlign === undefined ? "left"
+                        : that._buttonsAlign
+                });
+                this.$form.append(formAction);
+                this._renderActionButtons(formAction);
+            }
+
         },
         _renderFormElements: function (formBody) {
             if (this._items === undefined || this._items.length == 0) {
