@@ -257,7 +257,7 @@
             this._renderFormElements(formBody);
 
             // formAction
-            if (this._options.showAction === true) {
+            if (this._options.showAction === true || this._options.viewMode !== true) {
                 var formAction = $.tmpl(Form.statics.formActionTmpl, {
                     "align_": that._buttonsAlign === undefined ? "left"
                         : that._buttonsAlign
@@ -286,6 +286,9 @@
                 .each(
                     this._items,
                     function (i, item) {
+                        if (that._options.viewMode === true && item.type !== 'hidden') {
+                            item.readonly = 'readonly';
+                        }
                         if (that._formEles[item.type] !== undefined) {
                             if (item.type == "hidden") {
                                 var ele = that._formEles[item.type]
@@ -617,7 +620,7 @@
                     "id_": (data.id === undefined ? data.name : data.id),
                     "name_": data.name,
                     "cls_": data.cls === undefined ? "col-lg-3" : data.cls,
-                    "disabled_": (data.disabled ? "disabled" : ""),
+                    "disabled_": (data.readonly=='readonly' ? "disabled" : ""),
                     "attribute_": (data.attribute === undefined ? ""
                         : data.attribute)
                 });
@@ -677,8 +680,7 @@
                                         "text_": checkbox.text,
                                         "checked": (checkbox.checked ? "checked=checked"
                                             : ""),
-                                        "disabled_": (checkbox.disabled ? "disabled"
-                                            : ""),
+                                        "disabled_": (data.readonly == 'readonly' ? "disabled": ""),
                                         "attribute_": (checkbox.attribute === undefined ? ""
                                             : checkbox.attribute)
                                     });
@@ -727,7 +729,7 @@
             'radioGroup': function (data, form) {
                 var inlineCls = "radio-inline";
                 var wrapperTmpl = '<div class="radio"></div>';
-                var radioTmpl = '<label class="${inline_}"><input class="ace" drole="main" name="${name_}" value="${value_}" type="radio" ${checked_} ${attribute_}><span class="lbl">${text_}</span></label>';
+                var radioTmpl = '<label class="${inline_}"><input class="ace" drole="main" name="${name_}" value="${value_}" ${disable_} type="radio" ${checked_} ${attribute_}><span class="lbl">${text_}</span></label>';
                 var ele = $.tmpl(wrapperTmpl, {
                     "id_": (data.id === undefined ? data.name : data.id),
                     "name_": data.name,
@@ -742,6 +744,7 @@
                             "value_": radio.value,
                             "text_": radio.text,
                             "checked_": (radio.checked ? "checked=checked" : ""),
+                            "disable_": (data.readonly == "readonly" ? "disabled" : ""),
                             "attribute_": (radio.attribute === undefined ? ""
                                 : radio.attribute)
                         });
@@ -799,6 +802,11 @@
                 var config = (data.config == undefined ? {} : data.config);
                 config['parentEl'] = '#' + form._elementId;
                 var option = $.extend(true, dateDefaults, config);
+                if (data.single === true) {
+                    option.singleDatePicker = true;
+                    option.timePicker = false;
+                    option.locale.format = "YYYY-MM-DD";
+                }
                 var ele = $.tmpl(dateTmpl, {
                     "id_": (data.id == undefined ? data.name : data.id),
                     "name_": data.name,
