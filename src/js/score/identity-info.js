@@ -66,6 +66,13 @@
                             }
                         }
                     });
+                    columns.push({
+                        title: '性别',
+                        field: 'sex',
+                        format: function (ii, dd) {
+                            return dd.sex === 1 ? '男' : '女';
+                        }
+                    });
                     var grid;
                     var options = {
                         url: App.href + "/api/score/identityInfo/list",
@@ -85,40 +92,49 @@
                         actionColumnWidth: "20%",
                         actionColumns: [
                             {
-                                text: "编辑",
+                                text: "编辑申请人信息",
                                 cls: "btn-primary btn-sm",
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
-                                        id: "edit_form_modal",
-                                        title: "编辑",
-                                        destroy: true
-                                    }).show();
-                                    var form = modal.$body.orangeForm({
-                                        id: "edit_form",
-                                        name: "edit_form",
-                                        method: "POST",
-                                        action: App.href + "/api/score/identityInfo/update",
-                                        ajaxSubmit: true,
-                                        ajaxSuccess: function () {
-                                            modal.hide();
-                                            grid.reload();
-                                        },
-                                        submitText: "保存",
-                                        showReset: true,
-                                        resetText: "重置",
-                                        isValidate: true,
-                                        labelInline: true,
-                                        buttons: [{
-                                            type: 'button',
-                                            text: '关闭',
-                                            handle: function () {
-                                                modal.hide();
+                                        id: "eidt_form_modal",
+                                        title: "编辑申请人信息",
+                                        destroy: true,
+                                        buttons: [
+                                            {
+                                                text: '保存',
+                                                cls: 'btn btn-primary',
+                                                handle: function (m) {
+                                                    m.$body.find("form").each(function () {
+                                                        var f = $(this).data("form");
+                                                        f._ajaxSubmitForm();
+                                                    });
+                                                    m.hide();
+                                                    grid.reload();
+                                                }
+                                            }, {
+                                                type: 'button',
+                                                text: '关闭',
+                                                cls: "btn btn-default",
+                                                handle: function (m) {
+                                                    m.hide()
+                                                }
                                             }
-                                        }],
-                                        buttonsAlign: "center",
-                                        items: formItems
+                                        ]
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/identityInfo/detailAll?id=" + d.id;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                            identityInfo(d, modal.$body.find("#identityInfo"), false);
+                                            houseProfession(d, modal.$body.find("#houseProfession"), false);
+                                        },
+                                        error: function (e) {
+                                            alert("请求异常。");
+                                        }
                                     });
-                                    form.loadRemote(App.href + "/api/score/identityInfo/detail?id=" + d.id);
                                 }
                             }, {
                                 text: "查看申请人信息",
@@ -136,7 +152,8 @@
                                         url: requestUrl,
                                         success: function (data) {
                                             modal.$body.html(data.data.html);
-                                            viewIdentityInfo(d, modal.$body.find("#identityInfo"));
+                                            identityInfo(d, modal.$body.find("#identityInfo"), true);
+                                            houseProfession(d, modal.$body.find("#houseProfession"), true);
                                         },
                                         error: function (e) {
                                             alert("请求异常。");
@@ -229,7 +246,7 @@
         });
     };
 
-    var viewIdentityInfo = function (d, ele) {
+    var identityInfo = function (d, ele, view) {
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -267,15 +284,14 @@
                         action: App.href + "/api/score/identityInfo/update",
                         ajaxSubmit: true,
                         ajaxSuccess: function () {
-                            modal.hide();
-                            grid.reload();
+
                         },
                         submitText: "保存",
                         showReset: true,
                         resetText: "重置",
                         isValidate: true,
                         labelInline: false,
-                        viewMode: true,
+                        viewMode: view,
                         showAction: false,
                         buttons: [{
                             type: 'button',
@@ -293,7 +309,7 @@
 
     };
 
-    var houseProfession = function (d) {
+    var houseProfession = function (d, ele, view) {
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -307,26 +323,23 @@
                         if (dd.url != '')
                             dd.url = App.href + dd.url;
                     });
-                    var modal = $.orangeModal({
-                        id: "house_profession_edit_form_modal",
-                        title: "职业信息",
-                        destroy: true
-                    }).show();
-                    var form = modal.$body.orangeForm({
+                    ele.orangeForm({
                         id: "house_profession_edit_form",
                         name: "house_profession_edit_form",
                         method: "POST",
                         action: App.href + "/api/score/houseProfession/update",
                         ajaxSubmit: true,
                         ajaxSuccess: function () {
-                            modal.hide();
-                            grid.reload();
+
                         },
+                        rowEleNum: 2,
                         submitText: "保存",
                         showReset: true,
                         resetText: "重置",
                         isValidate: true,
-                        labelInline: true,
+                        labelInline: false,
+                        viewMode: view,
+                        showAction: false,
                         buttons: [{
                             type: 'button',
                             text: '关闭',
@@ -336,8 +349,7 @@
                         }],
                         buttonsAlign: "center",
                         items: formItems
-                    });
-                    form.loadRemote(App.href + "/api/score/houseProfession/detail?identityInfoId=" + d.id);
+                    }).loadRemote(App.href + "/api/score/houseProfession/detailByIdentityId?identityInfoId=" + d.id);
                 } else {
                     alert(fd.message);
                 }

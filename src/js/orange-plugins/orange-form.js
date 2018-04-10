@@ -257,7 +257,7 @@
             this._renderFormElements(formBody);
 
             // formAction
-            if (this._options.showAction === true || this._options.viewMode !== true) {
+            if (this._options.showAction === true && this._options.viewMode !== true) {
                 var formAction = $.tmpl(Form.statics.formActionTmpl, {
                     "align_": that._buttonsAlign === undefined ? "left"
                         : that._buttonsAlign
@@ -620,7 +620,7 @@
                     "id_": (data.id === undefined ? data.name : data.id),
                     "name_": data.name,
                     "cls_": data.cls === undefined ? "col-lg-3" : data.cls,
-                    "disabled_": (data.readonly=='readonly' ? "disabled" : ""),
+                    "disabled_": (data.readonly == 'readonly' ? "disabled" : ""),
                     "attribute_": (data.attribute === undefined ? ""
                         : data.attribute)
                 });
@@ -680,7 +680,7 @@
                                         "text_": checkbox.text,
                                         "checked": (checkbox.checked ? "checked=checked"
                                             : ""),
-                                        "disabled_": (data.readonly == 'readonly' ? "disabled": ""),
+                                        "disabled_": (data.readonly == 'readonly' ? "disabled" : ""),
                                         "attribute_": (checkbox.attribute === undefined ? ""
                                             : checkbox.attribute)
                                     });
@@ -787,14 +787,14 @@
                 return ele;
             },
             'datepicker': function (data, form) {
-                var dateTmpl = '<div class="input-group input-xxlarge">'
-                    + '<input drole="main" type="text" role="date-input" id="${id_}" name=${name_} value="${value_}" class="form-control">'
-                    + '<span role="icon" class="input-group-addon">'
-                    + '<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>' + '</span></div>';
+                var dateTmpl = '<div class="input-group">'
+                    + '<input drole="main" type="text" ${readonly_} role="date-input" id="${id_}" name=${name_} value="${value_}" class="form-control">'
+                    + '<span role="icon" class="input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span></div>';
                 if (typeof(moment) == "undefined") {
                     return $.tmpl(dateTmpl, {
                         "id_": (data.id === undefined ? data.name : data.id),
                         "name_": data.name,
+                        "readonly_": (data.readonly == "readonly" ? "readonly" : ""),
                         "cls_": data.cls === undefined ? "" : data.cls,
                         "value_": ""
                     });
@@ -810,9 +810,13 @@
                 var ele = $.tmpl(dateTmpl, {
                     "id_": (data.id == undefined ? data.name : data.id),
                     "name_": data.name,
+                    "readonly_": (data.readonly == "readonly" ? "readonly" : ""),
                     "cls_": data.cls == undefined ? "" : data.cls,
                     "value_": (data.value == undefined ? moment().format(option.locale.format) : data.value)
                 });
+                if (data.readonly = "readonly") {
+                    return ele;
+                }
                 if (data.callback !== undefined) {
                     ele.find('[role="date-input"]').daterangepicker(option, data.callback);
                 } else {
@@ -825,7 +829,7 @@
             },
             'file': function (data, form) {
                 var fileTmpl = '<div><div class="fileinput fileinput-new" data-provides="fileinput">'
-                    + '<div class="input-group input-xxlarge">'
+                    + '<div class="input-group">'
                     + '<div class="form-control uneditable-input" data-trigger="fileinput">'
                     + '<i class="fa fa-file fileinput-exists"></i>&nbsp; <span class="fileinput-filename "></span>'
                     + '</div>'
@@ -1577,34 +1581,38 @@
                 }
             );
             if (this._ajaxSubmit) {
-                $.ajax({
-                    type: that._method,
-                    url: that._action,
-                    data: $('#' + that._formId).serialize(),
-                    beforeSend: function (request) {
-                        request.setRequestHeader("X-Auth-Token", App.token);
-                        if (that._beforeSend != undefined)
-                            that._beforeSend(request);
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        if (data.code === 200) {
-                            if (that._ajaxSuccess !== undefined) {
-                                that._ajaxSuccess(data);
-                            } else {
-                                alert("表单提交成功");
-                            }
-                        } else {
-                            that._alert(data.message);
-                        }
-                    },
-                    error: function (data) {
-                        alert("异步提交表单错误.");
-                    }
-                });
+                that._ajaxSubmitForm();
             } else {
                 that.$form.submit();
             }
+        },
+        _ajaxSubmitForm: function () {
+            var that = this;
+            $.ajax({
+                type: that._method,
+                url: that._action,
+                data: $('#' + that._formId).serialize(),
+                beforeSend: function (request) {
+                    request.setRequestHeader("X-Auth-Token", App.token);
+                    if (that._beforeSend != undefined)
+                        that._beforeSend(request);
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.code === 200) {
+                        if (that._ajaxSuccess !== undefined) {
+                            that._ajaxSuccess(data);
+                        } else {
+                            console.info("表单提交成功");
+                        }
+                    } else {
+                        that._alert(data.message);
+                    }
+                },
+                error: function (data) {
+                    alert("异步提交表单错误.");
+                }
+            });
         },
         _doCallbacks: function () {
             if (this._complete !== undefined) {
@@ -1613,6 +1621,7 @@
             if (this._callback !== undefined) {
                 this._callback();
             }
+            this.$form.data("form", this);
         },
         _loadValue: function (name, value, element) {
             var ele = element || this.$form.find("[name='" + name + "']");
