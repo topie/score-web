@@ -32,15 +32,24 @@
             url: App.href + "/api/score/materialInfo/formItems",
             success: function (fd) {
                 if (fd.code === 200) {
-                    var formItems = fd.data;
+                    var formItems = fd.data.formItems;
+                    var searchItems = fd.data.searchItems;
+                    if (searchItems == null)
+                        searchItems = [];
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
-                        if (dd.type === 'text' || dd.name === 'id') {
+                        if (dd.type === 'text' || dd.name==='id') {
                             var column = {
                                 title: dd.label,
                                 field: dd.name
                             };
                             columns.push(column);
+                        }
+                        if (dd.itemsUrl !== undefined){
+                            dd.itemsUrl = App.href + dd.itemsUrl;
+                        }
+                        if (dd.url !== undefined){
+                            dd.url = App.href + dd.url;
                         }
                     });
                     var grid;
@@ -168,14 +177,7 @@
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
-                            items: [
-                                {
-                                    type: "text",
-                                    label: "ID",
-                                    name: "id",
-                                    placeholder: "输入ID"
-                                }
-                            ]
+                            items: searchItems
                         }
                     };
                     grid = window.App.content.find("#grid").orangeGrid(options);
@@ -187,7 +189,5 @@
                 alert("请求异常。");
             }
         });
-    };
-
-
+    }
 })(jQuery, window, document);
