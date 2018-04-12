@@ -130,6 +130,8 @@
                                             modal.$body.html(data.data.html);
                                             identityInfo(d, modal.$body.find("#identityInfo"), false);
                                             houseProfession(d, modal.$body.find("#houseProfession"), false);
+                                            houseMove(d, modal.$body.find("#houseMove"), false);
+                                            houseOther(d, modal.$body.find("#houseOther"), false);
                                         },
                                         error: function (e) {
                                             alert("请求异常。");
@@ -143,7 +145,68 @@
                                     var modal = $.orangeModal({
                                         id: "view_form_modal",
                                         title: "查看申请人信息",
-                                        destroy: true
+                                        destroy: true,
+                                        buttons: [
+                                            {
+                                                text: '打印材料',
+                                                cls: 'btn btn-info',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/wordTemplate/html";
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        success: function (data) {
+                                                            $.orangeModal({
+                                                                title: "材料",
+                                                                destroy: true,
+                                                                buttons: [
+                                                                    {
+                                                                        text: '打印1',
+                                                                        cls: 'btn btn-primary',
+                                                                        handle: function (m) {
+                                                                            m.$body.print({
+                                                                                globalStyles: true,
+                                                                                mediaPrint: false,
+                                                                                stylesheet: null,
+                                                                                noPrintSelector: ".no-print",
+                                                                                iframe: true,
+                                                                                append: null,
+                                                                                prepend: null,
+                                                                                manuallyCopyFormValues: true,
+                                                                                deferred: $.Deferred()
+                                                                            });
+                                                                        }
+                                                                    },{
+                                                                        text: '打印2',
+                                                                        cls: 'btn btn-primary',
+                                                                        handle: function (m) {
+                                                                            m.$body.jqprint({
+                                                                                debug: false, //如果是true则可以显示iframe查看效果（iframe默认高和宽都很小，可以再源码中调大），默认是false
+                                                                                importCSS: true, //true表示引进原来的页面的css，默认是true。（如果是true，先会找$("link[media=print]")，若没有会去找$("link")中的css文件）
+                                                                                printContainer: true, //表示如果原来选择的对象必须被纳入打印（注意：设置为false可能会打破你的CSS规则）。
+                                                                                operaSupport: false//表示如果插件也必须支持歌opera浏览器，在这种情况下，它提供了建立一个临时的打印选项卡。默认是true
+                                                                            });
+                                                                        }
+                                                                    }, {
+                                                                        type: 'button',
+                                                                        text: '关闭',
+                                                                        cls: "btn btn-default",
+                                                                        handle: function (m) {
+                                                                            m.hide()
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }).show().$body.html(data.data.html);
+                                                        },
+                                                        error: function (e) {
+                                                            alert("请求异常。");
+                                                        }
+                                                    });
+
+                                                }
+                                            }
+                                        ]
                                     }).show();
                                     var requestUrl = App.href + "/api/score/identityInfo/detailAll?id=" + d.id;
                                     $.ajax({
@@ -154,6 +217,9 @@
                                             modal.$body.html(data.data.html);
                                             identityInfo(d, modal.$body.find("#identityInfo"), true);
                                             houseProfession(d, modal.$body.find("#houseProfession"), true);
+                                            houseMove(d, modal.$body.find("#houseMove"), true);
+                                            houseMove(d, modal.$body.find("#houseMove"), true);
+                                            houseOther(d, modal.$body.find("#houseOther"), true);
                                         },
                                         error: function (e) {
                                             alert("请求异常。");
@@ -360,7 +426,7 @@
         });
     };
 
-    var houseMove = function (d) {
+    var houseMove = function (d, ele, view) {
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -376,26 +442,22 @@
                             dd.url = App.href + dd.url;
                         }
                     });
-                    var modal = $.orangeModal({
-                        id: "house_move_edit_form_modal",
-                        title: "编辑",
-                        destroy: true
-                    }).show();
-                    var form = modal.$body.orangeForm({
+                    ele.orangeForm({
                         id: "house_move_edit_form",
                         name: "house_move_edit_form",
                         method: "POST",
                         action: App.href + "/api/score/houseMove/update",
                         ajaxSubmit: true,
                         ajaxSuccess: function () {
-                            modal.hide();
-                            grid.reload();
+
                         },
+                        rowEleNum: 3,
                         submitText: "保存",
                         showReset: true,
                         resetText: "重置",
-                        isValidate: true,
                         labelInline: false,
+                        viewMode: view,
+                        showAction: false,
                         buttons: [{
                             type: 'button',
                             text: '关闭',
@@ -405,8 +467,7 @@
                         }],
                         buttonsAlign: "center",
                         items: formItems
-                    });
-                    form.loadRemote(App.href + "/api/score/houseMove/detail?identityInfoId=" + d.id);
+                    }).loadRemote(App.href + "/api/score/houseMove/detailByIdentityId?identityInfoId=" + d.id);
                 } else {
                     alert(fd.message);
                 }
@@ -417,7 +478,7 @@
         });
     };
 
-    var houseOther = function (d) {
+    var houseOther = function (d, ele, view) {
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -433,26 +494,22 @@
                             dd.url = App.href + dd.url;
                         }
                     });
-                    var modal = $.orangeModal({
-                        id: "house_other_form_modal",
-                        title: "编辑",
-                        destroy: true
-                    }).show();
-                    var form = modal.$body.orangeForm({
+                    ele.orangeForm({
                         id: "house_other_edit_form",
                         name: "house_other_edit_form",
                         method: "POST",
                         action: App.href + "/api/score/houseOther/update",
                         ajaxSubmit: true,
+                        rowEleNum: 3,
                         ajaxSuccess: function () {
-                            modal.hide();
-                            grid.reload();
                         },
                         submitText: "保存",
                         showReset: true,
                         resetText: "重置",
                         isValidate: true,
-                        labelInline: true,
+                        labelInline: false,
+                        viewMode: view,
+                        showAction: false,
                         buttons: [{
                             type: 'button',
                             text: '关闭',
@@ -462,8 +519,7 @@
                         }],
                         buttonsAlign: "center",
                         items: formItems
-                    });
-                    form.loadRemote(App.href + "/api/score/houseOther/detail?identityInfoId=" + d.id);
+                    }).loadRemote(App.href + "/api/score/houseOther/detailByIdentityId?identityInfoId=" + d.id);
                 } else {
                     alert(fd.message);
                 }

@@ -96,7 +96,7 @@
         formTmpl: '<form id="${id_}" name="${name_}" action="${action_}" method="${method_}" enctype="multipart/form-data" class="${cls_}"></form>',
         formBodyTmpl: '<div></div>',
         formActionTmpl: '<div class="form-actions" style="padding-bottom:20px;text-align:${align_};"></div>',
-        rowTmpl: '<div data-row=${row_} class="row"></div>',
+        rowTmpl: '<div data-row=${row_} class="row" style="margin-top: 5px;"></div>',
         eleTmpl: '<div class="col-md-${span_}"><div class="form-group"></div></div>',
         sectionTmpl: '<div class="col-md-12"><h3 class="form-section">${title_}</h3><hr></div>',
         labelTmpl: '<label class="control-label ${cls_}">${label_}</label>',
