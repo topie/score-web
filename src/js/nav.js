@@ -71,7 +71,7 @@
                                     + '<span class="menu-text">' + m.functionName + '</span>' + b + '</a>';
 
                                 if (subMenus.length > 0) {
-                                    ele = secondHMenu(ele, menus, subMenus);
+                                    ele = subHMenu(ele, menus, subMenus);
                                 }
                                 ele += '</li>';
                                 var li = $(ele);
@@ -142,7 +142,7 @@
                                     + '<span class="menu-text">' + m.functionName + '</span>' + b + '</a>';
 
                                 if (subMenus.length > 0) {
-                                    ele = secondMenu(ele, menus, subMenus);
+                                    ele = subMenu(ele, menus, subMenus);
                                 }
                                 ele += '</li>';
                                 var li = $(ele);
@@ -205,7 +205,7 @@
         return topMenus;
     }
 
-    function secondMenu(ele, menus, subMenus) {
+    function subMenu(ele, menus, subMenus) {
         if (subMenus.length > 0) {
             ele += "<ul class='submenu'>";
             $.each(subMenus, function (i, m) {
@@ -221,6 +221,9 @@
                     + '" data-title="' + m.functionName
                     + '" href="javascript:void(0);"><i class="menu-icon fa fa-desktop"></i> '
                     + m.functionName) + b + '</a>';
+                if (sMenus.length > 0) {
+                    ele = subMenu(ele, menus, sMenus);
+                }
                 ele += '</li>';
             });
             ele += "</ul>";
@@ -228,7 +231,7 @@
         return ele;
     }
 
-    function secondHMenu(ele, menus, subMenus) {
+    function subHMenu(ele, menus, subMenus) {
         if (subMenus.length > 0) {
             ele += "<ul class='submenu'>";
             $.each(subMenus, function (i, m) {
@@ -244,6 +247,9 @@
                     + '" data-title="' + m.functionName
                     + '" href="javascript:void(0);">'
                     + m.functionName) + b + '</a>';
+                if (sMenus.length > 0) {
+                    ele = subHMenu(ele, menus, sMenus);
+                }
                 ele += '</li>';
             });
             ele += "</ul>";
