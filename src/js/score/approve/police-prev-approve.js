@@ -112,13 +112,15 @@
                             return dd.sex === 1 ? '男' : '女';
                         }
                     });
-                    columns.push({
-                        title: '审核状态',
-                        field: 'unionApproveStatus1',
-                        format: function (i, cd) {
-                            return unionApproveStatus1[cd.unionApproveStatus1];
+                    columns.push(
+                        {
+                            title: '公安审核状态',
+                            field: 'unionApproveStatus1',
+                            format: function (i, cd) {
+                                return unionApproveStatus1[cd.unionApproveStatus1];
+                            }
                         }
-                    });
+                    );
                     var grid;
                     var options = {
                         url: App.href + "/api/score/approve/policePrevApprove/" + type,
