@@ -33,22 +33,23 @@
             success: function (fd) {
                 if (fd.code === 200) {
                     var formItems = fd.data.formItems;
+                    var batchFormItems = fd.data.batchFormItems;
                     var searchItems = fd.data.searchItems;
                     if (searchItems == null)
-                        searchItems = []
+                        searchItems = [];
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
-                        if (dd.type === 'text' || dd.name==='id') {
+                        if (dd.type === 'text' || dd.name === 'id') {
                             var column = {
                                 title: dd.label,
                                 field: dd.name
                             };
                             columns.push(column);
                         }
-                        if (dd.itemsUrl !== undefined){
+                        if (dd.itemsUrl !== undefined) {
                             dd.itemsUrl = App.href + dd.itemsUrl;
                         }
-                        if (dd.url !== undefined){
+                        if (dd.url !== undefined) {
                             dd.url = App.href + dd.url;
                         }
                     });
@@ -170,6 +171,43 @@
                                         }],
                                         buttonsAlign: "center",
                                         items: formItems
+                                    });
+                                }
+                            }, {
+                                text: "批 量 添 加",
+                                cls: "btn btn-primary",
+                                icon: "fa fa-plus",
+                                handle: function (grid) {
+                                    var modal = $.orangeModal({
+                                        id: "batch_add_form_modal",
+                                        title: "批量添加",
+                                        destroy: true
+                                    }).show();
+                                    var form = modal.$body.orangeForm({
+                                        id: "batch_add_form",
+                                        name: "batch_add_form",
+                                        method: "POST",
+                                        action: App.href + "/api/core/dict/insertBatch",
+                                        ajaxSubmit: true,
+                                        ajaxSuccess: function () {
+                                            modal.hide();
+                                            grid.reload();
+                                        },
+                                        submitText: "保存",//保存按钮的文本
+                                        showReset: true,//是否显示重置按钮
+                                        resetText: "重置",//重置按钮文本
+                                        isValidate: true,//开启验证
+                                        labelInline: true,
+                                        buttons: [{
+                                            type: 'button',
+                                            text: '关闭',
+                                            handle: function () {
+                                                modal.hide();
+                                                grid.reload();
+                                            }
+                                        }],
+                                        buttonsAlign: "center",
+                                        items: batchFormItems
                                     });
                                 }
                             }

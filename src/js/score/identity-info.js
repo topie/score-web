@@ -34,6 +34,7 @@
                 if (fd.code === 200) {
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
+                    var reservationStatus = fd.data.reservationStatus;
                     if (searchItems == null)
                         searchItems = [];
                     var columns = [];
@@ -73,6 +74,13 @@
                             return dd.sex === 1 ? '男' : '女';
                         }
                     });
+                    columns.push({
+                        title: '网上预约状态',
+                        field: 'reservationStatus',
+                        format: function (i, cd) {
+                            return reservationStatus[cd.reservationStatus];
+                        }
+                    });
                     var grid;
                     var options = {
                         url: App.href + "/api/score/identityInfo/list",
@@ -92,7 +100,7 @@
                         actionColumnWidth: "20%",
                         actionColumns: [
                             {
-                                text: "编辑申请人信息",
+                                text: "编辑",
                                 cls: "btn-primary btn-sm",
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
@@ -139,7 +147,7 @@
                                     });
                                 }
                             }, {
-                                text: "查看申请人信息",
+                                text: "查看",
                                 cls: "btn-info btn-sm",
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
