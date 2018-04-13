@@ -4,10 +4,10 @@
 ;
 (function ($, window, document, undefined) {
     var uploadMapping = {
-        "/api/core/columnJson/list": "coreColumnJson"
+        "/api/core/region/list": "coreRegion"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
-    App.coreColumnJson = {
+    App.coreRegion = {
         page: function (title) {
             window.App.content.empty();
             window.App.title(title);
@@ -29,7 +29,7 @@
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: App.href + "/api/core/columnJson/formItems",
+            url: App.href + "/api/core/region/formItems",
             success: function (fd) {
                 if (fd.code === 200) {
                     var formItems = fd.data.formItems;
@@ -54,7 +54,7 @@
                     });
                     var grid;
                     var options = {
-                        url: App.href + "/api/core/columnJson/list",
+                        url: App.href + "/api/core/region/list",
                         contentType: "table",
                         contentTypeItems: "table,card,list",
                         pageNum: 1,//当前页码
@@ -82,7 +82,7 @@
                                     id: "edit_form",
                                     name: "edit_form",
                                     method: "POST",
-                                    action: App.href + "/api/core/columnJson/update",
+                                    action: App.href + "/api/core/region/update",
                                     ajaxSubmit: true,
                                     ajaxSuccess: function () {
                                         modal.hide();
@@ -103,7 +103,7 @@
                                     buttonsAlign: "center",
                                     items: formItems
                                 });
-                                form.loadRemote(App.href + "/api/core/columnJson/detail?id=" + d.id);
+                                form.loadRemote(App.href + "/api/core/region/detail?id=" + d.id);
                             }
                         }, {
                             text: "删除",
@@ -111,7 +111,7 @@
                             handle: function (index, data) {
                                 bootbox.confirm("确定该操作?", function (result) {
                                     if (result) {
-                                        var requestUrl = App.href + "/api/core/columnJson/delete";
+                                        var requestUrl = App.href + "/api/core/region/delete";
                                         $.ajax({
                                             type: "POST",
                                             dataType: "json",
@@ -149,7 +149,7 @@
                                         id: "add_form",
                                         name: "add_form",
                                         method: "POST",
-                                        action: App.href + "/api/core/columnJson/insert",
+                                        action: App.href + "/api/core/region/insert",
                                         ajaxSubmit: true,
                                         ajaxSuccess: function () {
                                             modal.hide();
