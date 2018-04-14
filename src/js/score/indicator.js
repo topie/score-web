@@ -173,6 +173,79 @@
                                         items: formItems
                                     });
                                 }
+                            }, {
+                                text: "生成json",
+                                cls: "btn btn-info",
+                                handle: function (grid) {
+                                    var requestUrl = App.href + "/api/score/indicator/generateJson";
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: {
+                                            batchId: 1
+                                        },
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            if (data.code === 200) {
+                                                var m = $.orangeModal({
+                                                    id: "json_form_modal",
+                                                    title: "JSON预览",
+                                                    destroy: true
+                                                }).show();
+                                                var json = JSON.parse(data.data.html);
+                                                var items = [];
+                                                $.each(json, function (i, d) {
+                                                    var item = {
+                                                        name: d.id,
+                                                        label: d.name,
+                                                        id: d.id
+                                                    };
+                                                    if (d.itemType == 0) {
+                                                        item.type = 'radioGroup';
+                                                        item.inline = false;
+                                                        item.items = [];
+                                                        for (var j in d.items) {
+                                                            item.items.push(d.items[j]);
+                                                        }
+                                                    } else {
+                                                        item.type = 'text';
+                                                    }
+                                                    items.push(item);
+                                                });
+                                                m.$body.orangeForm({
+                                                    id: "add_form",
+                                                    name: "add_form",
+                                                    method: "POST",
+                                                    action: App.href + "/api/score/indicator/insert",
+                                                    ajaxSubmit: true,
+                                                    ajaxSuccess: function () {
+                                                    },
+                                                    submitText: "保存",//保存按钮的文本
+                                                    showReset: true,//是否显示重置按钮
+                                                    resetText: "重置",//重置按钮文本
+                                                    isValidate: true,//开启验证
+                                                    labelInline: true,
+                                                    viewMode: true,
+                                                    buttons: [{
+                                                        type: 'button',
+                                                        text: '关闭',
+                                                        handle: function () {
+                                                            modal.hide();
+                                                            grid.reload();
+                                                        }
+                                                    }],
+                                                    buttonsAlign: "center",
+                                                    items: items
+                                                });
+                                            } else {
+                                                alert(data.message);
+                                            }
+                                        },
+                                        error: function (e) {
+                                            alert("请求异常。");
+                                        }
+                                    });
+                                }
                             }
                         ],
                         search: {
