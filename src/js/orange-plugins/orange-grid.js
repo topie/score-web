@@ -1750,8 +1750,8 @@
                     $.each(that._grids, function (i, grid) {
                         var num = (that._pageNum - 1) * that._pageSize + i + 1;
                         var ele = $('<li>' +
-                            '<div class="timeline-badge">' +
-                            //'<i class="fa fa-check"></i>' +
+                            '<div class="timeline-badge info">' +
+                            '<i class="fa fa-clock-o"></i>' +
                             '</div>' +
                             '<div class="timeline-panel">' +
                             '    <div class="timeline-heading">' +
