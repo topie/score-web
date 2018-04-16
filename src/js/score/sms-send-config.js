@@ -38,19 +38,33 @@
                         searchItems = [];
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
-                        if (dd.type === 'text' || dd.name==='id') {
+                        if (dd.type === 'text' || dd.name === 'id') {
                             var column = {
                                 title: dd.label,
                                 field: dd.name
                             };
                             columns.push(column);
                         }
-                        if (dd.itemsUrl !== undefined){
+                        if (dd.itemsUrl !== undefined) {
                             dd.itemsUrl = App.href + dd.itemsUrl;
                         }
-                        if (dd.url !== undefined){
+                        if (dd.url !== undefined) {
                             dd.url = App.href + dd.url;
                         }
+                        if (dd.name === 'statusDictAlias') {
+                            dd.change = function (f, value) {
+                                var newItemsUrl = '/api/core/dict/' + value + '/options';
+                                f._refreshItem('statusInt', {'itemsUrl': newItemsUrl});
+                            };
+                            dd.loadHandler = function (ele, value, f) {
+                                var newItemsUrl = '/api/core/dict/' + value + '/options';
+                                f._refreshItem('statusInt', {'itemsUrl': newItemsUrl});
+                            }
+                        }
+                    });
+                    columns.push({
+                        title: '短信模板内容',
+                        field: 'templateStr'
                     });
                     var grid;
                     var options = {

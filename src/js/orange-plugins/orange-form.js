@@ -653,6 +653,9 @@
                         }
                     });
                 }
+                if (data.loadHandler !== undefined) {
+                    ele.data("load", data.loadHandler);
+                }
                 return ele;
             },
             'checkboxGroup': function (data, form) {
@@ -1629,6 +1632,7 @@
             this.$form.data("form", this);
         },
         _loadValue: function (name, value, element) {
+            var that = this;
             var ele = element || this.$form.find("[name='" + name + "']");
             if (ele.is('input[type="text"]')) {
                 if (ele.attr("data-type") == "tree-input") {
@@ -1763,7 +1767,7 @@
             }
             var loadHandler = ele.data("load");
             if (loadHandler !== undefined) {
-                loadHandler(ele, value);
+                loadHandler(ele, value, that);
             }
             this._uniform();
         },
@@ -1789,9 +1793,12 @@
         _remove: function () {
             this.$element.empty();
         },
-        _refreshItem: function (name) {
+        _refreshItem: function (name, options) {
             var module = this._module[name];
             var data = module.data("data");
+            if (options !== undefined) {
+                data = $.extend(true, data, Form.defaults, options);
+            }
             module.find(".form-group").empty();
             this._buildModuleWrapper(module, data);
             $('[role="tree"]').each(function () {
