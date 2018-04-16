@@ -192,18 +192,13 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/identityInfo/detailAll?id=" + d.id;
+                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/detailAll?id=" + d.id;
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
                                         url: requestUrl,
                                         success: function (data) {
                                             modal.$body.html(data.data.html);
-                                            identityInfo(d, modal.$body.find("#identityInfo"), true);
-                                            houseProfession(d, modal.$body.find("#houseProfession"), true);
-                                            houseMove(d, modal.$body.find("#houseMove"), true);
-                                            houseMove(d, modal.$body.find("#houseMove"), true);
-                                            houseOther(d, modal.$body.find("#houseOther"), true);
                                         },
                                         error: function (e) {
                                             alert("请求异常。");

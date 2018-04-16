@@ -656,8 +656,11 @@
                 return ele;
             },
             'checkboxGroup': function (data, form) {
-                var inlineCls = "checkbox-inline";
+                var inlineCls = "inline";
                 var wrapperTmpl = '<div id="${id_}_cbg" name="${name_}_cbg" ${attribute_} class="checkbox-list"></div>';
+                if (data.inline) {
+                    wrapperTmpl = '<div id="${id_}_cbg" name="${name_}_cbg" ${attribute_} class="checkbox"></div>';
+                }
                 var checkboxTmpl = '<label class="checkbox ${inline_}"><input drole="main" class="ace" name="${name_}" value="${value_}" type="checkbox" ${checked_} ${attribute_} ${disabled_} ><span class="lbl">${text_}</span></label>';
                 var ele = $.tmpl(wrapperTmpl, {
                     "id_": (data.id === undefined ? data.name : data.id),
@@ -673,8 +676,7 @@
                                 .tmpl(
                                     checkboxTmpl,
                                     {
-                                        "inline_": data.inline ? inlineCls
-                                            : "",
+                                        "inline_": data.inline ? inlineCls : "",
                                         "name_": data.name,
                                         "value_": checkbox.value,
                                         "text_": checkbox.text,
@@ -727,8 +729,11 @@
 
             },
             'radioGroup': function (data, form) {
-                var inlineCls = "radio-inline";
+                var inlineCls = "inline";
                 var wrapperTmpl = '<div class="radio-list"></div>';
+                if (data.inline) {
+                    wrapperTmpl = '<div class="radio"></div>';
+                }
                 var radioTmpl = '<label class="radio ${inline_}"><input class="ace" drole="main" name="${name_}" value="${value_}" ${disable_} type="radio" ${checked_} ${attribute_}><span class="lbl">${text_}</span></label>';
                 var ele = $.tmpl(wrapperTmpl, {
                     "id_": (data.id === undefined ? data.name : data.id),
