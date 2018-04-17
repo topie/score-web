@@ -1080,6 +1080,9 @@
                             });
                     };
                     if (data.readonly !== 'readonly') {
+                        if (data.autoUpload === undefined) {
+                            data.autoUpload = true;
+                        }
                         if (data.autoUpload) {
                             ele.find('[role="file"]').on("change", function () {
                                 uploadFile();
