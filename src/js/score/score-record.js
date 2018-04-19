@@ -4,10 +4,11 @@
 ;
 (function ($, window, document, undefined) {
     var uploadMapping = {
-        "/api/score/scoreRecord/list": "scoreScoreRecord"
+        "/api/score/scoreRecord/scoring": "scoreScoreRecordScoring",
+        "/api/score/scoreRecord/scored": "scoreScoreRecordScored"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
-    App.scoreScoreRecord = {
+    App.scoreScoreRecordScoring = {
         page: function (title) {
             window.App.content.empty();
             window.App.title(title);
@@ -15,17 +16,35 @@
                 '<div class="row">' +
                 '<div class="col-md-12" >' +
                 '<div class="panel panel-default" >' +
-                '<div class="panel-heading">列表</div>' +
+                '<div class="panel-heading">待打分列表</div>' +
                 '<div class="panel-body" id="grid"></div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>');
             window.App.content.append(content);
-            initEvents();
+            scoreRecord("scoring");
         }
     };
-    var initEvents = function () {
+    App.scoreScoreRecordScored = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="panel panel-default" >' +
+                '<div class="panel-heading">已打分列表</div>' +
+                '<div class="panel-body" id="grid"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            scoreRecord("scored");
+        }
+    };
+    var scoreRecord = function (type) {
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -34,27 +53,114 @@
                 if (fd.code === 200) {
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
+                    var scoreRecordStatus = fd.data.scoreRecordStatus;
                     if (searchItems == null)
                         searchItems = [];
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
-                        if (dd.type === 'text' || dd.name==='id') {
+                        if (dd.type === 'text' || dd.name === 'id') {
                             var column = {
                                 title: dd.label,
                                 field: dd.name
                             };
+                            if (dd.name == 'personName') {
+                                column.dataClick = function (iii, ddd) {
+                                    var modal = $.orangeModal({
+                                        id: "person_score_form_modal",
+                                        title: "申请人审核打分",
+                                        destroy: true,
+                                        buttons: [
+                                            {
+                                                text: '确认打分',
+                                                cls: 'btn btn-info',
+                                                handle: function (m) {
+                                                    var sIds = [];
+                                                    var sAns = [];
+                                                    m.$body.find('input[type=radio]:checked').each(function () {
+                                                        sIds.push($(this).val());
+                                                    });
+                                                    m.$body.find('input[type=text]').each(function () {
+                                                        if ($.trim($(this).val()) != '') {
+                                                            sAns.push($(this).attr("d-indicator") + "_" + $(this).val());
+                                                        }
+                                                    });
+                                                    if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
+                                                        bootbox.alert('请选择打分项');
+                                                        return;
+                                                    }
+                                                    if (m.$body.find('input[type=text]').length > 0 && sAns.length == 0) {
+                                                        bootbox.alert('请填写打分项');
+                                                        return;
+                                                    }
+                                                    var requestUrl = App.href + "/api/score/scoreRecord/score";
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        data: {
+                                                            personId: ddd.personId,
+                                                            sIds: sIds.toString(),
+                                                            sAns: sAns.toString()
+                                                        },
+                                                        success: function (data) {
+                                                            grid.reload();
+                                                            m.hide();
+                                                        },
+                                                        error: function (e) {
+                                                            alert("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            },
+                                            {
+                                                text: '打印审核表',
+                                                cls: 'btn btn-default',
+                                                handle: function (m) {
+
+                                                }
+                                            },
+                                            {
+                                                text: '打印材料接收单',
+                                                cls: 'btn btn-default',
+                                                handle: function (m) {
+
+                                                }
+                                            }
+                                        ]
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/scoreRecord/detailPerson?identityInfoId=" + ddd.personId;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                        },
+                                        error: function (e) {
+                                            alert("请求异常。");
+                                        }
+                                    });
+                                }
+                            }
                             columns.push(column);
                         }
-                        if (dd.itemsUrl !== undefined){
+                        if (dd.itemsUrl !== undefined) {
                             dd.itemsUrl = App.href + dd.itemsUrl;
                         }
-                        if (dd.url !== undefined){
+                        if (dd.url !== undefined) {
                             dd.url = App.href + dd.url;
+                        }
+                    });
+                    columns.push({
+                        title: '办理进度',
+                        field: 'status',
+                        format: function (i, d) {
+                            return scoreRecordStatus[d.status];
                         }
                     });
                     var grid;
                     var options = {
-                        url: App.href + "/api/score/scoreRecord/list",
+                        url: App.href + "/api/score/scoreRecord/" + type,
                         contentType: "table",
                         contentTypeItems: "table,card,list",
                         pageNum: 1,//当前页码
@@ -70,110 +176,144 @@
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
                         actionColumns: [{
-                            text: "编辑",
+                            text: "审核打分",
                             cls: "btn-primary btn-sm",
+                            visible: function (i, d) {
+                                return d.status === 3;
+                            },
                             handle: function (index, d) {
                                 var modal = $.orangeModal({
-                                    id: "edit_form_modal",
-                                    title: "编辑",
-                                    destroy: true
-                                }).show();
-                                var form = modal.$body.orangeForm({
-                                    id: "edit_form",
-                                    name: "edit_form",
-                                    method: "POST",
-                                    action: App.href + "/api/score/scoreRecord/update",
-                                    ajaxSubmit: true,
-                                    ajaxSuccess: function () {
-                                        modal.hide();
-                                        grid.reload();
-                                    },
-                                    submitText: "保存",
-                                    showReset: true,
-                                    resetText: "重置",
-                                    isValidate: true,
-                                    labelInline: true,
-                                    buttons: [{
-                                        type: 'button',
-                                        text: '关闭',
-                                        handle: function () {
-                                            modal.hide();
+                                    id: "score_form_modal",
+                                    title: "审核打分",
+                                    destroy: true,
+                                    buttons: [
+                                        {
+                                            text: '确认送达',
+                                            cls: 'btn btn-info',
+                                            handle: function (m) {
+                                                var sIds = [];
+                                                var sAns = [];
+                                                m.$body.find('input[type=radio]:checked').each(function () {
+                                                    sIds.push($(this).val());
+                                                });
+                                                m.$body.find('input[type=text]').each(function () {
+                                                    if ($.trim($(this).val()) != '') {
+                                                        sAns.push($(this).attr("d-indicator") + "_" + $(this).val());
+                                                    }
+                                                });
+                                                if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
+                                                    bootbox.alert('请选择打分项');
+                                                    return;
+                                                }
+                                                if (m.$body.find('input[type=text]').length > 0 && sAns.length == 0) {
+                                                    bootbox.alert('请填写打分项');
+                                                    return;
+                                                }
+                                                var requestUrl = App.href + "/api/score/scoreRecord/score";
+                                                $.ajax({
+                                                    type: "POST",
+                                                    dataType: "json",
+                                                    url: requestUrl,
+                                                    data: {
+                                                        personId: d.personId,
+                                                        sIds: sIds.toString(),
+                                                        sAns: sAns.toString()
+                                                    },
+                                                    success: function (data) {
+                                                        grid.reload();
+                                                        m.hide();
+                                                    },
+                                                    error: function (e) {
+                                                        alert("请求异常。");
+                                                    }
+                                                });
+                                            }
+                                        },
+                                        {
+                                            text: '修改信息',
+                                            cls: 'btn btn-warning',
+                                            handle: function (m) {
+
+                                            }
+                                        },
+                                        {
+                                            text: '打印审核表',
+                                            cls: 'btn btn-default',
+                                            handle: function (m) {
+
+                                            }
+                                        },
+                                        {
+                                            text: '打印材料接收单',
+                                            cls: 'btn btn-default',
+                                            handle: function (m) {
+
+                                            }
                                         }
-                                    }],
-                                    buttonsAlign: "center",
-                                    items: formItems
+                                    ]
+                                }).show();
+                                var requestUrl = App.href + "/api/score/scoreRecord/detailAll?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
+                                $.ajax({
+                                    type: "GET",
+                                    dataType: "json",
+                                    url: requestUrl,
+                                    success: function (data) {
+                                        modal.$body.html(data.data.html);
+                                    },
+                                    error: function (e) {
+                                        alert("请求异常。");
+                                    }
                                 });
-                                form.loadRemote(App.href + "/api/score/scoreRecord/detail?id=" + d.id);
+
                             }
                         }, {
-                            text: "删除",
+                            text: "查看",
                             cls: "btn-danger btn-sm",
-                            handle: function (index, data) {
-                                bootbox.confirm("确定该操作?", function (result) {
-                                    if (result) {
-                                        var requestUrl = App.href + "/api/score/scoreRecord/delete";
-                                        $.ajax({
-                                            type: "POST",
-                                            dataType: "json",
-                                            data: {
-                                                id: data.id
-                                            },
-                                            url: requestUrl,
-                                            success: function (data) {
-                                                if (data.code === 200) {
-                                                    grid.reload();
-                                                } else {
-                                                    alert(data.message);
-                                                }
-                                            },
-                                            error: function (e) {
-                                                alert("请求异常。");
+                            handle: function (index, d) {
+                                var modal = $.orangeModal({
+                                    id: "score_view_form_modal",
+                                    title: "查看打分",
+                                    destroy: true,
+                                    buttons: [
+                                        {
+                                            text: '打印审核表',
+                                            cls: 'btn btn-default',
+                                            handle: function (m) {
+
                                             }
-                                        });
+                                        },
+                                        {
+                                            text: '打印材料接收单',
+                                            cls: 'btn btn-default',
+                                            handle: function (m) {
+
+                                            }
+                                        }
+                                    ]
+                                }).show();
+                                var requestUrl = App.href + "/api/score/scoreRecord/detailAll?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
+                                $.ajax({
+                                    type: "GET",
+                                    dataType: "json",
+                                    url: requestUrl,
+                                    success: function (data) {
+                                        modal.$body.html(data.data.html);
+                                        var slist = data.data.sCheckList;
+                                        for (var i in slist) {
+                                            modal.$body.find("input[name=score]:radio[value='" + slist[i] + "']").attr('checked', 'true');
+                                        }
+                                        var stList = data.data.sTextList;
+                                        for (var i in stList) {
+                                            var arr = stList[i].split("_");
+                                            modal.$body.find("input[d-indicator=" + arr[0] + "]").val(parseFloat(arr[1]).toFixed(2));
+                                        }
+                                    },
+                                    error: function (e) {
+                                        alert("请求异常。");
                                     }
                                 });
                             }
                         }],
-                        tools: [
-                            {
-                                text: " 添 加",
-                                cls: "btn btn-primary",
-                                icon: "fa fa-plus",
-                                handle: function (grid) {
-                                    var modal = $.orangeModal({
-                                        id: "add_form_modal",
-                                        title: "添加",
-                                        destroy: true
-                                    }).show();
-                                    var form = modal.$body.orangeForm({
-                                        id: "add_form",
-                                        name: "add_form",
-                                        method: "POST",
-                                        action: App.href + "/api/score/scoreRecord/insert",
-                                        ajaxSubmit: true,
-                                        ajaxSuccess: function () {
-                                            modal.hide();
-                                            grid.reload();
-                                        },
-                                        submitText: "保存",//保存按钮的文本
-                                        showReset: true,//是否显示重置按钮
-                                        resetText: "重置",//重置按钮文本
-                                        isValidate: true,//开启验证
-                                        labelInline: true,
-                                        buttons: [{
-                                            type: 'button',
-                                            text: '关闭',
-                                            handle: function () {
-                                                modal.hide();
-                                                grid.reload();
-                                            }
-                                        }],
-                                        buttonsAlign: "center",
-                                        items: formItems
-                                    });
-                                }
-                            }
-                        ],
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素

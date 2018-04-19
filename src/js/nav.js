@@ -88,8 +88,9 @@
                             );
                         refreshHref(ul);
                     } else if (result.code === 401) {
-                        bootbox.alert("token失效,请登录!");
-                        window.location.href = '../login.html';
+                        bootbox.alert("token失效,请登录!",function(){
+                            window.location.href = '../login.html';
+                        });
                     }
                 },
                 error: function (err) {
@@ -159,8 +160,9 @@
                             );
                         refreshHref(ul);
                     } else if (result.code === 401) {
-                        bootbox.alert("token失效,请登录!");
-                        window.location.href = '../login.html';
+                        bootbox.alert("token失效,请登录!",function(){
+                            window.location.href = '../login.html';
+                        });
                     }
                 },
                 error: function (err) {

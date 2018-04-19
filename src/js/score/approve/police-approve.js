@@ -140,7 +140,7 @@
                             format: function (i, cd) {
                                 return hallStatus[cd.hallStatus];
                             }
-                        },{
+                        }, {
                             title: '公安前置预审状态',
                             field: 'policeApproveStatus',
                             format: function (i, cd) {
@@ -167,8 +167,46 @@
                         actionColumnWidth: "20%",
                         actionColumns: [
                             {
+                                text: "查看",
+                                cls: "btn-danger btn-sm",
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "view_form_modal",
+                                        title: "查看申请人信息",
+                                        destroy: true,
+                                        buttons: [
+                                            {
+                                                text: '打印信息',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+
+                                                }
+                                            }
+                                        ]
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/identityInfo/detailAll?identityInfoId=" + d.id;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                            var checkList = data.data.cMids;
+                                            for (var i in checkList) {
+                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                            }
+                                        },
+                                        error: function (e) {
+                                            alert("请求异常。");
+                                        }
+                                    });
+                                }
+                            },{
                                 text: "审核",
                                 cls: "btn-info btn-sm",
+                                visible: function (i, d) {
+                                    return d.policeApproveStatus == 1;
+                                },
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
                                         id: "approve_form_modal",
@@ -243,7 +281,7 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/approve/policeApprove/detailAll?id=" + d.id;
+                                    var requestUrl = App.href + "/api/score/identityInfo/detailAll?id=" + d.id;
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
@@ -256,7 +294,8 @@
                                         }
                                     });
                                 }
-                            }],
+                            }
+                        ],
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素

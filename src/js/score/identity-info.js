@@ -216,18 +216,17 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/identityInfo/detailAll?id=" + d.id;
+                                    var requestUrl = App.href + "/api/score/identityInfo/detailAll?identityInfoId=" + d.id;
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
                                         url: requestUrl,
                                         success: function (data) {
                                             modal.$body.html(data.data.html);
-                                            identityInfo(d, modal.$body.find("#identityInfo"), true);
-                                            houseProfession(d, modal.$body.find("#houseProfession"), true);
-                                            houseMove(d, modal.$body.find("#houseMove"), true);
-                                            houseMove(d, modal.$body.find("#houseMove"), true);
-                                            houseOther(d, modal.$body.find("#houseOther"), true);
+                                            var checkList = data.data.cMids;
+                                            for (var i in checkList) {
+                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                            }
                                         },
                                         error: function (e) {
                                             alert("请求异常。");
@@ -607,71 +606,72 @@
                         columns: columns,
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
-                        actionColumns: [{
-                            text: "编辑",
-                            cls: "btn-primary btn-sm",
-                            handle: function (index, d) {
-                                var modal = $.orangeModal({
-                                    id: "edit_form_modal",
-                                    title: "编辑",
-                                    destroy: true
-                                }).show();
-                                var form = modal.$body.orangeForm({
-                                    id: "edit_form",
-                                    name: "edit_form",
-                                    method: "POST",
-                                    action: App.href + "/api/score/onlinePersonMaterial/update",
-                                    ajaxSubmit: true,
-                                    ajaxSuccess: function () {
-                                        modal.hide();
-                                        grid.reload();
-                                    },
-                                    submitText: "保存",
-                                    showReset: true,
-                                    resetText: "重置",
-                                    isValidate: true,
-                                    labelInline: true,
-                                    buttons: [{
-                                        type: 'button',
-                                        text: '关闭',
-                                        handle: function () {
+                        actionColumns: [
+                            {
+                                text: "编辑",
+                                cls: "btn-primary btn-sm",
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "edit_form_modal",
+                                        title: "编辑",
+                                        destroy: true
+                                    }).show();
+                                    var form = modal.$body.orangeForm({
+                                        id: "edit_form",
+                                        name: "edit_form",
+                                        method: "POST",
+                                        action: App.href + "/api/score/onlinePersonMaterial/update",
+                                        ajaxSubmit: true,
+                                        ajaxSuccess: function () {
                                             modal.hide();
-                                        }
-                                    }],
-                                    buttonsAlign: "center",
-                                    items: formItems
-                                });
-                                form.loadRemote(App.href + "/api/score/onlinePersonMaterial/detail?id=" + d.id);
-                            }
-                        }, {
-                            text: "删除",
-                            cls: "btn-danger btn-sm",
-                            handle: function (index, data) {
-                                bootbox.confirm("确定该操作?", function (result) {
-                                    if (result) {
-                                        var requestUrl = App.href + "/api/score/onlinePersonMaterial/delete";
-                                        $.ajax({
-                                            type: "POST",
-                                            dataType: "json",
-                                            data: {
-                                                id: data.id
-                                            },
-                                            url: requestUrl,
-                                            success: function (data) {
-                                                if (data.code === 200) {
-                                                    grid.reload();
-                                                } else {
-                                                    alert(data.message);
-                                                }
-                                            },
-                                            error: function (e) {
-                                                alert("请求异常。");
+                                            grid.reload();
+                                        },
+                                        submitText: "保存",
+                                        showReset: true,
+                                        resetText: "重置",
+                                        isValidate: true,
+                                        labelInline: true,
+                                        buttons: [{
+                                            type: 'button',
+                                            text: '关闭',
+                                            handle: function () {
+                                                modal.hide();
                                             }
-                                        });
-                                    }
-                                });
-                            }
-                        }],
+                                        }],
+                                        buttonsAlign: "center",
+                                        items: formItems
+                                    });
+                                    form.loadRemote(App.href + "/api/score/onlinePersonMaterial/detail?id=" + d.id);
+                                }
+                            }, {
+                                text: "删除",
+                                cls: "btn-danger btn-sm",
+                                handle: function (index, data) {
+                                    bootbox.confirm("确定该操作?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/onlinePersonMaterial/delete";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                data: {
+                                                    id: data.id
+                                                },
+                                                url: requestUrl,
+                                                success: function (data) {
+                                                    if (data.code === 200) {
+                                                        grid.reload();
+                                                    } else {
+                                                        alert(data.message);
+                                                    }
+                                                },
+                                                error: function (e) {
+                                                    alert("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }],
                         tools: [
                             {
                                 text: " 添 加",
