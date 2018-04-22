@@ -412,10 +412,10 @@
                             that._init();
                         } else if (data.code === 401) {
                             that.$element.unblock();
-                            that._alert(data.message + ";请重新登录！", undefined, undefined, App.redirectLogin);
+                            bootbox.alert(data.message + ";请重新登录！", App.redirectLogin);
                         } else if (data.code === 403) {
                             that.$element.unblock();
-                            that._alert(data.message);
+                            bootbox.alert(data.message + ";请重新登录！", App.redirectLogin);
                         } else {
                             that.$element.unblock();
                             that._alert(data.message);

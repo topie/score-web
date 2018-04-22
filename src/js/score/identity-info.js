@@ -147,6 +147,12 @@
                                     });
                                 }
                             }, {
+                                text: "审核过程",
+                                cls: "btn-success btn-sm",
+                                handle: function (index, data) {
+                                    statusProgress(data);
+                                }
+                            }, {
                                 text: "查看",
                                 cls: "btn-info btn-sm",
                                 handle: function (index, d) {
@@ -728,4 +734,67 @@
             }
         });
     };
+
+    var statusProgress = function (d) {
+        var modal = $.orangeModal({
+            id: "status_form_modal",
+            title: "审核过程",
+            destroy: true
+        }).show();
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: App.href + "/api/score/personBatchStatusRecord/formItems",
+            success: function (fd) {
+                if (fd.code === 200) {
+                    var formItems = fd.data.formItems;
+                    var searchItems = fd.data.searchItems;
+                    if (searchItems == null)
+                        searchItems = [];
+                    var columns = [];
+                    $.each(formItems, function (ii, dd) {
+                        if (dd.type === 'text' || dd.name === 'id') {
+                            var column = {
+                                title: dd.label,
+                                field: dd.name
+                            };
+                            columns.push(column);
+                        }
+                        if (dd.itemsUrl !== undefined) {
+                            dd.itemsUrl = App.href + dd.itemsUrl;
+                        }
+                        if (dd.url !== undefined) {
+                            dd.url = App.href + dd.url;
+                        }
+                    });
+                    var grid;
+                    var options = {
+                        url: App.href + "/api/score/personBatchStatusRecord/list?batchId=" + d.batchId + "&personIdNumber=" + d.idNumber,
+                        contentType: "timeline",
+                        contentTypeItems: "timeline,table,list",
+                        pageNum: 1,//当前页码
+                        pageSize: 15,//每页显示条数
+                        idField: "id",//id域指定
+                        headField: "id",
+                        showCheck: true,//是否显示checkbox
+                        checkboxWidth: "3%",
+                        showIndexNum: false,
+                        indexNumWidth: "5%",
+                        pageSelect: [2, 15, 30, 50],
+                        columns: columns,
+                        actionColumnText: "操作",//操作列文本
+                        actionColumnWidth: "20%",
+                        actionColumns: [],
+                        tools: []
+                    };
+                    modal.$body.orangeGrid(options);
+                } else {
+                    alert(fd.message);
+                }
+            },
+            error: function (e) {
+                alert("请求异常。");
+            }
+        });
+    }
 })(jQuery, window, document);
