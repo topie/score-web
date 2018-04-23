@@ -208,6 +208,7 @@
                 if (fd.code === 200) {
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
+                    var addressMap = fd.data.addressMap;
                     if (searchItems == null)
                         searchItems = [];
                     var columns = [];
@@ -225,8 +226,15 @@
                         if (dd.url !== undefined) {
                             dd.url = App.href + dd.url;
                         }
-                        if(dd.name=='batchId'){
+                        if (dd.name === 'batchId') {
                             dd.value = d.id;
+                        }
+                    });
+                    columns.push({
+                        title: '受理地址',
+                        field: 'addressId',
+                        format: function (iii, ddd) {
+                            return addressMap[ddd.addressId];
                         }
                     });
                     columns.push({
