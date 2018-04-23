@@ -46,7 +46,43 @@
             initEvents("ing");
         }
     };
-    var initEvents = function () {
+    App.scoreApplyCancelAgree = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="panel panel-default" >' +
+                '<div class="panel-heading">列表</div>' +
+                '<div class="panel-body" id="grid"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            initEvents("agree");
+        }
+    };
+    App.scoreApplyCancelDisAgree = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="panel panel-default" >' +
+                '<div class="panel-heading">列表</div>' +
+                '<div class="panel-body" id="grid"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            initEvents("disAgree");
+        }
+    };
+    var initEvents = function (type) {
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -59,23 +95,23 @@
                         searchItems = [];
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
-                        if (dd.type === 'text' || dd.name==='id') {
+                        if (dd.type === 'text' || dd.name === 'id') {
                             var column = {
                                 title: dd.label,
                                 field: dd.name
                             };
                             columns.push(column);
                         }
-                        if (dd.itemsUrl !== undefined){
+                        if (dd.itemsUrl !== undefined) {
                             dd.itemsUrl = App.href + dd.itemsUrl;
                         }
-                        if (dd.url !== undefined){
+                        if (dd.url !== undefined) {
                             dd.url = App.href + dd.url;
                         }
                     });
                     var grid;
                     var options = {
-                        url: App.href + "/api/score/applyCancel/list",
+                        url: App.href + "/api/score/applyCancel/" + type,
                         contentType: "table",
                         contentTypeItems: "table,card,list",
                         pageNum: 1,//当前页码

@@ -4,10 +4,13 @@
 ;
 (function ($, window, document, undefined) {
     var uploadMapping = {
-        "/api/score/applyScore/list": "scoreApplyScore"
+        "/api/score/applyScore/mine": "scoreApplyScoreMine",
+        "/api/score/applyScore/ing": "scoreApplyScoreIng",
+        "/api/score/applyScore/agree": "scoreApplyScoreAgree",
+        "/api/score/applyScore/disAgree": "scoreApplyScoreDisAgree"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
-    App.scoreApplyScore = {
+    App.scoreApplyScoreMine = {
         page: function (title) {
             window.App.content.empty();
             window.App.title(title);
@@ -15,17 +18,71 @@
                 '<div class="row">' +
                 '<div class="col-md-12" >' +
                 '<div class="panel panel-default" >' +
-                '<div class="panel-heading">列表</div>' +
+                '<div class="panel-heading">我的申请</div>' +
                 '<div class="panel-body" id="grid"></div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>');
             window.App.content.append(content);
-            initEvents();
+            initEvents("mine");
         }
     };
-    var initEvents = function () {
+    App.scoreApplyScoreIng = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="panel panel-default" >' +
+                '<div class="panel-heading">待审批列表</div>' +
+                '<div class="panel-body" id="grid"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            initEvents("ing");
+        }
+    };
+    App.scoreApplyScoreAgree = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="panel panel-default" >' +
+                '<div class="panel-heading">审批通过列表</div>' +
+                '<div class="panel-body" id="grid"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            initEvents("agree");
+        }
+    };
+    App.scoreApplyScoreDisAgree = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="panel panel-default" >' +
+                '<div class="panel-heading">审批不通过列表</div>' +
+                '<div class="panel-body" id="grid"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            initEvents("disAgree");
+        }
+    };
+    var initEvents = function (type) {
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -38,23 +95,23 @@
                         searchItems = [];
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
-                        if (dd.type === 'text' || dd.name==='id') {
+                        if (dd.type === 'text' || dd.name === 'id') {
                             var column = {
                                 title: dd.label,
                                 field: dd.name
                             };
                             columns.push(column);
                         }
-                        if (dd.itemsUrl !== undefined){
+                        if (dd.itemsUrl !== undefined) {
                             dd.itemsUrl = App.href + dd.itemsUrl;
                         }
-                        if (dd.url !== undefined){
+                        if (dd.url !== undefined) {
                             dd.url = App.href + dd.url;
                         }
                     });
                     var grid;
                     var options = {
-                        url: App.href + "/api/score/applyScore/list",
+                        url: App.href + "/api/score/applyScore/" + type,
                         contentType: "table",
                         contentTypeItems: "table,card,list",
                         pageNum: 1,//当前页码
