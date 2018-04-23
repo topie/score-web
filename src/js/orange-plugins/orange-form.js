@@ -822,7 +822,7 @@
                     "cls_": data.cls == undefined ? "" : data.cls,
                     "value_": (data.value == undefined ? moment().format(option.locale.format) : data.value)
                 });
-                if (data.readonly = "readonly") {
+                if (data.readonly === "readonly") {
                     return ele;
                 }
                 if (data.callback !== undefined) {
