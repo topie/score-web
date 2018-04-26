@@ -32,7 +32,9 @@
             url: App.href + "/api/score/indicator/formItems",
             success: function (fd) {
                 if (fd.code === 200) {
-                    var formItems = fd.data;
+                    var formItems = fd.data.formItems;
+                    var searchItems = fd.data.searchItems;
+                    var scoreRule = fd.data.scoreRule;
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
@@ -45,6 +47,28 @@
                         if (dd.type === 'tree') {
                             dd.items = [];
                             dd.url = App.href + dd.url;
+                        }
+                    });
+                    columns.push({
+                        title: '题目类型',
+                        field: 'itemType',
+                        format: function (i, d) {
+                            return d.itemType === 0 ? '单选题' : '多选题';
+                        }
+                    });
+                    columns.push({
+                        title: '打分方式',
+                        field: 'scoreRule',
+                        format: function (i, d) {
+                            if (d.scoreRule === 0) {
+                                return '单一部门打分';
+                            } else if (d.scoreRule === 1) {
+                                return '取最高分';
+                            } else if (d.scoreRule === 2) {
+                                return '同分则给分';
+                            } else if (d.scoreRule === 3) {
+                                return '累计加分';
+                            }
                         }
                     });
                     var grid;
@@ -251,14 +275,7 @@
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
-                            items: [
-                                {
-                                    type: "text",
-                                    label: "ID",
-                                    name: "id",
-                                    placeholder: "输入ID"
-                                }
-                            ]
+                            items: searchItems
                         }
                     };
                     grid = window.App.content.find("#grid").orangeGrid(options);
@@ -274,7 +291,7 @@
     var indicatorItem = function (indicator) {
         var modal = $.orangeModal({
             id: "manager_item_modal",
-            title: "选项管理",
+            title: "选项管理-" + indicator.name,
             destroy: true
         }).show();
         $.ajax({
@@ -418,19 +435,7 @@
                                     });
                                 }
                             }
-                        ],
-                        search: {
-                            rowEleNum: 2,
-                            //搜索栏元素
-                            items: [
-                                {
-                                    type: "text",
-                                    label: "ID",
-                                    name: "id",
-                                    placeholder: "输入ID"
-                                }
-                            ]
-                        }
+                        ]
                     };
                     grid = modal.$body.orangeGrid(options);
                 } else {

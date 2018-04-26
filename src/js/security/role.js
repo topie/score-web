@@ -85,7 +85,6 @@
                             name: 'roleName',//name
                             id: 'roleName',//id
                             label: '角色名',//左边label
-                            readonly: true,
                             rule: {
                                 required: true
                             },

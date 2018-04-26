@@ -89,32 +89,10 @@
                         columns: columns,
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
-                        actionColumns: [],
-                        tools: [
-                            {
-                                text: "设置开始",
-                                visible: function (i, d) {
-                                    return d.status !== 0
-                                },
-                                cls: "btn-success btn-sm",
-                                handle: function (index, data) {
-                                    setStatus(data.id, 1, function () {
-                                        grid.reload();
-                                    });
-                                }
-                            }, {
-                                text: "设置过期",
-                                visible: function (i, d) {
-                                    return d.status === 1
-                                },
-                                cls: "btn-success btn-sm",
-                                handle: function (index, data) {
-                                    setStatus(data.id, 2, function () {
-                                        grid.reload();
-                                    });
-                                }
-                            }
+                        actionColumns: [
+
                         ],
+                        tools: [],
                         search: {
                             rowEleNum: 2,
                             items: searchItems
@@ -130,32 +108,5 @@
             }
         });
     };
-
-    var setStatus = function (id, status, cb) {
-        bootbox.confirm("确定该操作?", function (result) {
-            if (result) {
-                var requestUrl = App.href + "/api/score/info/listInfo/updateStatus";
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    data: {
-                        id: id,
-                        status: status
-                    },
-                    url: requestUrl,
-                    success: function (data) {
-                        if (data.code === 200) {
-                            cb();
-                        } else {
-                            alert(data.message);
-                        }
-                    },
-                    error: function (e) {
-                        alert("请求异常。");
-                    }
-                });
-            }
-        });
-    }
 
 })(jQuery, window, document);

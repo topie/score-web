@@ -159,7 +159,7 @@
                                     url: App.href + "/api/security/role/treeNodes",
                                     expandAll: true,
                                     autoParam: ["id", "name", "pId"],
-                                    chkStyle: "checkbox",
+                                    chkStyle: "radio",
                                     rule: {
                                         required: true
                                     },
@@ -288,44 +288,6 @@
             ],
             tools: [
                 {
-                    text: " 导入",//按钮文本
-                    cls: "btn btn-sm btn-primary",
-                    icon: "fa fa-upload",
-                    handle: function (grid) {
-                        var modal = $.orangeModal({
-                            id: "importUser",
-                            title: "导入用户",
-                            destroy: true
-                        }).show();
-                        modal.$body.orangeForm({
-                            method: "post",
-                            action: "",
-                            ajaxSubmit: true,
-                            submitText: "保存",
-                            showReset: false,
-                            resetText: "重置",
-                            showSubmit: false,
-                            items: [
-                                {
-                                    type: 'file',
-                                    id: 'file',
-                                    name: 'file',
-                                    label: '选择文件',
-                                    isAjaxUpload: true,
-                                    autoUpload: false,
-                                    allowTypes: "xls,xlsx",
-                                    uploadUrl: App.href + '/api/security/user/import',
-                                    onSuccess: function (data, form) {
-                                        form._alert('上传成功', 'success');
-                                        modal.hide();
-                                        grid.reload();
-                                    }
-                                }
-                            ]
-                        });
-                    }
-                },
-                {
                     text: " 添 加",//按钮文本
                     cls: "btn btn-sm btn-primary",
                     icon: "fa fa-cubes",
@@ -400,8 +362,8 @@
                                     label: '密码',
                                     rule: {
                                         required: true,
-                                        minlength: 8,
-                                        maxlength: 64
+                                        minlength: 6,
+                                        maxlength: 20
                                     },
                                     message: {
                                         required: "请输入密码",
@@ -501,7 +463,7 @@
                                     url: App.href + "/api/security/role/treeNodes",
                                     expandAll: true,
                                     autoParam: ["id", "name", "pId"],
-                                    chkStyle: "checkbox",
+                                    chkStyle: "radio",
                                     detail: "如何设置角色?<a target='_blank' href='?u=/api/security/role/pageList'>点击设置</a>",
                                     rule: {
                                         required: true

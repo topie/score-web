@@ -35,20 +35,20 @@
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
                     if (searchItems == null)
-                        searchItems = []
+                        searchItems = [];
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
-                        if (dd.type === 'text' || dd.name==='id') {
+                        if (dd.type === 'text' || dd.name === 'id') {
                             var column = {
                                 title: dd.label,
                                 field: dd.name
                             };
                             columns.push(column);
                         }
-                        if (dd.itemsUrl !== undefined){
+                        if (dd.itemsUrl !== undefined) {
                             dd.itemsUrl = App.href + dd.itemsUrl;
                         }
-                        if (dd.url !== undefined){
+                        if (dd.url !== undefined) {
                             dd.url = App.href + dd.url;
                         }
                     });

@@ -32,7 +32,12 @@
             url: App.href + "/api/score/batchConf/formItems",
             success: function (fd) {
                 if (fd.code === 200) {
-                    var formItems = fd.data;
+                    var formItems = fd.data.formItems;
+                    var searchItems = fd.data.searchItems;
+                    var batchStatus = fd.data.batchStatus;
+                    var batchProcess = fd.data.batchProcess;
+                    if (searchItems == null)
+                        searchItems = [];
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
@@ -42,7 +47,32 @@
                             };
                             columns.push(column);
                         }
+                        if (dd.itemsUrl !== undefined) {
+                            dd.itemsUrl = App.href + dd.itemsUrl;
+                        }
+                        if (dd.url !== undefined) {
+                            dd.url = App.href + dd.url;
+                        }
                     });
+                    columns.push(
+                        {
+                            title: '批次状态',
+                            field: 'status',
+                            format: function (ii, dd) {
+                                return batchStatus[dd.status];
+                            }
+                        }
+                    );
+                    columns.push(
+                        {
+                            title: '批次进度',
+                            field: 'process',
+                            format: function (ii, dd) {
+                                return batchProcess[dd.process];
+                            }
+                        }
+                    );
+                    console.info(columns);
                     var grid;
                     var options = {
                         url: App.href + "/api/score/batchConf/list",
@@ -60,77 +90,101 @@
                         columns: columns,
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
-                        actionColumns: [{
-                            text: "编辑",
-                            cls: "btn-primary btn-sm",
-                            handle: function (index, d) {
-                                var modal = $.orangeModal({
-                                    id: "edit_form_modal",
-                                    title: "编辑",
-                                    destroy: true
-                                }).show();
-                                var form = modal.$body.orangeForm({
-                                    id: "edit_form",
-                                    name: "edit_form",
-                                    method: "POST",
-                                    action: App.href + "/api/score/batchConf/update",
-                                    ajaxSubmit: true,
-                                    ajaxSuccess: function () {
-                                        modal.hide();
-                                        grid.reload();
-                                    },
-                                    submitText: "保存",
-                                    showReset: true,
-                                    resetText: "重置",
-                                    isValidate: true,
-                                    labelInline: true,
-                                    buttons: [{
-                                        type: 'button',
-                                        text: '关闭',
-                                        handle: function () {
+                        actionColumns: [
+                            {
+                                text: "编辑",
+                                cls: "btn-primary btn-sm",
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "edit_form_modal",
+                                        title: "编辑",
+                                        destroy: true
+                                    }).show();
+                                    var form = modal.$body.orangeForm({
+                                        id: "edit_form",
+                                        name: "edit_form",
+                                        method: "POST",
+                                        action: App.href + "/api/score/batchConf/update",
+                                        ajaxSubmit: true,
+                                        ajaxSuccess: function () {
                                             modal.hide();
-                                        }
-                                    }],
-                                    buttonsAlign: "center",
-                                    items: formItems
-                                });
-                                form.loadRemote(App.href + "/api/score/batchConf/detail?id=" + d.id);
-                            }
-                        }, {
-                            text: "详细设置",
-                            cls: "btn-info btn-sm",
-                            handle: function (index, d) {
-                                dateConfig(d);
-                            }
-                        }, {
-                            text: "删除",
-                            cls: "btn-danger btn-sm",
-                            handle: function (index, data) {
-                                bootbox.confirm("确定该操作?", function (result) {
-                                    if (result) {
-                                        var requestUrl = App.href + "/api/score/batchConf/delete";
-                                        $.ajax({
-                                            type: "POST",
-                                            dataType: "json",
-                                            data: {
-                                                id: data.id
-                                            },
-                                            url: requestUrl,
-                                            success: function (data) {
-                                                if (data.code === 200) {
-                                                    grid.reload();
-                                                } else {
-                                                    alert(data.message);
-                                                }
-                                            },
-                                            error: function (e) {
-                                                alert("请求异常。");
+                                            grid.reload();
+                                        },
+                                        submitText: "保存",
+                                        showReset: true,
+                                        resetText: "重置",
+                                        isValidate: true,
+                                        labelInline: true,
+                                        buttons: [{
+                                            type: 'button',
+                                            text: '关闭',
+                                            handle: function () {
+                                                modal.hide();
                                             }
-                                        });
-                                    }
-                                });
+                                        }],
+                                        buttonsAlign: "center",
+                                        items: formItems
+                                    });
+                                    form.loadRemote(App.href + "/api/score/batchConf/detail?id=" + d.id);
+                                }
+                            }, {
+                                text: "详细设置",
+                                cls: "btn-info btn-sm",
+                                handle: function (index, d) {
+                                    dateConfig(d);
+                                }
+                            }, {
+                                text: "删除",
+                                cls: "btn-danger btn-sm",
+                                handle: function (index, data) {
+                                    bootbox.confirm("确定该操作?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/batchConf/delete";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                data: {
+                                                    id: data.id
+                                                },
+                                                url: requestUrl,
+                                                success: function (data) {
+                                                    if (data.code === 200) {
+                                                        grid.reload();
+                                                    } else {
+                                                        alert(data.message);
+                                                    }
+                                                },
+                                                error: function (e) {
+                                                    alert("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }, {
+                                text: "设置开始",
+                                visible: function (i, d) {
+                                    return d.status !== 1
+                                },
+                                cls: "btn-success btn-sm",
+                                handle: function (index, data) {
+                                    setStatus(data.id, 1, function () {
+                                        grid.reload();
+                                    });
+                                }
+                            }, {
+                                text: "设置过期",
+                                visible: function (i, d) {
+                                    return d.status === 1
+                                },
+                                cls: "btn-warning btn-sm",
+                                handle: function (index, data) {
+                                    setStatus(data.id, 2, function () {
+                                        grid.reload();
+                                    });
+                                }
                             }
-                        }],
+                        ],
                         tools: [
                             {
                                 text: " 添 加",
@@ -173,15 +227,7 @@
                         ],
                         search: {
                             rowEleNum: 2,
-                            //搜索栏元素
-                            items: [
-                                {
-                                    type: "text",
-                                    label: "ID",
-                                    name: "id",
-                                    placeholder: "输入ID"
-                                }
-                            ]
+                            items: searchItems
                         }
                     };
                     grid = window.App.content.find("#grid").orangeGrid(options);
@@ -191,6 +237,33 @@
             },
             error: function (e) {
                 alert("请求异常。");
+            }
+        });
+    };
+
+    var setStatus = function (id, status, cb) {
+        bootbox.confirm("确定该操作?", function (result) {
+            if (result) {
+                var requestUrl = App.href + "/api/score/batchConf/updateStatus";
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        id: id,
+                        status: status
+                    },
+                    url: requestUrl,
+                    success: function (data) {
+                        if (data.code === 200) {
+                            cb();
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (e) {
+                        alert("请求异常。");
+                    }
+                });
             }
         });
     };
