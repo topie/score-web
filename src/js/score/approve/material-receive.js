@@ -63,57 +63,6 @@
                                 title: dd.label,
                                 field: dd.name
                             };
-                            if (dd.name == 'personName') {
-                                column.dataClick = function (iii, ddd) {
-                                    var modal = $.orangeModal({
-                                        id: "person_receive_form_modal",
-                                        title: "申请人审核接收",
-                                        destroy: true,
-                                        buttons: [
-                                            {
-                                                text: '确认送达',
-                                                cls: 'btn btn-info',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '修改信息',
-                                                cls: 'btn btn-warning',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印审核表',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印材料接收单',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            }
-                                        ]
-                                    }).show();
-                                    var requestUrl = App.href + "/api/score/materialReceive/detailPerson?identityInfoId=" + ddd.personId;
-                                    $.ajax({
-                                        type: "GET",
-                                        dataType: "json",
-                                        url: requestUrl,
-                                        success: function (data) {
-                                            modal.$body.html(data.data.html);
-                                        },
-                                        error: function (e) {
-                                            alert("请求异常。");
-                                        }
-                                    });
-                                }
-                            }
                             columns.push(column);
                         }
                         if (dd.itemsUrl !== undefined) {
