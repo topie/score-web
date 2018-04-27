@@ -157,7 +157,7 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/identityInfo/detailAll?identityInfoId=" + d.id;
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id;
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",

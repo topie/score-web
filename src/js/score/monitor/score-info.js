@@ -191,12 +191,7 @@
                                 text: "查看指标",
                                 cls: "btn-primary btn-sm",
                                 handle: function (index, d) {
-                                    var modal = $.orangeModal({
-                                        id: "view_form_modal",
-                                        title: "查看查看指标",
-                                        destroy: true
-                                    }).show();
-                                    scoreRecord(modal.$body, d.id);
+                                    scoreRecord(d.id);
                                 }
                             }
                         ],
@@ -216,7 +211,12 @@
             }
         });
     };
-    var scoreRecord = function (ele, personId) {
+    var scoreRecord = function (personId) {
+        var modal = $.orangeModal({
+            id: "view_score_form_modal",
+            title: "查看申请人打分信息",
+            destroy: true
+        }).show();
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -277,16 +277,37 @@
                                 text: "查看",
                                 cls: "btn-danger btn-sm",
                                 handle: function (index, d) {
-
+                                    var modal = $.orangeModal({
+                                        id: "view_score_detail_form_modal",
+                                        title: "查看打分信息",
+                                        destroy: true
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/monitor/scoreInfo/scoreDetail2?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                            var slist = data.data.sCheckList;
+                                            for (var i in slist) {
+                                                modal.$body.find("input[name=score]:radio[value='" + slist[i] + "']").attr('checked', 'true');
+                                            }
+                                            var stList = data.data.sTextList;
+                                            for (var i in stList) {
+                                                var arr = stList[i].split("_");
+                                                modal.$body.find("input[d-indicator=" + arr[0] + "_" + arr[1] + "]").val(parseFloat(arr[2]).toFixed(2));
+                                            }
+                                        },
+                                        error: function (e) {
+                                            alert("请求异常。");
+                                        }
+                                    });
                                 }
-                            }],
-                        search: {
-                            rowEleNum: 2,
-                            //搜索栏元素
-                            items: searchItems
-                        }
+                            }
+                        ]
                     };
-                    ele.orangeGrid(options);
+                    grid = modal.$body.orangeGrid(options);
                 } else {
                     alert(fd.message);
                 }
@@ -295,5 +316,5 @@
                 alert("请求异常。");
             }
         });
-    }
+    };
 })(jQuery, window, document);

@@ -53,7 +53,7 @@
                         title: '题目类型',
                         field: 'itemType',
                         format: function (i, d) {
-                            return d.itemType === 0 ? '单选题' : '多选题';
+                            return d.itemType === 0 ? '单选题' : '填空题';
                         }
                     });
                     columns.push({
