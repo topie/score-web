@@ -109,6 +109,71 @@
                             dd.url = App.href + dd.url;
                         }
                     });
+                    var actionColumns = [{
+                        text: "编辑",
+                        cls: "btn-primary btn-sm",
+                        handle: function (index, d) {
+                            var modal = $.orangeModal({
+                                id: "edit_form_modal",
+                                title: "编辑",
+                                destroy: true
+                            }).show();
+                            var form = modal.$body.orangeForm({
+                                id: "edit_form",
+                                name: "edit_form",
+                                method: "POST",
+                                action: App.href + "/api/score/applyScore/update",
+                                ajaxSubmit: true,
+                                ajaxSuccess: function () {
+                                    modal.hide();
+                                    grid.reload();
+                                },
+                                submitText: "保存",
+                                showReset: true,
+                                resetText: "重置",
+                                isValidate: true,
+                                labelInline: true,
+                                buttons: [{
+                                    type: 'button',
+                                    text: '关闭',
+                                    handle: function () {
+                                        modal.hide();
+                                    }
+                                }],
+                                buttonsAlign: "center",
+                                items: formItems
+                            });
+                            form.loadRemote(App.href + "/api/score/applyScore/detail?id=" + d.id);
+                        }
+                    }, {
+                        text: "删除",
+                        cls: "btn-danger btn-sm",
+                        handle: function (index, data) {
+                            bootbox.confirm("确定该操作?", function (result) {
+                                if (result) {
+                                    var requestUrl = App.href + "/api/score/applyScore/delete";
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        data: {
+                                            id: data.id
+                                        },
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            if (data.code === 200) {
+                                                grid.reload();
+                                            } else {
+                                                alert(data.message);
+                                            }
+                                        },
+                                        error: function (e) {
+                                            alert("请求异常。");
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }];
                     var grid;
                     var options = {
                         url: App.href + "/api/score/applyScore/" + type,

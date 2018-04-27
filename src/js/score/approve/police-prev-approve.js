@@ -73,6 +73,8 @@
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
                     var unionApproveStatus1 = fd.data.unionApproveStatus1;
+                    var unionApproveStatus2 = fd.data.unionApproveStatus2;
+                    var reservationStatus = fd.data.reservationStatus;
                     if (searchItems == null)
                         searchItems = [];
                     var columns = [];
@@ -118,6 +120,24 @@
                             field: 'unionApproveStatus1',
                             format: function (i, cd) {
                                 return unionApproveStatus1[cd.unionApproveStatus1];
+                            }
+                        }
+                    );
+                    columns.push(
+                        {
+                            title: '人社审核状态',
+                            field: 'unionApproveStatus2',
+                            format: function (i, cd) {
+                                return unionApproveStatus2[cd.unionApproveStatus2];
+                            }
+                        }
+                    );
+                    columns.push(
+                        {
+                            title: '网上预约状态',
+                            field: 'reservationStatus',
+                            format: function (i, cd) {
+                                return reservationStatus[cd.reservationStatus];
                             }
                         }
                     );
@@ -174,7 +194,7 @@
                                         }
                                     });
                                 }
-                            },{
+                            }, {
                                 text: "审核",
                                 cls: "btn-info btn-sm",
                                 visible: function (i, d) {
@@ -232,13 +252,17 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/detailAll?id=" + d.id;
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id;
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
                                         url: requestUrl,
                                         success: function (data) {
                                             modal.$body.html(data.data.html);
+                                            var checkList = data.data.cMids;
+                                            for (var i in checkList) {
+                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                            }
                                         },
                                         error: function (e) {
                                             alert("请求异常。");

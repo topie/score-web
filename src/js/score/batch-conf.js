@@ -92,6 +92,28 @@
                         actionColumnWidth: "20%",
                         actionColumns: [
                             {
+                                text: "查看预约",
+                                cls: "btn-info btn-sm",
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "view_form_modal",
+                                        title: "查看预约信息",
+                                        destroy: true
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/batchConf/acceptDateList?batchId=" + d.id;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                        },
+                                        error: function (e) {
+                                            alert("请求异常。");
+                                        }
+                                    });
+                                }
+                            }, {
                                 text: "编辑",
                                 cls: "btn-primary btn-sm",
                                 handle: function (index, d) {

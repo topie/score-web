@@ -281,13 +281,17 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?id=" + d.id;
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id;
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
                                         url: requestUrl,
                                         success: function (data) {
                                             modal.$body.html(data.data.html);
+                                            var checkList = data.data.cMids;
+                                            for (var i in checkList) {
+                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                            }
                                         },
                                         error: function (e) {
                                             alert("请求异常。");

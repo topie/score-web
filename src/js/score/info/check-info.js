@@ -29,6 +29,130 @@
         $.ajax({
             type: "GET",
             dataType: "json",
+            url: App.href + "/api/score/info/checkInfo/batch/formItems",
+            success: function (fd) {
+                if (fd.code === 200) {
+                    var formItems = fd.data.formItems;
+                    var searchItems = fd.data.searchItems;
+                    var batchStatus = fd.data.batchStatus;
+                    var batchProcess = fd.data.batchProcess;
+                    if (searchItems == null)
+                        searchItems = [];
+                    var columns = [];
+                    $.each(formItems, function (ii, dd) {
+                        if (dd.type === 'text' || dd.name === 'id') {
+                            var column = {
+                                title: dd.label,
+                                field: dd.name
+                            };
+                            columns.push(column);
+                        }
+                        if (dd.itemsUrl !== undefined) {
+                            dd.itemsUrl = App.href + dd.itemsUrl;
+                        }
+                        if (dd.url !== undefined) {
+                            dd.url = App.href + dd.url;
+                        }
+                    });
+                    columns.push(
+                        {
+                            title: '批次状态',
+                            field: 'status',
+                            format: function (ii, dd) {
+                                return batchStatus[dd.status];
+                            }
+                        }
+                    );
+                    columns.push(
+                        {
+                            title: '批次进度',
+                            field: 'process',
+                            format: function (ii, dd) {
+                                return batchProcess[dd.process];
+                            }
+                        }
+                    );
+                    var grid;
+                    var options = {
+                        url: App.href + "/api/score/info/checkInfo/batch/list",
+                        contentType: "table",
+                        contentTypeItems: "table,card,list",
+                        pageNum: 1,//当前页码
+                        pageSize: 15,//每页显示条数
+                        idField: "id",//id域指定
+                        headField: "id",
+                        showCheck: true,//是否显示checkbox
+                        checkboxWidth: "3%",
+                        showIndexNum: false,
+                        indexNumWidth: "5%",
+                        pageSelect: [2, 15, 30, 50],
+                        columns: columns,
+                        actionColumnText: "操作",//操作列文本
+                        actionColumnWidth: "20%",
+                        actionColumns: [
+                            {
+                                text: "查看预约",
+                                cls: "btn-info btn-sm",
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "view_form_modal",
+                                        title: "查看预约信息",
+                                        destroy: true
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/batchConf/acceptDateList?batchId=" + d.id;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                        },
+                                        error: function (e) {
+                                            alert("请求异常。");
+                                        }
+                                    });
+                                }
+                            }, {
+                                text: "申请人",
+                                cls: "btn-info btn-sm",
+                                handle: function (index, d) {
+                                    viewIdentityInfo(d.id);
+                                }
+                            }, {
+                                text: "汇总发布",
+                                visible: function (i, d) {
+                                    return d.process === 1;
+                                },
+                                cls: "btn-info btn-sm",
+                                handle: function (index, d) {
+
+                                }
+                            }
+                        ],
+                        search: {
+                            rowEleNum: 2,
+                            items: searchItems
+                        }
+                    };
+                    grid = window.App.content.find("#grid").orangeGrid(options);
+                } else {
+                    alert(fd.message);
+                }
+            },
+            error: function (e) {
+                alert("请求异常。");
+            }
+        });
+    };
+    var viewIdentityInfo = function (batchId) {
+        var modal = $.orangeModal({
+            id: "view_person_form_modal",
+            title: "查看申请人信息",
+            destroy: true
+        }).show();
+        $.ajax({
+            type: "GET",
+            dataType: "json",
             url: App.href + "/api/score/info/checkInfo/formItems",
             success: function (fd) {
                 if (fd.code === 200) {
@@ -90,7 +214,7 @@
                     });
                     var grid;
                     var options = {
-                        url: App.href + "/api/score/info/checkInfo/list",
+                        url: App.href + "/api/score/info/checkInfo/list?batchId=" + batchId,
                         contentType: "table",
                         contentTypeItems: "table,card,list",
                         pageNum: 1,//当前页码
@@ -113,68 +237,7 @@
                                     var modal = $.orangeModal({
                                         id: "view_form_modal",
                                         title: "查看申请人信息",
-                                        destroy: true,
-                                        buttons: [
-                                            {
-                                                text: '打印材料',
-                                                cls: 'btn btn-info',
-                                                handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/wordTemplate/html";
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        success: function (data) {
-                                                            $.orangeModal({
-                                                                title: "材料",
-                                                                destroy: true,
-                                                                buttons: [
-                                                                    {
-                                                                        text: '打印1',
-                                                                        cls: 'btn btn-primary',
-                                                                        handle: function (m) {
-                                                                            m.$body.print({
-                                                                                globalStyles: true,
-                                                                                mediaPrint: false,
-                                                                                stylesheet: null,
-                                                                                noPrintSelector: ".no-print",
-                                                                                iframe: true,
-                                                                                append: null,
-                                                                                prepend: null,
-                                                                                manuallyCopyFormValues: true,
-                                                                                deferred: $.Deferred()
-                                                                            });
-                                                                        }
-                                                                    }, {
-                                                                        text: '打印2',
-                                                                        cls: 'btn btn-primary',
-                                                                        handle: function (m) {
-                                                                            m.$body.jqprint({
-                                                                                debug: false, //如果是true则可以显示iframe查看效果（iframe默认高和宽都很小，可以再源码中调大），默认是false
-                                                                                importCSS: false, //true表示引进原来的页面的css，默认是true。（如果是true，先会找$("link[media=print]")，若没有会去找$("link")中的css文件）
-                                                                                printContainer: true, //表示如果原来选择的对象必须被纳入打印（注意：设置为false可能会打破你的CSS规则）。
-                                                                                operaSupport: false//表示如果插件也必须支持歌opera浏览器，在这种情况下，它提供了建立一个临时的打印选项卡。默认是true
-                                                                            });
-                                                                        }
-                                                                    }, {
-                                                                        type: 'button',
-                                                                        text: '关闭',
-                                                                        cls: "btn btn-default",
-                                                                        handle: function (m) {
-                                                                            m.hide()
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }).show().$body.html(data.data.html);
-                                                        },
-                                                        error: function (e) {
-                                                            alert("请求异常。");
-                                                        }
-                                                    });
-
-                                                }
-                                            }
-                                        ]
+                                        destroy: true
                                     }).show();
                                     var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id;
                                     $.ajax({
@@ -192,12 +255,6 @@
                                             alert("请求异常。");
                                         }
                                     });
-                                }
-                            }, {
-                                text: "审核过程",
-                                cls: "btn-success btn-sm",
-                                handle: function (index, data) {
-                                    statusProgress(data);
                                 }
                             }, {
                                 text: "核算分数",
@@ -256,7 +313,7 @@
                             items: searchItems
                         }
                     };
-                    grid = window.App.content.find("#grid").orangeGrid(options);
+                    modal.$body.orangeGrid(options);
                 } else {
                     alert(fd.message);
                 }

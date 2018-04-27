@@ -29,7 +29,7 @@
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: App.href + "/api/score/info/listInfo/formItems",
+            url: App.href + "/api/score/info/listInfo/batch/formItems",
             success: function (fd) {
                 if (fd.code === 200) {
                     var formItems = fd.data.formItems;
@@ -74,7 +74,7 @@
                     );
                     var grid;
                     var options = {
-                        url: App.href + "/api/score/info/listInfo/list",
+                        url: App.href + "/api/score/info/listInfo/batch/list",
                         contentType: "table",
                         contentTypeItems: "table,card,list",
                         pageNum: 1,//当前页码
@@ -90,9 +90,37 @@
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
                         actionColumns: [
+                            {
+                                text: "查看",
+                                cls: "btn-info btn-sm",
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "view_form_modal",
+                                        title: "查看批次信息",
+                                        destroy: true
+                                    }).show();
+                                }
+                            },{
+                                text: "申请分数排行",
+                                cls: "btn-info btn-sm",
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "view_form_modal",
+                                        title: "申请分数排行",
+                                        destroy: true
+                                    }).show();
+                                }
+                            }, {
+                                text: "公示",
+                                visible: function (i, d) {
+                                    return d.process === 2;
+                                },
+                                cls: "btn-info btn-sm",
+                                handle: function (index, d) {
 
+                                }
+                            }
                         ],
-                        tools: [],
                         search: {
                             rowEleNum: 2,
                             items: searchItems

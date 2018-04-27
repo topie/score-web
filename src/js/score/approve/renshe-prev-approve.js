@@ -73,6 +73,8 @@
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
                     var unionApproveStatus2 = fd.data.unionApproveStatus2;
+                    var unionApproveStatus1 = fd.data.unionApproveStatus1;
+                    var reservationStatus = fd.data.reservationStatus;
                     if (searchItems == null)
                         searchItems = [];
                     var columns = [];
@@ -112,13 +114,33 @@
                             return dd.sex === 1 ? '男' : '女';
                         }
                     });
-                    columns.push({
-                        title: '审核状态',
-                        field: 'unionApproveStatus2',
-                        format: function (i, cd) {
-                            return unionApproveStatus2[cd.unionApproveStatus2];
+                    columns.push(
+                        {
+                            title: '公安审核状态',
+                            field: 'unionApproveStatus1',
+                            format: function (i, cd) {
+                                return unionApproveStatus1[cd.unionApproveStatus1];
+                            }
                         }
-                    });
+                    );
+                    columns.push(
+                        {
+                            title: '人社审核状态',
+                            field: 'unionApproveStatus2',
+                            format: function (i, cd) {
+                                return unionApproveStatus2[cd.unionApproveStatus2];
+                            }
+                        }
+                    );
+                    columns.push(
+                        {
+                            title: '网上预约状态',
+                            field: 'reservationStatus',
+                            format: function (i, cd) {
+                                return reservationStatus[cd.reservationStatus];
+                            }
+                        }
+                    );
                     var grid;
                     var options = {
                         url: App.href + "/api/score/approve/renshePrevApprove/" + type,
