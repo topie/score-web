@@ -158,6 +158,13 @@
                             return scoreRecordStatus[d.status];
                         }
                     });
+                    columns.push({
+                        title: '分数',
+                        field: 'scoreValue',
+                        format: function (i, d) {
+                            return d.scoreValue===null?'-':d.scoreValue;
+                        }
+                    });
                     var grid;
                     var options = {
                         url: App.href + "/api/score/scoreRecord/" + type,
