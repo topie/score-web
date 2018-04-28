@@ -269,22 +269,27 @@
                                     return d.resultStatus === 0;
                                 },
                                 handle: function (index, data) {
-                                    var requestUrl = App.href + "/api/score/info/checkInfo";
-                                    $.ajax({
-                                        type: "POST",
-                                        dataType: "json",
-                                        url: requestUrl,
-                                        data: {
-                                            identityInfoId: personId
-                                        },
-                                        success: function (result) {
-                                            modal.hide();
-                                            grid.reload();
-                                        },
-                                        error: function (e) {
-                                            alert("请求异常。");
+
+                                    bootbox.confirm("确定该操作?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/info/checkInfo/checkPerson";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                data: {
+                                                    identityInfoId: data.id
+                                                },
+                                                success: function (result) {
+                                                    grid.reload();
+                                                },
+                                                error: function (e) {
+                                                    alert("请求异常。");
+                                                }
+                                            });
                                         }
                                     });
+
                                 }
                             }
                         ],
