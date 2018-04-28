@@ -257,13 +257,34 @@
                                     });
                                 }
                             }, {
-                                text: "核算分数",
+                                text: "查看打分情况",
                                 cls: "btn-Warning btn-sm",
+                                handle: function (index, data) {
+                                    scoreRecord(data.id);
+                                }
+                            }, {
+                                text: "核算",
+                                cls: "btn-success btn-sm",
                                 visible: function (i, d) {
                                     return d.resultStatus === 0;
                                 },
                                 handle: function (index, data) {
-                                    scoreRecord(data.id);
+                                    var requestUrl = App.href + "/api/score/info/checkInfo";
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        data: {
+                                            identityInfoId: personId
+                                        },
+                                        success: function (result) {
+                                            modal.hide();
+                                            grid.reload();
+                                        },
+                                        error: function (e) {
+                                            alert("请求异常。");
+                                        }
+                                    });
                                 }
                             }
                         ],
@@ -313,7 +334,7 @@
                             items: searchItems
                         }
                     };
-                    modal.$body.orangeGrid(options);
+                    grid = modal.$body.orangeGrid(options);
                 } else {
                     alert(fd.message);
                 }
@@ -435,5 +456,5 @@
                 alert("请求异常。");
             }
         });
-    }
+    };
 })(jQuery, window, document);
