@@ -361,6 +361,12 @@
                         title: '打分',
                         field: 'scoreValue'
                     });
+                    columns.push(
+                        {
+                            title: '打分部门',
+                            field: 'opRole'
+                        }
+                    );
                     columns.push({
                         title: '办理进度',
                         field: 'status',

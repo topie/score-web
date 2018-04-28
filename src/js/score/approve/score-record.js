@@ -162,7 +162,10 @@
                         title: '分数',
                         field: 'scoreValue',
                         format: function (i, d) {
-                            return d.scoreValue===null?'-':d.scoreValue;
+                            if (d.status !== 4) {
+                                return '-';
+                            }
+                            return d.scoreValue === null ? '-' : d.scoreValue;
                         }
                     });
                     var grid;

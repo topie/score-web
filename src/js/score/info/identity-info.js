@@ -35,6 +35,7 @@
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
                     var reservationStatus = fd.data.reservationStatus;
+                    var hallStatus = fd.data.hallStatus;
                     if (searchItems == null)
                         searchItems = [];
                     var columns = [];
@@ -79,6 +80,13 @@
                         field: 'reservationStatus',
                         format: function (i, cd) {
                             return reservationStatus[cd.reservationStatus];
+                        }
+                    });
+                    columns.push({
+                        title: '预约大厅状态',
+                        field: 'hallStatus',
+                        format: function (i, cd) {
+                            return hallStatus[cd.hallStatus];
                         }
                     });
                     columns.push({
