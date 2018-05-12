@@ -50,7 +50,7 @@
                 }
             },
             error: function (e) {
-                alert("请求异常。");
+                console.error("请求异常。");
             }
         });
         var grid;
@@ -129,7 +129,7 @@
                                     }
                                 },
                                 error: function (e) {
-                                    alert("请求异常。");
+                                    console.error("请求异常。");
                                 }
                             });
                         }

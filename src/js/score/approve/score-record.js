@@ -107,7 +107,7 @@
                                                             m.hide();
                                                         },
                                                         error: function (e) {
-                                                            alert("请求异常。");
+                                                            console.error("请求异常。");
                                                         }
                                                     });
                                                 }
@@ -137,7 +137,7 @@
                                             modal.$body.html(data.data.html);
                                         },
                                         error: function (e) {
-                                            alert("请求异常。");
+                                            console.error("请求异常。");
                                         }
                                     });
                                 }
@@ -232,7 +232,7 @@
                                             });
                                         },
                                         error: function (e) {
-                                            alert("请求异常。");
+                                            console.error("请求异常。");
                                         }
                                     });
                                 }
@@ -285,7 +285,7 @@
                                                             m.hide();
                                                         },
                                                         error: function (e) {
-                                                            alert("请求异常。");
+                                                            console.error("请求异常。");
                                                         }
                                                     });
                                                 }
@@ -322,10 +322,61 @@
                                             modal.$body.html(data.data.html);
                                         },
                                         error: function (e) {
-                                            alert("请求异常。");
+                                            console.error("请求异常。");
                                         }
                                     });
 
+                                }
+                            }, {
+                                text: "申请重新打分",
+                                cls: "btn-warning btn-sm",
+                                visible: function (i, d) {
+                                    return d.status === 4;
+                                },
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "score_apply_form_modal",
+                                        title: "申请重新打分",
+                                        destroy: true
+                                    }).show();
+                                    modal.$body.orangeForm({
+                                        id: "apply_form",
+                                        name: "apply_form",
+                                        method: "POST",
+                                        action: App.href + "/api/score/applyScore/apply?scoreRecordId=" + d.id,
+                                        ajaxSubmit: true,
+                                        ajaxSuccess: function () {
+                                            bootbox.alert('申请也发出，请耐心等待');
+                                            modal.hide();
+                                        },
+                                        submitText: "提交",
+                                        showReset: true,
+                                        resetText: "重置",
+                                        isValidate: true,
+                                        labelInline: true,
+                                        buttons: [{
+                                            type: 'button',
+                                            text: '关闭',
+                                            handle: function () {
+                                                modal.hide();
+                                            }
+                                        }],
+                                        buttonsAlign: "center",
+                                        items: [
+                                            {
+                                                type: 'textarea',
+                                                name: 'reason',
+                                                id: 'reason',
+                                                label: '申请原因',
+                                                rule: {
+                                                    required: true
+                                                },
+                                                message: {
+                                                    required: "请输入昵称"
+                                                }
+                                            }
+                                        ]
+                                    });
                                 }
                             }
                         ],
@@ -341,7 +392,7 @@
                 }
             },
             error: function (e) {
-                alert("请求异常。");
+                console.error("请求异常。");
             }
         });
     }
