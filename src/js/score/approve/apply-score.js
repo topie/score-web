@@ -199,7 +199,7 @@
                                                     id: "disagree_form_modal",
                                                     title: "驳回",
                                                     destroy: true,
-                                                    width: '400px',
+                                                    width: '600px',
                                                     height: '400px',
                                                     buttons: [{
                                                         type: 'button',
