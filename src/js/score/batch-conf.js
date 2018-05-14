@@ -125,6 +125,7 @@
                                     var form = modal.$body.orangeForm({
                                         id: "edit_form",
                                         name: "edit_form",
+                                        rowEleNum: 2,
                                         method: "POST",
                                         action: App.href + "/api/score/batchConf/update",
                                         ajaxSubmit: true,
@@ -221,6 +222,7 @@
                                     var form = modal.$body.orangeForm({
                                         id: "add_form",
                                         name: "add_form",
+                                        rowEleNum: 2,
                                         method: "POST",
                                         action: App.href + "/api/score/batchConf/insert",
                                         ajaxSubmit: true,
