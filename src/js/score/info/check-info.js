@@ -293,46 +293,6 @@
                                 }
                             }
                         ],
-                        tools: [
-                            {
-                                text: " 添 加",
-                                cls: "btn btn-primary",
-                                icon: "fa fa-plus",
-                                handle: function (grid) {
-                                    var modal = $.orangeModal({
-                                        id: "add_form_modal",
-                                        title: "添加",
-                                        destroy: true
-                                    }).show();
-                                    var form = modal.$body.orangeForm({
-                                        id: "add_form",
-                                        name: "add_form",
-                                        method: "POST",
-                                        action: App.href + "/api/score/info/checkInfo/insert",
-                                        ajaxSubmit: true,
-                                        ajaxSuccess: function () {
-                                            modal.hide();
-                                            grid.reload();
-                                        },
-                                        submitText: "保存",//保存按钮的文本
-                                        showReset: true,//是否显示重置按钮
-                                        resetText: "重置",//重置按钮文本
-                                        isValidate: true,//开启验证
-                                        labelInline: true,
-                                        buttons: [{
-                                            type: 'button',
-                                            text: '关闭',
-                                            handle: function () {
-                                                modal.hide();
-                                                grid.reload();
-                                            }
-                                        }],
-                                        buttonsAlign: "center",
-                                        items: formItems
-                                    });
-                                }
-                            }
-                        ],
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
@@ -427,7 +387,7 @@
                                         title: "查看打分信息",
                                         destroy: true
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/monitor/scoreInfo/scoreDetail2?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
+                                    var requestUrl = App.href + "/api/score/monitor/scoreInfo/scoreDetail?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",

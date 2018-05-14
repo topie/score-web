@@ -91,24 +91,65 @@
                         actionColumnWidth: "20%",
                         actionColumns: [
                             {
-                                text: "查看",
+                                text: "批次信息",
                                 cls: "btn-info btn-sm",
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
                                         id: "view_form_modal",
-                                        title: "查看批次信息",
+                                        title: "批次信息",
                                         destroy: true
                                     }).show();
+                                    var requestUrl = App.href + "/api/score/batchConf/acceptDateList?batchId=" + d.id;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
                                 }
-                            },{
-                                text: "申请分数排行",
-                                cls: "btn-info btn-sm",
+                            }, {
+                                text: "分数排行",
+                                cls: "btn-danger btn-sm",
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
                                         id: "view_form_modal",
-                                        title: "申请分数排行",
+                                        title: "分数排行",
                                         destroy: true
                                     }).show();
+                                    var options = {
+                                        url: App.href + "/api/score/info/listInfo/rank?batchId=" + d.id,
+                                        contentType: "table",
+                                        contentTypeItems: "table,card,list",
+                                        pageNum: 1,//当前页码
+                                        pageSize: 15,//每页显示条数
+                                        idField: "id",//id域指定
+                                        headField: "id",
+                                        showCheck: true,//是否显示checkbox
+                                        checkboxWidth: "3%",
+                                        showIndexNum: false,
+                                        indexNumWidth: "5%",
+                                        pageSelect: [2, 15, 30, 50],
+                                        columns: [
+                                            {
+                                                title: '申请人',
+                                                field: 'personName'
+                                            },
+                                            {
+                                                title: '申请人身份证',
+                                                field: 'personIdNum'
+                                            },
+                                            {
+                                                title: '得分',
+                                                field: 'scoreValue'
+                                            }
+                                        ]
+                                    };
+                                    modal.$body.orangeGrid(options);
                                 }
                             }, {
                                 text: "公示",

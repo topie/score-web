@@ -282,7 +282,7 @@
                                         title: "查看打分信息",
                                         destroy: true
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/monitor/scoreInfo/scoreDetail2?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
+                                    var requestUrl = App.href + "/api/score/monitor/scoreInfo/scoreDetail?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
