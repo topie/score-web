@@ -594,7 +594,9 @@
                                                         "value_": (option.value == undefined ? ""
                                                             : option.value),
                                                         "text_": (option.text == undefined ? ""
-                                                            : option.text)
+                                                            : option.text),
+                                                        "selected": (option.selected == undefined ? ""
+                                                            : option.selected)
                                                     })
                                                 .appendTo(
                                                     ele);
@@ -620,7 +622,9 @@
                                                                     "value_": (option.value == undefined ? ""
                                                                         : option.value),
                                                                     "text_": (option.text == undefined ? ""
-                                                                        : option.text)
+                                                                        : option.text),
+                                                                    "selected": (option.selected == undefined ? ""
+                                                                        : option.selected)
                                                                 })
                                                             .appendTo(
                                                                 ele);
@@ -948,7 +952,9 @@
                                         "value_": (option.value == undefined ? ""
                                             : option.value),
                                         "text_": (option.text == undefined ? ""
-                                            : option.text)
+                                            : option.text),
+                                        "selected": (option.selected == undefined ? ""
+                                            : option.selected)
                                     })
                                 .appendTo(
                                     ele);
@@ -974,7 +980,9 @@
                                                     "value_": (option.value == undefined ? ""
                                                         : option.value),
                                                     "text_": (option.text == undefined ? ""
-                                                        : option.text)
+                                                        : option.text),
+                                                    "selected": (option.selected == undefined ? ""
+                                                        : option.selected)
                                                 })
                                             .appendTo(
                                                 ele);
