@@ -115,6 +115,9 @@
                             }, {
                                 text: "申请人",
                                 cls: "btn-info btn-sm",
+                                visible: function (i, d) {
+                                    return d.process >= 1;
+                                },
                                 handle: function (index, d) {
                                     viewIdentityInfo(d.id);
                                 }
@@ -125,7 +128,25 @@
                                 },
                                 cls: "btn-info btn-sm",
                                 handle: function (index, d) {
-
+                                    bootbox.confirm("确定该操作?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/info/checkInfo/checkBatch";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                data: {
+                                                    batchId: d.id
+                                                },
+                                                success: function (result) {
+                                                    grid.reload();
+                                                },
+                                                error: function (e) {
+                                                    console.error("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
                             }
                         ],

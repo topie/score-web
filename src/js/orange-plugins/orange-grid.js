@@ -1535,6 +1535,7 @@
                 tableRow.append(this._html);
             }
             this.$gridWrapper.append(tableRow);
+            tableRow.find("table").css("margin-left", "20px");
         },
         _renderList: function () {
             var that = this;

@@ -125,6 +125,54 @@
                                                 handle: function (m) {
 
                                                 }
+                                            }, {
+                                                text: "申请取消资格",
+                                                cls: "btn btn-warning",
+                                                handle: function (m) {
+                                                    var mmm = $.orangeModal({
+                                                        id: "score_cancel_form_modal",
+                                                        title: "申请取消资格",
+                                                        destroy: true
+                                                    }).show();
+                                                    mmm.$body.orangeForm({
+                                                        id: "apply_form",
+                                                        name: "apply_form",
+                                                        method: "POST",
+                                                        action: App.href + "/api/score/applyCancel/apply?scoreRecordId=" + ddd.id,
+                                                        ajaxSubmit: true,
+                                                        ajaxSuccess: function () {
+                                                            bootbox.alert('申请也发出，请耐心等待');
+                                                            mmm.hide();
+                                                        },
+                                                        submitText: "提交",
+                                                        showReset: true,
+                                                        resetText: "重置",
+                                                        isValidate: true,
+                                                        labelInline: true,
+                                                        buttons: [{
+                                                            type: 'button',
+                                                            text: '关闭',
+                                                            handle: function () {
+                                                                mmm.hide();
+                                                            }
+                                                        }],
+                                                        buttonsAlign: "center",
+                                                        items: [
+                                                            {
+                                                                type: 'textarea',
+                                                                name: 'reason',
+                                                                id: 'reason',
+                                                                label: '申请原因',
+                                                                rule: {
+                                                                    required: true
+                                                                },
+                                                                message: {
+                                                                    required: "请输入昵称"
+                                                                }
+                                                            }
+                                                        ]
+                                                    });
+                                                }
                                             }
                                         ]
                                     }).show();

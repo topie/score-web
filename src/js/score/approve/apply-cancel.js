@@ -36,7 +36,7 @@
                 '<div class="row">' +
                 '<div class="col-md-12" >' +
                 '<div class="panel panel-default" >' +
-                '<div class="panel-heading">列表</div>' +
+                '<div class="panel-heading">申请中列表</div>' +
                 '<div class="panel-body" id="grid"></div>' +
                 '</div>' +
                 '</div>' +
@@ -54,7 +54,7 @@
                 '<div class="row">' +
                 '<div class="col-md-12" >' +
                 '<div class="panel panel-default" >' +
-                '<div class="panel-heading">列表</div>' +
+                '<div class="panel-heading">已同意列表</div>' +
                 '<div class="panel-body" id="grid"></div>' +
                 '</div>' +
                 '</div>' +
@@ -72,7 +72,7 @@
                 '<div class="row">' +
                 '<div class="col-md-12" >' +
                 '<div class="panel panel-default" >' +
-                '<div class="panel-heading">列表</div>' +
+                '<div class="panel-heading">已驳回列表</div>' +
                 '<div class="panel-body" id="grid"></div>' +
                 '</div>' +
                 '</div>' +
@@ -110,6 +110,168 @@
                         }
                     });
                     var grid;
+                    var actionColumns = [
+                        {
+                            text: "查看",
+                            cls: "btn-primary btn-sm",
+                            handle: function (index, d) {
+                                var modal = $.orangeModal({
+                                    id: "view_form_modal",
+                                    title: "查看",
+                                    destroy: true
+                                }).show();
+                                var form = modal.$body.orangeForm({
+                                    id: "view_form",
+                                    name: "view_form",
+                                    method: "POST",
+                                    ajaxSubmit: true,
+                                    viewMode: true,
+                                    ajaxSuccess: function () {
+                                        modal.hide();
+                                        grid.reload();
+                                    },
+                                    submitText: "保存",
+                                    showReset: false,
+                                    showSubmit: false,
+                                    resetText: "重置",
+                                    isValidate: true,
+                                    labelInline: true,
+                                    buttons: [
+                                        {
+                                            type: 'button',
+                                            text: '关闭',
+                                            handle: function () {
+                                                modal.hide();
+                                            }
+                                        }
+                                    ],
+                                    buttonsAlign: "center",
+                                    items: formItems
+                                });
+                                form.loadRemote(App.href + "/api/score/applyCancel/detail?id=" + d.id);
+                            }
+                        }
+                    ];
+                    if (type === "ing") {
+                        actionColumns.push({
+                            text: "审核",
+                            cls: "btn-danger btn-sm",
+                            handle: function (index, d) {
+                                var modal = $.orangeModal({
+                                    id: "approve_form_modal",
+                                    title: "审核",
+                                    destroy: true,
+                                    buttons: [
+                                        {
+                                            type: 'button',
+                                            text: '通过',
+                                            handle: function (mm) {
+                                                bootbox.confirm("确定该操作?", function (result) {
+                                                    if (result) {
+                                                        var requestUrl = App.href + "/api/score/applyCancel/agree";
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            dataType: "json",
+                                                            data: {
+                                                                id: d.id
+                                                            },
+                                                            url: requestUrl,
+                                                            success: function (data) {
+                                                                if (data.code === 200) {
+                                                                    mm.hide();
+                                                                    grid.reload();
+                                                                } else {
+                                                                    alert(data.message);
+                                                                }
+                                                            },
+                                                            error: function (e) {
+                                                                console.error("请求异常。");
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        }, {
+                                            type: 'button',
+                                            text: '驳回',
+                                            handle: function (mm) {
+                                                var m = $.orangeModal({
+                                                    id: "disagree_form_modal",
+                                                    title: "驳回",
+                                                    destroy: true,
+                                                    width: '600px',
+                                                    height: '400px',
+                                                    buttons: [{
+                                                        type: 'button',
+                                                        text: '关闭',
+                                                        handle: function (m) {
+                                                            m.hide();
+                                                        }
+                                                    }]
+                                                }).show();
+                                                m.$body.orangeForm({
+                                                    id: "disagree_form",
+                                                    name: "disagree_form",
+                                                    method: "POST",
+                                                    action: App.href + "/api/score/applyCancel/disAgree?id=" + d.id,
+                                                    ajaxSubmit: true,
+                                                    ajaxSuccess: function () {
+                                                        m.hide();
+                                                        mm.hide();
+                                                    },
+                                                    submitText: "提交",
+                                                    showReset: true,
+                                                    resetText: "重置",
+                                                    isValidate: true,
+                                                    labelInline: true,
+                                                    buttonsAlign: "center",
+                                                    items: [
+                                                        {
+                                                            type: 'textarea',
+                                                            name: 'approveContent',
+                                                            id: 'approveContent',
+                                                            label: '驳回原因',
+                                                            rule: {
+                                                                required: true
+                                                            },
+                                                            message: {
+                                                                required: "请输入驳回原因"
+                                                            }
+                                                        }
+                                                    ]
+                                                });
+                                            }
+                                        }, {
+                                            type: 'button',
+                                            text: '关闭',
+                                            handle: function (m) {
+                                                m.hide();
+                                            }
+                                        }]
+                                }).show();
+                                var form = modal.$body.orangeForm({
+                                    id: "approve_form",
+                                    name: "approve_form",
+                                    method: "POST",
+                                    ajaxSubmit: true,
+                                    viewMode: true,
+                                    ajaxSuccess: function () {
+                                        modal.hide();
+                                        grid.reload();
+                                    },
+                                    submitText: "保存",
+                                    showReset: false,
+                                    showSubmit: false,
+                                    resetText: "重置",
+                                    isValidate: true,
+                                    labelInline: true,
+                                    buttonsAlign: "center",
+                                    items: formItems
+                                });
+                                form.loadRemote(App.href + "/api/score/applyCancel/detail?id=" + d.id);
+                            }
+                        });
+                    }
                     var options = {
                         url: App.href + "/api/score/applyCancel/" + type,
                         contentType: "table",
@@ -126,111 +288,7 @@
                         columns: columns,
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
-                        actionColumns: [{
-                            text: "编辑",
-                            cls: "btn-primary btn-sm",
-                            handle: function (index, d) {
-                                var modal = $.orangeModal({
-                                    id: "edit_form_modal",
-                                    title: "编辑",
-                                    destroy: true
-                                }).show();
-                                var form = modal.$body.orangeForm({
-                                    id: "edit_form",
-                                    name: "edit_form",
-                                    method: "POST",
-                                    action: App.href + "/api/score/applyCancel/update",
-                                    ajaxSubmit: true,
-                                    ajaxSuccess: function () {
-                                        modal.hide();
-                                        grid.reload();
-                                    },
-                                    submitText: "保存",
-                                    showReset: true,
-                                    resetText: "重置",
-                                    isValidate: true,
-                                    labelInline: true,
-                                    buttons: [{
-                                        type: 'button',
-                                        text: '关闭',
-                                        handle: function () {
-                                            modal.hide();
-                                        }
-                                    }],
-                                    buttonsAlign: "center",
-                                    items: formItems
-                                });
-                                form.loadRemote(App.href + "/api/score/applyCancel/detail?id=" + d.id);
-                            }
-                        }, {
-                            text: "删除",
-                            cls: "btn-danger btn-sm",
-                            handle: function (index, data) {
-                                bootbox.confirm("确定该操作?", function (result) {
-                                    if (result) {
-                                        var requestUrl = App.href + "/api/score/applyCancel/delete";
-                                        $.ajax({
-                                            type: "POST",
-                                            dataType: "json",
-                                            data: {
-                                                id: data.id
-                                            },
-                                            url: requestUrl,
-                                            success: function (data) {
-                                                if (data.code === 200) {
-                                                    grid.reload();
-                                                } else {
-                                                    alert(data.message);
-                                                }
-                                            },
-                                            error: function (e) {
-                                                console.error("请求异常。");
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        }],
-                        tools: [
-                            {
-                                text: " 添 加",
-                                cls: "btn btn-primary",
-                                icon: "fa fa-plus",
-                                handle: function (grid) {
-                                    var modal = $.orangeModal({
-                                        id: "add_form_modal",
-                                        title: "添加",
-                                        destroy: true
-                                    }).show();
-                                    var form = modal.$body.orangeForm({
-                                        id: "add_form",
-                                        name: "add_form",
-                                        method: "POST",
-                                        action: App.href + "/api/score/applyCancel/insert",
-                                        ajaxSubmit: true,
-                                        ajaxSuccess: function () {
-                                            modal.hide();
-                                            grid.reload();
-                                        },
-                                        submitText: "保存",//保存按钮的文本
-                                        showReset: true,//是否显示重置按钮
-                                        resetText: "重置",//重置按钮文本
-                                        isValidate: true,//开启验证
-                                        labelInline: true,
-                                        buttons: [{
-                                            type: 'button',
-                                            text: '关闭',
-                                            handle: function () {
-                                                modal.hide();
-                                                grid.reload();
-                                            }
-                                        }],
-                                        buttonsAlign: "center",
-                                        items: formItems
-                                    });
-                                }
-                            }
-                        ],
+                        actionColumns: actionColumns,
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
