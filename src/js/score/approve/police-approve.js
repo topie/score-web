@@ -202,7 +202,7 @@
                                     });
                                 }
                             },{
-                                text: "材料补正审核",
+                                text: "审核材料补正",
                                 cls: "btn-info btn-sm",
                                 visible: function (i, d) {
                                     return d.policeApproveStatus == 2;

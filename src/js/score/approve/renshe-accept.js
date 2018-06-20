@@ -169,7 +169,7 @@
                         actionColumns: [
                             {
                                 text: "查看",
-                                cls: "btn-danger btn-sm",
+                                cls: "btn-primary btn-sm",
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
                                         id: "view_form_modal",
@@ -204,7 +204,7 @@
                                 }
                             }, {
                                 text: "审核",
-                                cls: "btn-info btn-sm",
+                                cls: "btn-danger btn-sm",
                                 visible: function (i, d) {
                                     return d.rensheAcceptStatus == 1;
                                 },
@@ -299,7 +299,83 @@
                                         }
                                     });
                                 }
-                            }],
+                            },{
+                                text: "审核补正信息",
+                                cls: "btn-warning btn-sm",
+                                visible: function (i, d) {
+                                    return d.rensheAcceptStatus == 2;
+                                },
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "approve_form_modal",
+                                        title: "审核补正信息",
+                                        destroy: true,
+                                        buttons: [
+                                            {
+                                                text: '通过',
+                                                cls: 'btn btn-info',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/approve/rensheAccept/agree";
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        data: {
+                                                            id: d.id
+                                                        },
+                                                        success: function (data) {
+                                                            grid.reload();
+                                                            m.hide();
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            },
+                                            {
+                                                text: '不通过',
+                                                cls: 'btn btn-danger',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/approve/rensheAccept/disAgree";
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        data: {
+                                                            id: d.id
+                                                        },
+                                                        success: function (data) {
+                                                            grid.reload();
+                                                            m.hide();
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        ]
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                            var checkList = data.data.cMids;
+                                            for (var i in checkList) {
+                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                            }
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            }
+                        ],
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
