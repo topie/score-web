@@ -151,7 +151,7 @@
                                     form.loadRemote(App.href + "/api/score/batchConf/detail?id=" + d.id);
                                 }
                             }, {
-                                text: "详细设置",
+                                text: "批次设置",
                                 cls: "btn-info btn-sm",
                                 handle: function (index, d) {
                                     dateConfig(d);
@@ -187,7 +187,7 @@
                             }, {
                                 text: "设置开始",
                                 visible: function (i, d) {
-                                    return d.status !== 1
+                                    return d.status === 0
                                 },
                                 cls: "btn-success btn-sm",
                                 handle: function (index, data) {
@@ -294,7 +294,7 @@
     var dateConfig = function (d) {
         var modal = $.orangeModal({
             id: "detail_config_modal",
-            title: "详细设置",
+            title: "批次设置",
             destroy: true
         }).show();
         $.ajax({
