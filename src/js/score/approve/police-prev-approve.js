@@ -6,7 +6,8 @@
     var uploadMapping = {
         "/api/score/approve/policePrevApprove/approving": "scorePolicePrevApproving",
         "/api/score/approve/policePrevApprove/approved": "scorePolicePrevApproved",
-        "/api/score/approve/policePrevApprove/rejected": "scorePolicePrevRejected"
+        "/api/score/approve/policePrevApprove/rejected": "scorePolicePrevRejected",
+        "/api/score/approve/policePrevApprove/supply": "scorePolicePrevSupply"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
     App.scorePolicePrevApproving = {
@@ -61,6 +62,24 @@
                 '</div>');
             window.App.content.append(content);
             scorePolicePrevApprove("rejected");
+        }
+    };
+    App.scorePolicePrevSupply = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="panel panel-default" >' +
+                '<div class="panel-heading">待补件列表</div>' +
+                '<div class="panel-body" id="grid"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            scorePolicePrevApprove("supply");
         }
     };
     var scorePolicePrevApprove = function (type) {
@@ -249,6 +268,28 @@
                                                         }
                                                     });
                                                 }
+                                            },
+                                            {
+                                                text: '待补件',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/supply";
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        data: {
+                                                            id: d.id
+                                                        },
+                                                        success: function (data) {
+                                                            grid.reload();
+                                                            m.hide();
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
                                             }
                                         ]
                                     }).show();
@@ -269,7 +310,83 @@
                                         }
                                     });
                                 }
-                            }],
+                            }, {
+                                text: "审核补件",
+                                cls: "btn-info btn-sm",
+                                visible: function (i, d) {
+                                    return d.unionApproveStatus1 == 4;
+                                },
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "approve_form_modal",
+                                        title: "审核补件",
+                                        destroy: true,
+                                        buttons: [
+                                            {
+                                                text: '通过',
+                                                cls: 'btn btn-info',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/agree";
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        data: {
+                                                            id: d.id
+                                                        },
+                                                        success: function (data) {
+                                                            grid.reload();
+                                                            m.hide();
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            },
+                                            {
+                                                text: '不通过',
+                                                cls: 'btn btn-danger',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/disAgree";
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        data: {
+                                                            id: d.id
+                                                        },
+                                                        success: function (data) {
+                                                            grid.reload();
+                                                            m.hide();
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        ]
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                            var checkList = data.data.cMids;
+                                            for (var i in checkList) {
+                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                            }
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            }
+                        ],
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
