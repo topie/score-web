@@ -287,10 +287,9 @@
                                 text: "核算",
                                 cls: "btn-success btn-sm",
                                 visible: function (i, d) {
-                                    return d.resultStatus === 0;
+                                    return d.hallStatus === 9;
                                 },
                                 handle: function (index, data) {
-
                                     bootbox.confirm("确定该操作?", function (result) {
                                         if (result) {
                                             var requestUrl = App.href + "/api/score/info/checkInfo/checkPerson";
@@ -310,7 +309,6 @@
                                             });
                                         }
                                     });
-
                                 }
                             }
                         ],
