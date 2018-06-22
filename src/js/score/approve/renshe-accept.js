@@ -169,18 +169,58 @@
                         actionColumns: [
                             {
                                 text: "查看",
-                                cls: "btn-primary btn-sm",
+                                cls: "btn-info btn-sm",
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
-                                        id: "view_form_modal",
+                                        id: "approve_form_modal",
                                         title: "查看申请人信息",
                                         destroy: true,
                                         buttons: [
                                             {
-                                                text: '打印信息',
+                                                text: '打印接收凭证',
                                                 cls: 'btn btn-warning',
                                                 handle: function (m) {
-
+                                                    var requestUrl = App.href + "/api/score/print/accept?personId=" + d.id;
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        success: function (data) {
+                                                            $.orangeModal({
+                                                                title: "打印接收凭证",
+                                                                destroy: true,
+                                                                buttons: [
+                                                                    {
+                                                                        text: '打印',
+                                                                        cls: 'btn btn-primary',
+                                                                        handle: function (m) {
+                                                                            m.$body.print({
+                                                                                globalStyles: true,
+                                                                                mediaPrint: false,
+                                                                                stylesheet: null,
+                                                                                noPrintSelector: ".no-print",
+                                                                                iframe: true,
+                                                                                append: null,
+                                                                                prepend: null,
+                                                                                manuallyCopyFormValues: true,
+                                                                                deferred: $.Deferred()
+                                                                            });
+                                                                        }
+                                                                    }, {
+                                                                        type: 'button',
+                                                                        text: '关闭',
+                                                                        cls: "btn btn-default",
+                                                                        handle: function (m) {
+                                                                            m.hide()
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }).show().$body.html(data.data.html);
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
                                                 }
                                             }
                                         ]
@@ -202,7 +242,7 @@
                                         }
                                     });
                                 }
-                            }, {
+                            },{
                                 text: "审核",
                                 cls: "btn-danger btn-sm",
                                 visible: function (i, d) {
@@ -215,6 +255,52 @@
                                         destroy: true,
                                         buttons: [
                                             {
+                                                text: '打印接收凭证',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/print/accept?personId=" + d.id;
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        success: function (data) {
+                                                            $.orangeModal({
+                                                                title: "打印接收凭证",
+                                                                destroy: true,
+                                                                buttons: [
+                                                                    {
+                                                                        text: '打印',
+                                                                        cls: 'btn btn-primary',
+                                                                        handle: function (m) {
+                                                                            m.$body.print({
+                                                                                globalStyles: true,
+                                                                                mediaPrint: false,
+                                                                                stylesheet: null,
+                                                                                noPrintSelector: ".no-print",
+                                                                                iframe: true,
+                                                                                append: null,
+                                                                                prepend: null,
+                                                                                manuallyCopyFormValues: true,
+                                                                                deferred: $.Deferred()
+                                                                            });
+                                                                        }
+                                                                    }, {
+                                                                        type: 'button',
+                                                                        text: '关闭',
+                                                                        cls: "btn btn-default",
+                                                                        handle: function (m) {
+                                                                            m.hide()
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }).show().$body.html(data.data.html);
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            }, {
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
@@ -299,7 +385,7 @@
                                         }
                                     });
                                 }
-                            },{
+                            }, {
                                 text: "审核补正信息",
                                 cls: "btn-warning btn-sm",
                                 visible: function (i, d) {

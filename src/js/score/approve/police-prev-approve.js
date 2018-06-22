@@ -191,7 +191,7 @@
                                                 text: '打印信息',
                                                 cls: 'btn btn-warning',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/wordTemplate/html";
+                                                    var requestUrl = App.href + "/api/score/print/template";
                                                     $.ajax({
                                                         type: "GET",
                                                         dataType: "json",
