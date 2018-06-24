@@ -113,7 +113,7 @@
                                     });
                                 }
                             }, {
-                                text: "申请人",
+                                text: "查看申请人",
                                 cls: "btn-info btn-sm",
                                 visible: function (i, d) {
                                     return d.process >= 1;
@@ -131,6 +131,33 @@
                                     bootbox.confirm("确定该操作?", function (result) {
                                         if (result) {
                                             var requestUrl = App.href + "/api/score/info/checkInfo/checkBatch";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                data: {
+                                                    batchId: d.id
+                                                },
+                                                success: function (result) {
+                                                    grid.reload();
+                                                },
+                                                error: function (e) {
+                                                    console.error("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }, {
+                                text: "取消汇总发布",
+                                visible: function (i, d) {
+                                    return d.process === 2;
+                                },
+                                cls: "btn-warning btn-sm",
+                                handle: function (index, d) {
+                                    bootbox.confirm("确定该操作?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/info/checkInfo/cancelCheck";
                                             $.ajax({
                                                 type: "POST",
                                                 dataType: "json",
