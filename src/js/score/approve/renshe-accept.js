@@ -222,7 +222,7 @@
                                                         }
                                                     });
                                                 }
-                                            },{
+                                            }, {
                                                 text: '打印受理通知书',
                                                 cls: 'btn btn-warning',
                                                 handle: function (m) {
@@ -288,7 +288,7 @@
                                         }
                                     });
                                 }
-                            },{
+                            }, {
                                 text: "审核",
                                 cls: "btn-danger btn-sm",
                                 visible: function (i, d) {
@@ -346,7 +346,7 @@
                                                         }
                                                     });
                                                 }
-                                            },{
+                                            }, {
                                                 text: '打印受理通知书',
                                                 cls: 'btn btn-warning',
                                                 handle: function (m) {
@@ -440,20 +440,24 @@
                                                 text: '材料待补正',
                                                 cls: 'btn btn-warning',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/rensheAccept/supply";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/rensheAccept/supply";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
                                                 }

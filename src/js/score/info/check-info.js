@@ -314,7 +314,7 @@
                                 text: "核算",
                                 cls: "btn-success btn-sm",
                                 visible: function (i, d) {
-                                    return d.hallStatus === 9;
+                                    return d.resultStatus === 0 && d.hallStatus === 5;
                                 },
                                 handle: function (index, data) {
                                     bootbox.confirm("确定该操作?", function (result) {
