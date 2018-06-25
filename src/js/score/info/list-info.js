@@ -113,12 +113,12 @@
                                     });
                                 }
                             }, {
-                                text: "分数排行",
+                                text: "全部排行",
                                 cls: "btn-danger btn-sm",
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
                                         id: "view_form_modal",
-                                        title: "分数排行",
+                                        title: "全部排行",
                                         destroy: true
                                     }).show();
                                     var options = {
@@ -152,13 +152,101 @@
                                     modal.$body.orangeGrid(options);
                                 }
                             }, {
+                                text: "公示名单",
+                                cls: "btn-success btn-sm",
+                                visible: function (i, d) {
+                                    return d.process === 4;
+                                },
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "view_form_modal",
+                                        title: "全部排行",
+                                        destroy: true
+                                    }).show();
+                                    var options = {
+                                        url: App.href + "/api/score/info/listInfo/rankHtml?batchId=" + d.id,
+                                        contentType: "table",
+                                        contentTypeItems: "table,card,list",
+                                        pageNum: 1,//当前页码
+                                        pageSize: 999999,//每页显示条数
+                                        idField: "id",//id域指定
+                                        headField: "id",
+                                        showCheck: true,//是否显示checkbox
+                                        checkboxWidth: "3%",
+                                        showIndexNum: false,
+                                        indexNumWidth: "5%",
+                                        showPaging: false,
+                                        pageSelect: [2, 15, 30, 50],
+                                        columns: [
+                                            {
+                                                title: '申请人',
+                                                field: 'personName'
+                                            },
+                                            {
+                                                title: '申请人身份证',
+                                                field: 'personIdNum'
+                                            },
+                                            {
+                                                title: '得分',
+                                                field: 'scoreValue'
+                                            }
+                                        ]
+                                    };
+                                    modal.$body.orangeGrid(options);
+                                }
+                            }, {
                                 text: "公示",
                                 visible: function (i, d) {
-                                    return d.process === 2;
+                                    return d.process === 2 || d.process === 3;
                                 },
                                 cls: "btn-info btn-sm",
                                 handle: function (index, d) {
-
+                                    bootbox.confirm("确定该操作?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/info/listInfo/setList";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                data: {
+                                                    batchId: d.id
+                                                },
+                                                success: function (result) {
+                                                    grid.reload();
+                                                },
+                                                error: function (e) {
+                                                    console.error("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }, {
+                                text: "取消公示",
+                                visible: function (i, d) {
+                                    return d.process === 4;
+                                },
+                                cls: "btn-warning btn-sm",
+                                handle: function (index, d) {
+                                    bootbox.confirm("确定该操作?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/info/listInfo/cancelList";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                data: {
+                                                    batchId: d.id
+                                                },
+                                                success: function (result) {
+                                                    grid.reload();
+                                                },
+                                                error: function (e) {
+                                                    console.error("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
                             }
                         ],
