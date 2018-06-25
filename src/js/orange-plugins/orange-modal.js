@@ -134,7 +134,7 @@
             });
             modal.append(body);
             this.$body = body.find("div.panel-body");
-            this.$body.css("height", that.modalOpts.minHeight);
+            //this.$body.css("height", that.modalOpts.minHeight);
             if (this._buttons !== undefined) {
                 var footer = $.tmpl(Modal.statics.footerTmpl, {
                     "id_": that._elementId
