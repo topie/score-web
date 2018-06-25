@@ -17,17 +17,22 @@
             }
         });
         $("#login_btn").on("click", login);
+        var alertTmpl = '<div id="alertDive" class="alert alert-${type_} alert-dismissable" role="alert">'
+            + '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'
+            + '<p id="alertContent">${alert_}</p></div>';
+        var alertDiv = $.tmpl(alertTmpl, {
+            "type_": 'warning',
+            "alert_": ""
+        }).hide();
+        $("#login-form").prepend(alertDiv);
     }
 
     function alertValidate(alertText) {
-        var alertTmpl = '<div class="alert alert-${type_} alert-dismissable" role="alert">'
-            + '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'
-            + '${alert_}</div>';
-        var alertDiv = $.tmpl(alertTmpl, {
-            "type_": 'warning',
-            "alert_": alertText
-        });
-        $("#login-form").prepend(alertDiv);
+        if (alertText === '坏的凭证')
+            alertText = '密码不正确';
+        var alertDiv = $("#login-form").find("#alertDive");
+        alertDiv.find("#alertContent").text(alertText);
+        alertDiv.show();
         alertDiv.delay(5 * 1000).fadeOut();
         App.scrollTo(alertDiv, -200);
     }
