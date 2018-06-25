@@ -176,7 +176,7 @@
                                         destroy: true,
                                         buttons: [
                                             {
-                                                text: '打印户口迁移确认通知书',
+                                                text: '户口迁移确认通知书',
                                                 cls: 'btn btn-warning',
                                                 handle: function (m) {
                                                     var requestUrl = App.href + "/api/score/print/moveNotice?personId=" + d.id;
@@ -187,6 +187,53 @@
                                                         success: function (data) {
                                                             $.orangeModal({
                                                                 title: "打印户口迁移确认通知书",
+                                                                destroy: true,
+                                                                buttons: [
+                                                                    {
+                                                                        text: '打印',
+                                                                        cls: 'btn btn-primary',
+                                                                        handle: function (m) {
+                                                                            m.$body.print({
+                                                                                globalStyles: true,
+                                                                                mediaPrint: false,
+                                                                                stylesheet: null,
+                                                                                noPrintSelector: ".no-print",
+                                                                                iframe: true,
+                                                                                append: null,
+                                                                                prepend: null,
+                                                                                manuallyCopyFormValues: true,
+                                                                                deferred: $.Deferred()
+                                                                            });
+                                                                        }
+                                                                    }, {
+                                                                        type: 'button',
+                                                                        text: '关闭',
+                                                                        cls: "btn btn-default",
+                                                                        handle: function (m) {
+                                                                            m.hide()
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }).show().$body.html(data.data.html);
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            },
+                                            {
+                                                text: '材料清单',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/print/materialList";
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        success: function (data) {
+                                                            $.orangeModal({
+                                                                title: "打印材料清单",
                                                                 destroy: true,
                                                                 buttons: [
                                                                     {
@@ -241,7 +288,7 @@
                                         }
                                     });
                                 }
-                            },{
+                            }, {
                                 text: "审核材料补正",
                                 cls: "btn-info btn-sm",
                                 visible: function (i, d) {
@@ -250,56 +297,10 @@
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
                                         id: "approve_form_modal",
-                                        title: "审核申请人信息",
+                                        title: "审核材料补正",
                                         destroy: true,
                                         buttons: [
                                             {
-                                                text: '打印户口迁移确认通知书',
-                                                cls: 'btn btn-warning',
-                                                handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/print/moveNotice?personId=" + d.id;
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        success: function (data) {
-                                                            $.orangeModal({
-                                                                title: "打印户口迁移确认通知书",
-                                                                destroy: true,
-                                                                buttons: [
-                                                                    {
-                                                                        text: '打印',
-                                                                        cls: 'btn btn-primary',
-                                                                        handle: function (m) {
-                                                                            m.$body.print({
-                                                                                globalStyles: true,
-                                                                                mediaPrint: false,
-                                                                                stylesheet: null,
-                                                                                noPrintSelector: ".no-print",
-                                                                                iframe: true,
-                                                                                append: null,
-                                                                                prepend: null,
-                                                                                manuallyCopyFormValues: true,
-                                                                                deferred: $.Deferred()
-                                                                            });
-                                                                        }
-                                                                    }, {
-                                                                        type: 'button',
-                                                                        text: '关闭',
-                                                                        cls: "btn btn-default",
-                                                                        handle: function (m) {
-                                                                            m.hide()
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }).show().$body.html(data.data.html);
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
-                                                        }
-                                                    });
-                                                }
-                                            },{
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
@@ -362,7 +363,7 @@
                                         }
                                     });
                                 }
-                            },{
+                            }, {
                                 text: "审核",
                                 cls: "btn-info btn-sm",
                                 visible: function (i, d) {
@@ -375,6 +376,99 @@
                                         destroy: true,
                                         buttons: [
                                             {
+                                                text: '户口迁移确认通知书',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/print/moveNotice?personId=" + d.id;
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        success: function (data) {
+                                                            $.orangeModal({
+                                                                title: "打印户口迁移确认通知书",
+                                                                destroy: true,
+                                                                buttons: [
+                                                                    {
+                                                                        text: '打印',
+                                                                        cls: 'btn btn-primary',
+                                                                        handle: function (m) {
+                                                                            m.$body.print({
+                                                                                globalStyles: true,
+                                                                                mediaPrint: false,
+                                                                                stylesheet: null,
+                                                                                noPrintSelector: ".no-print",
+                                                                                iframe: true,
+                                                                                append: null,
+                                                                                prepend: null,
+                                                                                manuallyCopyFormValues: true,
+                                                                                deferred: $.Deferred()
+                                                                            });
+                                                                        }
+                                                                    }, {
+                                                                        type: 'button',
+                                                                        text: '关闭',
+                                                                        cls: "btn btn-default",
+                                                                        handle: function (m) {
+                                                                            m.hide()
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }).show().$body.html(data.data.html);
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            },
+                                            {
+                                                text: '材料清单',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/print/materialList";
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        success: function (data) {
+                                                            $.orangeModal({
+                                                                title: "打印材料清单",
+                                                                destroy: true,
+                                                                buttons: [
+                                                                    {
+                                                                        text: '打印',
+                                                                        cls: 'btn btn-primary',
+                                                                        handle: function (m) {
+                                                                            m.$body.print({
+                                                                                globalStyles: true,
+                                                                                mediaPrint: false,
+                                                                                stylesheet: null,
+                                                                                noPrintSelector: ".no-print",
+                                                                                iframe: true,
+                                                                                append: null,
+                                                                                prepend: null,
+                                                                                manuallyCopyFormValues: true,
+                                                                                deferred: $.Deferred()
+                                                                            });
+                                                                        }
+                                                                    }, {
+                                                                        type: 'button',
+                                                                        text: '关闭',
+                                                                        cls: "btn btn-default",
+                                                                        handle: function (m) {
+                                                                            m.hide()
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }).show().$body.html(data.data.html);
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            }, {
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
