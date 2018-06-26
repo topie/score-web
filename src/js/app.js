@@ -16,7 +16,7 @@
 
     window.App = {
         token_key: "score_server_token",
-        href: "http://score.zt647.com",//测试环境
+        href: "http://score.chenjz.com",//测试环境
         requestMapping: {}
     };
 
