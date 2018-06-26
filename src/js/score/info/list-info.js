@@ -275,6 +275,33 @@
                                         }
                                     });
                                 }
+                            }, {
+                                text: "发送短信通知",
+                                visible: function (i, d) {
+                                    return d.process === 4;
+                                },
+                                cls: "btn-danger btn-sm",
+                                handle: function (index, d) {
+                                    bootbox.confirm("确定该操作?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/info/listInfo/sendMessage";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                data: {
+                                                    batchId: d.id
+                                                },
+                                                success: function (result) {
+                                                    grid.reload();
+                                                },
+                                                error: function (e) {
+                                                    console.error("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
                             }
                         ],
                         search: {
