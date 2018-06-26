@@ -178,6 +178,7 @@
                     {
                         type: 'text',
                         name: 'name',
+                        searchType:"like",
                         label: '文件名'
                     }
                 ]
