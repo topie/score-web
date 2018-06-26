@@ -34,6 +34,7 @@
                 if (fd.code === 200) {
                     var formItems = fd.data;
                     var columns = [];
+                    var searchItems =fd.data.searchItems;
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name==='id') {
                             var column = {
@@ -168,14 +169,13 @@
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
-                            items: [
-                                {
-                                    type: "text",
-                                    label: "ID",
-                                    name: "id",
-                                    placeholder: "输入ID"
-                                }
-                            ]
+                            items: [{
+                                name:'companyName',
+                                id:'companyName',
+                                searchType:'like',
+                                label:'企业名称',
+                                type:'text'
+                            }]
                         }
                     };
                     grid = window.App.content.find("#grid").orangeGrid(options);

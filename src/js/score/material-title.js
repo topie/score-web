@@ -40,7 +40,8 @@
         var searchItems = [{
             type: 'text',
             name: 'title',
-            label: '标题'
+            label: '标题',
+            searchType:"like"
         }];
         if (searchItems == null)
             searchItems = [];

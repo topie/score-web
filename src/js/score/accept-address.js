@@ -181,9 +181,10 @@
                 items: [
                     {
                         type: "text",
-                        label: "ID",
-                        name: "id",
-                        placeholder: "输入ID"
+                        label: "地址",
+                        name: "address",
+                        searchType:"like",
+                        placeholder: "输入地址"
                     }
                 ]
             }
