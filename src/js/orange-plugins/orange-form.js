@@ -1006,9 +1006,9 @@
                             var file = ele.find("[role='file']").val();
                             var type = file.substring(file.lastIndexOf("."));
                             if (!(type.toLowerCase() == ".jpg"
-                                    || type.toLowerCase() == ".png"
-                                    || type.toLowerCase() == ".bmp" || type
-                                        .toLowerCase() == ".jpeg")) {
+                                || type.toLowerCase() == ".png"
+                                || type.toLowerCase() == ".bmp" || type
+                                    .toLowerCase() == ".jpeg")) {
                                 alert("必须是.jpp,.png,.bmp,.jpeg格式中的一种");
                                 return;
                             }
@@ -1675,6 +1675,14 @@
                         ele.parent().parent().parent().find(
                             "span.fileinput-filename ").text(
                             value.substring(value.lastIndexOf("/") + 1));
+                    }
+                } else if (ele.attr("role") == "date-input") {
+                    if (value != '') {
+                        ele.val(value);
+                        var picker = ele.data("daterangepicker");
+                        if(picker.singleDatePicker){
+                            picker.setStartDate(value);
+                        }
                     }
                 } else if (ele.is('table')) {
                     this._renderMultipleFiles(ele, name, value);

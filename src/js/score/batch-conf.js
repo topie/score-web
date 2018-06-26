@@ -72,7 +72,6 @@
                             }
                         }
                     );
-                    console.info(columns);
                     var grid;
                     var options = {
                         url: App.href + "/api/score/batchConf/list",
