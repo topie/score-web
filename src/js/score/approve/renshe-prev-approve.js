@@ -186,67 +186,7 @@
                                     var modal = $.orangeModal({
                                         id: "view_form_modal",
                                         title: "查看申请人信息",
-                                        destroy: true,
-                                        buttons: [
-                                            {
-                                                text: '打印信息',
-                                                cls: 'btn btn-warning',
-                                                handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/print/template";
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        success: function (data) {
-                                                            $.orangeModal({
-                                                                title: "材料",
-                                                                destroy: true,
-                                                                buttons: [
-                                                                    {
-                                                                        text: '打印1',
-                                                                        cls: 'btn btn-primary',
-                                                                        handle: function (m) {
-                                                                            m.$body.print({
-                                                                                globalStyles: true,
-                                                                                mediaPrint: false,
-                                                                                stylesheet: null,
-                                                                                noPrintSelector: ".no-print",
-                                                                                iframe: true,
-                                                                                append: null,
-                                                                                prepend: null,
-                                                                                manuallyCopyFormValues: true,
-                                                                                deferred: $.Deferred()
-                                                                            });
-                                                                        }
-                                                                    }, {
-                                                                        text: '打印2',
-                                                                        cls: 'btn btn-primary',
-                                                                        handle: function (m) {
-                                                                            m.$body.jqprint({
-                                                                                debug: false, //如果是true则可以显示iframe查看效果（iframe默认高和宽都很小，可以再源码中调大），默认是false
-                                                                                importCSS: false, //true表示引进原来的页面的css，默认是true。（如果是true，先会找$("link[media=print]")，若没有会去找$("link")中的css文件）
-                                                                                printContainer: true, //表示如果原来选择的对象必须被纳入打印（注意：设置为false可能会打破你的CSS规则）。
-                                                                                operaSupport: false//表示如果插件也必须支持歌opera浏览器，在这种情况下，它提供了建立一个临时的打印选项卡。默认是true
-                                                                            });
-                                                                        }
-                                                                    }, {
-                                                                        type: 'button',
-                                                                        text: '关闭',
-                                                                        cls: "btn btn-default",
-                                                                        handle: function (m) {
-                                                                            m.hide()
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }).show().$body.html(data.data.html);
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        ]
+                                        destroy: true
                                     }).show();
                                     var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id;
                                     $.ajax({
@@ -322,20 +262,71 @@
                                                 }
                                             },
                                             {
-                                                text: '待补件',
-                                                cls: 'btn btn-warning',
+                                                text: '材料待补正',
+                                                cls: 'btn btn-danger',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/renshePrevApprove/supply";
+                                                    var modal = $.orangeModal({
+                                                        id: "approve_supply_form_modal",
+                                                        title: "材料待补正",
+                                                        destroy: true,
+                                                        buttons: [
+                                                            {
+                                                                text: '确认',
+                                                                cls: 'btn btn-warning',
+                                                                handle: function (m) {
+                                                                    var supplyArr = [];
+                                                                    m.$body.find("input[name=supplyMaterial]").each(
+                                                                        function (i, d) {
+                                                                            if ($(this).is(":checked")) {
+                                                                                var id = $(this).val();
+                                                                                var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
+                                                                                supplyArr.push({
+                                                                                    "id": id,
+                                                                                    "reason": reason
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                    );
+                                                                    var supplyStr = JSON.stringify(supplyArr);
+                                                                    var requestUrl = App.href + "/api/score/approve/renshePrevApprove/supply";
+                                                                    $.ajax({
+                                                                        type: "POST",
+                                                                        dataType: "json",
+                                                                        url: requestUrl,
+                                                                        data: {
+                                                                            "id": d.id,
+                                                                            "supplyArr": supplyStr
+                                                                        },
+                                                                        success: function (data) {
+                                                                            grid.reload();
+                                                                            m.hide();
+                                                                        },
+                                                                        error: function (e) {
+                                                                            console.error("请求异常。");
+                                                                        }
+                                                                    });
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '关闭',
+                                                                cls: 'btn btn-default',
+                                                                handle: function (m) {
+                                                                    m.hide();
+                                                                }
+                                                            }
+                                                        ]
+                                                    }).show();
+                                                    var requestUrl = App.href + "/api/score/info/identityInfo/materialSupply?identityInfoId=" + d.id;
                                                     $.ajax({
-                                                        type: "POST",
+                                                        type: "GET",
                                                         dataType: "json",
                                                         url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
                                                         success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
+                                                            modal.$body.html(data.data.html);
+                                                            var checkList = data.data.cMids;
+                                                            for (var i in checkList) {
+                                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                                            }
                                                         },
                                                         error: function (e) {
                                                             console.error("请求异常。");

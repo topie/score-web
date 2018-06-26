@@ -321,20 +321,71 @@
                                                 }
                                             },
                                             {
-                                                text: '待补件',
-                                                cls: 'btn btn-warning',
+                                                text: '材料待补正',
+                                                cls: 'btn btn-danger',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/supply";
+                                                    var modal = $.orangeModal({
+                                                        id: "approve_supply_form_modal",
+                                                        title: "材料待补正",
+                                                        destroy: true,
+                                                        buttons: [
+                                                            {
+                                                                text: '确认',
+                                                                cls: 'btn btn-warning',
+                                                                handle: function (m) {
+                                                                    var supplyArr = [];
+                                                                    m.$body.find("input[name=supplyMaterial]").each(
+                                                                        function (i, d) {
+                                                                            if ($(this).is(":checked")) {
+                                                                                var id = $(this).val();
+                                                                                var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
+                                                                                supplyArr.push({
+                                                                                    "id": id,
+                                                                                    "reason": reason
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                    );
+                                                                    var supplyStr = JSON.stringify(supplyArr);
+                                                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/supply";
+                                                                    $.ajax({
+                                                                        type: "POST",
+                                                                        dataType: "json",
+                                                                        url: requestUrl,
+                                                                        data: {
+                                                                            "id": d.id,
+                                                                            "supplyArr": supplyStr
+                                                                        },
+                                                                        success: function (data) {
+                                                                            grid.reload();
+                                                                            m.hide();
+                                                                        },
+                                                                        error: function (e) {
+                                                                            console.error("请求异常。");
+                                                                        }
+                                                                    });
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '关闭',
+                                                                cls: 'btn btn-default',
+                                                                handle: function (m) {
+                                                                    m.hide();
+                                                                }
+                                                            }
+                                                        ]
+                                                    }).show();
+                                                    var requestUrl = App.href + "/api/score/info/identityInfo/materialSupply?identityInfoId=" + d.id;
                                                     $.ajax({
-                                                        type: "POST",
+                                                        type: "GET",
                                                         dataType: "json",
                                                         url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
                                                         success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
+                                                            modal.$body.html(data.data.html);
+                                                            var checkList = data.data.cMids;
+                                                            for (var i in checkList) {
+                                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                                            }
                                                         },
                                                         error: function (e) {
                                                             console.error("请求异常。");
