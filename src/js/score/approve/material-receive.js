@@ -181,27 +181,6 @@
                                                         }
                                                     });
                                                 }
-                                            },
-                                            {
-                                                text: '修改信息',
-                                                cls: 'btn btn-warning',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印审核表',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印材料接收单',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
                                             }
                                         ]
                                     }).show();
