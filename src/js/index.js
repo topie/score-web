@@ -20,41 +20,22 @@
             App.title(title);
             var content = $('<div class="panel-body" >' +
                 '<div class="row">' +
-                '<div class="col-md-6" >' +
+                '<div class="col-md-12" >' +
                 '<div class="panel panel-default" >' +
-                '<div class="panel-heading">通知</div>' +
+                '<div class="panel-heading">在办件</div>' +
                 '<div class="panel-body" id="content1"></div>' +
                 '</div>' +
                 '</div>' +
-                '<div class="col-md-6" >' +
+                '<div class="col-md-12" >' +
                 '<div class="panel panel-default" >' +
-                '<div class="panel-heading">板块2</div>' +
+                '<div class="panel-heading">待办件</div>' +
                 '<div class="panel-body" id="content2"></div>' +
                 '</div>' +
                 '</div>' +
-                '<div class="col-md-6" >' +
+                '<div class="col-md-12" >' +
                 '<div class="panel panel-default" >' +
-                '<div class="panel-heading">板块3</div>' +
+                '<div class="panel-heading">限期办理列表</div>' +
                 '<div class="panel-body" id="content3"></div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-md-6" >' +
-                '<div class="panel panel-default" >' +
-                '<div class="panel-heading">板块4</div>' +
-                '<div class="panel-body" id="content4"></div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-md-6" >' +
-                '<div class="panel panel-default" >' +
-                '<div class="panel-heading">板块5</div>' +
-                '<div class="panel-body" id="content5"></div>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-md-6" >' +
-                '<div class="panel panel-default" >' +
-                '<div class="panel-heading">板块6</div>' +
-                '<div class="panel-body" id="content6"></div>' +
-                '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>');
