@@ -322,37 +322,6 @@
                                     });
                                 }
                             }, {
-                                text: "打分完成",
-                                visible: function (i, d) {
-                                    return d.status === 4;
-                                },
-                                cls: "btn-success btn-sm",
-                                handle: function (index, d) {
-                                    bootbox.confirm("确定该操作?", function (result) {
-                                        if (result) {
-                                            var requestUrl = App.href + "/api/score/scoreRecord/complete";
-                                            $.ajax({
-                                                type: "POST",
-                                                dataType: "json",
-                                                data: {
-                                                    id: d.personId
-                                                },
-                                                url: requestUrl,
-                                                success: function (data) {
-                                                    if (data.code === 200) {
-                                                        grid.reload();
-                                                    } else {
-                                                        alert(data.message);
-                                                    }
-                                                },
-                                                error: function (e) {
-                                                    console.error("请求异常。");
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            }, {
                                 text: "申请取消资格",
                                 cls: "btn-danger btn-sm",
                                 handle: function (index, d) {

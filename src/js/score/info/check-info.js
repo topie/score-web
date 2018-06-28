@@ -128,23 +128,166 @@
                                 },
                                 cls: "btn-info btn-sm",
                                 handle: function (index, d) {
-                                    bootbox.confirm("确定该操作?", function (result) {
-                                        if (result) {
-                                            var requestUrl = App.href + "/api/score/info/checkInfo/checkBatch";
-                                            $.ajax({
-                                                type: "POST",
-                                                dataType: "json",
-                                                url: requestUrl,
-                                                data: {
-                                                    batchId: d.id
-                                                },
-                                                success: function (result) {
-                                                    grid.reload();
-                                                },
-                                                error: function (e) {
-                                                    console.error("请求异常。");
-                                                }
-                                            });
+                                    var requestUrl = App.href + "/api/score/info/checkInfo/canCheck";
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        data: {
+                                            batchId: d.id
+                                        },
+                                        success: function (result) {
+                                            if (result.data.can == 0) {
+                                                $.ajax({
+                                                    type: "GET",
+                                                    dataType: "json",
+                                                    url: App.href + "/api/score/info/identityInfo/formItems",
+                                                    success: function (fd) {
+                                                        if (fd.code === 200) {
+                                                            var modal = $.orangeModal({
+                                                                id: "view_not_cat_form_modal",
+                                                                title: "当前批次有" + result.data.list.length + "申请人未完成打分，是否继续进行汇总发布?",
+                                                                destroy: true,
+                                                                buttons: [
+                                                                    {
+                                                                        text: '确认汇总发布',
+                                                                        cls: 'btn btn-danger',
+                                                                        handle: function (m) {
+                                                                            var requestUrl = App.href + "/api/score/info/checkInfo/checkBatch";
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                dataType: "json",
+                                                                                url: requestUrl,
+                                                                                data: {
+                                                                                    batchId: d.id
+                                                                                },
+                                                                                success: function (result) {
+                                                                                    grid.reload();
+                                                                                    m.hide();
+                                                                                },
+                                                                                error: function (e) {
+                                                                                    console.error("请求异常。");
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }, {
+                                                                        text: '取消',
+                                                                        cls: 'btn btn-default',
+                                                                        handle: function (m) {
+                                                                            m.hide();
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }).show();
+                                                            var formItems = fd.data.formItems;
+                                                            var searchItems = fd.data.searchItems;
+                                                            var reservationStatus = fd.data.reservationStatus;
+                                                            var hallStatus = fd.data.hallStatus;
+                                                            if (searchItems == null)
+                                                                searchItems = [];
+                                                            var columns = [];
+                                                            $.each(formItems, function (ii, dd) {
+                                                                if (dd.type === 'text' || dd.name === 'id') {
+                                                                    var column = {
+                                                                        title: dd.label,
+                                                                        field: dd.name
+                                                                    };
+                                                                    columns.push(column);
+                                                                }
+                                                                if (dd.itemsUrl !== undefined) {
+                                                                    dd.itemsUrl = App.href + dd.itemsUrl;
+                                                                }
+                                                                if (dd.url !== undefined) {
+                                                                    dd.url = App.href + dd.url;
+                                                                }
+                                                                if (dd.name == 'nation') {
+                                                                    var national = [
+                                                                        "汉族", "壮族", "满族", "回族", "苗族", "维吾尔族", "土家族", "彝族", "蒙古族", "藏族", "布依族", "侗族", "瑶族", "朝鲜族", "白族", "哈尼族",
+                                                                        "哈萨克族", "黎族", "傣族", "畲族", "傈僳族", "仡佬族", "东乡族", "高山族", "拉祜族", "水族", "佤族", "纳西族", "羌族", "土族", "仫佬族", "锡伯族",
+                                                                        "柯尔克孜族", "达斡尔族", "景颇族", "毛南族", "撒拉族", "布朗族", "塔吉克族", "阿昌族", "普米族", "鄂温克族", "怒族", "京族", "基诺族", "德昂族", "保安族",
+                                                                        "俄罗斯族", "裕固族", "乌孜别克族", "门巴族", "鄂伦春族", "独龙族", "塔塔尔族", "赫哲族", "珞巴族"
+                                                                    ];
+                                                                    for (var n in national) {
+                                                                        dd.items.push({
+                                                                            text: national[n],
+                                                                            value: national[n]
+                                                                        })
+                                                                    }
+                                                                }
+                                                            });
+                                                            columns.push({
+                                                                title: '性别',
+                                                                field: 'sex',
+                                                                format: function (ii, dd) {
+                                                                    return dd.sex === 1 ? '男' : '女';
+                                                                }
+                                                            });
+                                                            columns.push({
+                                                                title: '网上预约状态',
+                                                                field: 'reservationStatus',
+                                                                format: function (i, cd) {
+                                                                    return reservationStatus[cd.reservationStatus];
+                                                                }
+                                                            });
+                                                            columns.push({
+                                                                title: '预约大厅状态',
+                                                                field: 'hallStatus',
+                                                                format: function (i, cd) {
+                                                                    return hallStatus[cd.hallStatus];
+                                                                }
+                                                            });
+                                                            columns.push({
+                                                                title: '核算状态',
+                                                                field: 'resultStatus',
+                                                                format: function (i, cd) {
+                                                                    return cd.resultStatus === 0 ? '未核算' : '已核算';
+                                                                }
+                                                            });
+                                                            var options = {
+                                                                url: App.href + "/api/score/info/checkInfo/canNotCheckList?batchId=" + d.id,
+                                                                contentType: "table",
+                                                                contentTypeItems: "table,card,list",
+                                                                pageNum: 1,//当前页码
+                                                                pageSize: 15,//每页显示条数
+                                                                idField: "id",//id域指定
+                                                                headField: "id",
+                                                                showCheck: true,//是否显示checkbox
+                                                                checkboxWidth: "3%",
+                                                                showIndexNum: false,
+                                                                indexNumWidth: "5%",
+                                                                pageSelect: [2, 15, 30, 50],
+                                                                columns: columns
+                                                            };
+                                                            modal.$body.orangeGrid(options);
+                                                        } else {
+                                                            alert(fd.message);
+                                                        }
+                                                    },
+                                                    error: function (e) {
+                                                        console.error("请求异常。");
+                                                    }
+                                                });
+
+                                            } else {
+                                                var requestUrl = App.href + "/api/score/info/checkInfo/checkBatch";
+                                                $.ajax({
+                                                    type: "POST",
+                                                    dataType: "json",
+                                                    url: requestUrl,
+                                                    data: {
+                                                        batchId: d.id
+                                                    },
+                                                    success: function (result) {
+                                                        grid.reload();
+                                                    },
+                                                    error: function (e) {
+                                                        console.error("请求异常。");
+                                                    }
+                                                });
+                                            }
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
                                         }
                                     });
                                 }
@@ -178,7 +321,7 @@
                             }, {
                                 text: "结束汇总发布",
                                 visible: function (i, d) {
-                                    return d.process === 2 ;
+                                    return d.process === 2;
                                 },
                                 cls: "btn-warning btn-sm",
                                 handle: function (index, d) {
