@@ -412,7 +412,7 @@
                                             {
                                                 text: '材料待补正',
                                                 cls: 'btn btn-danger',
-                                                handle: function (m) {
+                                                handle: function (mm) {
                                                     var modal = $.orangeModal({
                                                         id: "approve_supply_form_modal",
                                                         title: "材料待补正",
@@ -448,6 +448,7 @@
                                                                         success: function (data) {
                                                                             grid.reload();
                                                                             m.hide();
+                                                                            mm.hide();
                                                                         },
                                                                         error: function (e) {
                                                                             console.error("请求异常。");
