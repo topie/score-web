@@ -165,6 +165,7 @@
                                         {
                                             type: 'button',
                                             text: '通过',
+                                            cls: 'btn btn-info',
                                             handle: function (mm) {
                                                 bootbox.confirm("确定该操作?", function (result) {
                                                     if (result) {
@@ -194,6 +195,7 @@
                                         }, {
                                             type: 'button',
                                             text: '驳回',
+                                            cls: 'btn btn-danger',
                                             handle: function (mm) {
                                                 var m = $.orangeModal({
                                                     id: "disagree_form_modal",
