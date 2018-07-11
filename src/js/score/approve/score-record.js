@@ -136,23 +136,7 @@
                                     var modal = $.orangeModal({
                                         id: "score_view_form_modal",
                                         title: "查看",
-                                        destroy: true,
-                                        buttons: [
-                                            {
-                                                text: '打印审核表',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印材料接收单',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            }
-                                        ]
+                                        destroy: true
                                     }).show();
                                     var requestUrl = App.href + "/api/score/scoreRecord/detailAll?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
                                     $.ajax({
@@ -195,62 +179,46 @@
                                                 text: '审核打分',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
-                                                    var sIds = [];
-                                                    var sAns = [];
-                                                    m.$body.find('input[type=radio]:checked').each(function () {
-                                                        sIds.push($(this).val());
-                                                    });
-                                                    m.$body.find('input[type=text]').each(function () {
-                                                        if ($.trim($(this).val()) != '') {
-                                                            sAns.push($(this).attr("d-indicator") + "_" + $(this).val());
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var sIds = [];
+                                                            var sAns = [];
+                                                            m.$body.find('input[type=radio]:checked').each(function () {
+                                                                sIds.push($(this).val());
+                                                            });
+                                                            m.$body.find('input[type=text]').each(function () {
+                                                                if ($.trim($(this).val()) != '') {
+                                                                    sAns.push($(this).attr("d-indicator") + "_" + $(this).val());
+                                                                }
+                                                            });
+                                                            if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
+                                                                bootbox.alert('请选择打分项');
+                                                                return;
+                                                            }
+                                                            if (m.$body.find('input[type=text]').length > 0 && sAns.length == 0) {
+                                                                bootbox.alert('请填写打分项');
+                                                                return;
+                                                            }
+                                                            var requestUrl = App.href + "/api/score/scoreRecord/score";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    personId: d.personId,
+                                                                    sIds: sIds.toString(),
+                                                                    sAns: sAns.toString()
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
-                                                    if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
-                                                        bootbox.alert('请选择打分项');
-                                                        return;
-                                                    }
-                                                    if (m.$body.find('input[type=text]').length > 0 && sAns.length == 0) {
-                                                        bootbox.alert('请填写打分项');
-                                                        return;
-                                                    }
-                                                    var requestUrl = App.href + "/api/score/scoreRecord/score";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            personId: d.personId,
-                                                            sIds: sIds.toString(),
-                                                            sAns: sAns.toString()
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
-                                                        }
-                                                    });
-                                                }
-                                            },
-                                            {
-                                                text: '修改信息',
-                                                cls: 'btn btn-warning',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印审核表',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印材料接收单',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
 
                                                 }
                                             }
@@ -460,23 +428,7 @@
                                     var modal = $.orangeModal({
                                         id: "score_view_form_modal",
                                         title: "查看",
-                                        destroy: true,
-                                        buttons: [
-                                            {
-                                                text: '打印审核表',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印材料接收单',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            }
-                                        ]
+                                        destroy: true
                                     }).show();
                                     var requestUrl = App.href + "/api/score/scoreRecord/detailAll?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
                                     $.ajax({
@@ -519,62 +471,46 @@
                                                 text: '审核打分',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
-                                                    var sIds = [];
-                                                    var sAns = [];
-                                                    m.$body.find('input[type=radio]:checked').each(function () {
-                                                        sIds.push($(this).val());
-                                                    });
-                                                    m.$body.find('input[type=text]').each(function () {
-                                                        if ($.trim($(this).val()) != '') {
-                                                            sAns.push($(this).attr("d-indicator") + "_" + $(this).val());
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var sIds = [];
+                                                            var sAns = [];
+                                                            m.$body.find('input[type=radio]:checked').each(function () {
+                                                                sIds.push($(this).val());
+                                                            });
+                                                            m.$body.find('input[type=text]').each(function () {
+                                                                if ($.trim($(this).val()) != '') {
+                                                                    sAns.push($(this).attr("d-indicator") + "_" + $(this).val());
+                                                                }
+                                                            });
+                                                            if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
+                                                                bootbox.alert('请选择打分项');
+                                                                return;
+                                                            }
+                                                            if (m.$body.find('input[type=text]').length > 0 && sAns.length == 0) {
+                                                                bootbox.alert('请填写打分项');
+                                                                return;
+                                                            }
+                                                            var requestUrl = App.href + "/api/score/scoreRecord/score";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    personId: d.personId,
+                                                                    sIds: sIds.toString(),
+                                                                    sAns: sAns.toString()
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
-                                                    if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
-                                                        bootbox.alert('请选择打分项');
-                                                        return;
-                                                    }
-                                                    if (m.$body.find('input[type=text]').length > 0 && sAns.length == 0) {
-                                                        bootbox.alert('请填写打分项');
-                                                        return;
-                                                    }
-                                                    var requestUrl = App.href + "/api/score/scoreRecord/score";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            personId: d.personId,
-                                                            sIds: sIds.toString(),
-                                                            sAns: sAns.toString()
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
-                                                        }
-                                                    });
-                                                }
-                                            },
-                                            {
-                                                text: '修改信息',
-                                                cls: 'btn btn-warning',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印审核表',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印材料接收单',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
 
                                                 }
                                             }

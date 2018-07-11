@@ -173,103 +173,7 @@
                                     var modal = $.orangeModal({
                                         id: "view_form_modal",
                                         title: "查看申请人信息",
-                                        destroy: true,
-                                        buttons: [
-                                            {
-                                                text: '户口迁移确认通知书',
-                                                cls: 'btn btn-warning',
-                                                handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/print/moveNotice?personId=" + d.id;
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        success: function (data) {
-                                                            $.orangeModal({
-                                                                title: "打印户口迁移确认通知书",
-                                                                destroy: true,
-                                                                buttons: [
-                                                                    {
-                                                                        text: '打印',
-                                                                        cls: 'btn btn-primary',
-                                                                        handle: function (m) {
-                                                                            m.$body.print({
-                                                                                globalStyles: true,
-                                                                                mediaPrint: false,
-                                                                                stylesheet: null,
-                                                                                noPrintSelector: ".no-print",
-                                                                                iframe: true,
-                                                                                append: null,
-                                                                                prepend: null,
-                                                                                manuallyCopyFormValues: true,
-                                                                                deferred: $.Deferred()
-                                                                            });
-                                                                        }
-                                                                    }, {
-                                                                        type: 'button',
-                                                                        text: '关闭',
-                                                                        cls: "btn btn-default",
-                                                                        handle: function (m) {
-                                                                            m.hide()
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }).show().$body.html(data.data.html);
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
-                                                        }
-                                                    });
-                                                }
-                                            },
-                                            {
-                                                text: '材料清单',
-                                                cls: 'btn btn-warning',
-                                                handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/print/materialList";
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        success: function (data) {
-                                                            $.orangeModal({
-                                                                title: "打印材料清单",
-                                                                destroy: true,
-                                                                buttons: [
-                                                                    {
-                                                                        text: '打印',
-                                                                        cls: 'btn btn-primary',
-                                                                        handle: function (m) {
-                                                                            m.$body.print({
-                                                                                globalStyles: true,
-                                                                                mediaPrint: false,
-                                                                                stylesheet: null,
-                                                                                noPrintSelector: ".no-print",
-                                                                                iframe: true,
-                                                                                append: null,
-                                                                                prepend: null,
-                                                                                manuallyCopyFormValues: true,
-                                                                                deferred: $.Deferred()
-                                                                            });
-                                                                        }
-                                                                    }, {
-                                                                        type: 'button',
-                                                                        text: '关闭',
-                                                                        cls: "btn btn-default",
-                                                                        handle: function (m) {
-                                                                            m.hide()
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }).show().$body.html(data.data.html);
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        ]
+                                        destroy: true
                                     }).show();
                                     var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id;
                                     $.ajax({
@@ -304,20 +208,24 @@
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/policeApprove/agree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/policeApprove/agree";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
                                                 }
@@ -326,22 +234,27 @@
                                                 text: '不通过',
                                                 cls: 'btn btn-danger',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/policeApprove/disAgree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/policeApprove/disAgree";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
+
                                                 }
                                             },
                                             {
@@ -357,36 +270,40 @@
                                                                 text: '确认',
                                                                 cls: 'btn btn-warning',
                                                                 handle: function (m) {
-                                                                    var supplyArr = [];
-                                                                    m.$body.find("input[name=supplyMaterial]").each(
-                                                                        function (i, d) {
-                                                                            if ($(this).is(":checked")) {
-                                                                                var id = $(this).val();
-                                                                                var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
-                                                                                supplyArr.push({
-                                                                                    "id": id,
-                                                                                    "reason": reason
-                                                                                });
-                                                                            }
-                                                                        }
-                                                                    );
-                                                                    var supplyStr = JSON.stringify(supplyArr);
-                                                                    var requestUrl = App.href + "/api/score/approve/policeApprove/supply";
-                                                                    $.ajax({
-                                                                        type: "POST",
-                                                                        dataType: "json",
-                                                                        url: requestUrl,
-                                                                        data: {
-                                                                            "id": d.id,
-                                                                            "supplyArr": supplyStr
-                                                                        },
-                                                                        success: function (data) {
-                                                                            grid.reload();
-                                                                            m.hide();
-                                                                            mm.hide();
-                                                                        },
-                                                                        error: function (e) {
-                                                                            console.error("请求异常。");
+                                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                                        if (result) {
+                                                                            var supplyArr = [];
+                                                                            m.$body.find("input[name=supplyMaterial]").each(
+                                                                                function (i, d) {
+                                                                                    if ($(this).is(":checked")) {
+                                                                                        var id = $(this).val();
+                                                                                        var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
+                                                                                        supplyArr.push({
+                                                                                            "id": id,
+                                                                                            "reason": reason
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            );
+                                                                            var supplyStr = JSON.stringify(supplyArr);
+                                                                            var requestUrl = App.href + "/api/score/approve/policeApprove/supply";
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                dataType: "json",
+                                                                                url: requestUrl,
+                                                                                data: {
+                                                                                    "id": d.id,
+                                                                                    "supplyArr": supplyStr
+                                                                                },
+                                                                                success: function (data) {
+                                                                                    grid.reload();
+                                                                                    m.hide();
+                                                                                    mm.hide();
+                                                                                },
+                                                                                error: function (e) {
+                                                                                    console.error("请求异常。");
+                                                                                }
+                                                                            });
                                                                         }
                                                                     });
                                                                 }
@@ -438,6 +355,104 @@
                                     });
                                 }
                             }, {
+                                text: "打印确认通知书",
+                                cls: "btn-info btn-sm",
+                                visible: function (i, d) {
+                                    return d.policeApproveStatus == 3;
+                                },
+                                handle: function (index, d) {
+                                    var requestUrl = App.href + "/api/score/print/moveNotice?personId=" + d.id;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            $.orangeModal({
+                                                title: "打印户口迁移确认通知书",
+                                                destroy: true,
+                                                buttons: [
+                                                    {
+                                                        text: '打印',
+                                                        cls: 'btn btn-primary',
+                                                        handle: function (m) {
+                                                            m.$body.print({
+                                                                globalStyles: true,
+                                                                mediaPrint: false,
+                                                                stylesheet: null,
+                                                                noPrintSelector: ".no-print",
+                                                                iframe: true,
+                                                                append: null,
+                                                                prepend: null,
+                                                                manuallyCopyFormValues: true,
+                                                                deferred: $.Deferred()
+                                                            });
+                                                        }
+                                                    }, {
+                                                        type: 'button',
+                                                        text: '关闭',
+                                                        cls: "btn btn-default",
+                                                        handle: function (m) {
+                                                            m.hide()
+                                                        }
+                                                    }
+                                                ]
+                                            }).show().$body.html(data.data.html);
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            }, {
+                                text: "打印材料清单",
+                                cls: "btn-info btn-sm",
+                                visible: function (i, d) {
+                                    return d.policeApproveStatus == 3;
+                                },
+                                handle: function (index, d) {
+                                    var requestUrl = App.href + "/api/score/print/materialList";
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            $.orangeModal({
+                                                title: "打印材料清单",
+                                                destroy: true,
+                                                buttons: [
+                                                    {
+                                                        text: '打印',
+                                                        cls: 'btn btn-primary',
+                                                        handle: function (m) {
+                                                            m.$body.print({
+                                                                globalStyles: true,
+                                                                mediaPrint: false,
+                                                                stylesheet: null,
+                                                                noPrintSelector: ".no-print",
+                                                                iframe: true,
+                                                                append: null,
+                                                                prepend: null,
+                                                                manuallyCopyFormValues: true,
+                                                                deferred: $.Deferred()
+                                                            });
+                                                        }
+                                                    }, {
+                                                        type: 'button',
+                                                        text: '关闭',
+                                                        cls: "btn btn-default",
+                                                        handle: function (m) {
+                                                            m.hide()
+                                                        }
+                                                    }
+                                                ]
+                                            }).show().$body.html(data.data.html);
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            }, {
                                 text: "审核",
                                 cls: "btn-info btn-sm",
                                 visible: function (i, d) {
@@ -450,140 +465,57 @@
                                         destroy: true,
                                         buttons: [
                                             {
-                                                text: '户口迁移确认通知书',
-                                                cls: 'btn btn-warning',
-                                                handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/print/moveNotice?personId=" + d.id;
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        success: function (data) {
-                                                            $.orangeModal({
-                                                                title: "打印户口迁移确认通知书",
-                                                                destroy: true,
-                                                                buttons: [
-                                                                    {
-                                                                        text: '打印',
-                                                                        cls: 'btn btn-primary',
-                                                                        handle: function (m) {
-                                                                            m.$body.print({
-                                                                                globalStyles: true,
-                                                                                mediaPrint: false,
-                                                                                stylesheet: null,
-                                                                                noPrintSelector: ".no-print",
-                                                                                iframe: true,
-                                                                                append: null,
-                                                                                prepend: null,
-                                                                                manuallyCopyFormValues: true,
-                                                                                deferred: $.Deferred()
-                                                                            });
-                                                                        }
-                                                                    }, {
-                                                                        type: 'button',
-                                                                        text: '关闭',
-                                                                        cls: "btn btn-default",
-                                                                        handle: function (m) {
-                                                                            m.hide()
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }).show().$body.html(data.data.html);
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
-                                                        }
-                                                    });
-                                                }
-                                            },
-                                            {
-                                                text: '材料清单',
-                                                cls: 'btn btn-warning',
-                                                handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/print/materialList";
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        success: function (data) {
-                                                            $.orangeModal({
-                                                                title: "打印材料清单",
-                                                                destroy: true,
-                                                                buttons: [
-                                                                    {
-                                                                        text: '打印',
-                                                                        cls: 'btn btn-primary',
-                                                                        handle: function (m) {
-                                                                            m.$body.print({
-                                                                                globalStyles: true,
-                                                                                mediaPrint: false,
-                                                                                stylesheet: null,
-                                                                                noPrintSelector: ".no-print",
-                                                                                iframe: true,
-                                                                                append: null,
-                                                                                prepend: null,
-                                                                                manuallyCopyFormValues: true,
-                                                                                deferred: $.Deferred()
-                                                                            });
-                                                                        }
-                                                                    }, {
-                                                                        type: 'button',
-                                                                        text: '关闭',
-                                                                        cls: "btn btn-default",
-                                                                        handle: function (m) {
-                                                                            m.hide()
-                                                                        }
-                                                                    }
-                                                                ]
-                                                            }).show().$body.html(data.data.html);
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
-                                                        }
-                                                    });
-                                                }
-                                            }, {
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/policeApprove/agree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/policeApprove/agree";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
+
                                                 }
                                             },
                                             {
                                                 text: '不通过',
                                                 cls: 'btn btn-danger',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/policeApprove/disAgree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/policeApprove/disAgree";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
+
                                                 }
                                             },
                                             {
@@ -599,37 +531,42 @@
                                                                 text: '确认',
                                                                 cls: 'btn btn-warning',
                                                                 handle: function (m) {
-                                                                    var supplyArr = [];
-                                                                    m.$body.find("input[name=supplyMaterial]").each(
-                                                                        function (i, d) {
-                                                                            if ($(this).is(":checked")) {
-                                                                                var id = $(this).val();
-                                                                                var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
-                                                                                supplyArr.push({
-                                                                                    "id": id,
-                                                                                    "reason": reason
-                                                                                });
-                                                                            }
-                                                                        }
-                                                                    );
-                                                                    var supplyStr = JSON.stringify(supplyArr);
-                                                                    var requestUrl = App.href + "/api/score/approve/policeApprove/supply";
-                                                                    $.ajax({
-                                                                        type: "POST",
-                                                                        dataType: "json",
-                                                                        url: requestUrl,
-                                                                        data: {
-                                                                            "id": d.id,
-                                                                            "supplyArr": supplyStr
-                                                                        },
-                                                                        success: function (data) {
-                                                                            grid.reload();
-                                                                            m.hide();
-                                                                        },
-                                                                        error: function (e) {
-                                                                            console.error("请求异常。");
+                                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                                        if (result) {
+                                                                            var supplyArr = [];
+                                                                            m.$body.find("input[name=supplyMaterial]").each(
+                                                                                function (i, d) {
+                                                                                    if ($(this).is(":checked")) {
+                                                                                        var id = $(this).val();
+                                                                                        var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
+                                                                                        supplyArr.push({
+                                                                                            "id": id,
+                                                                                            "reason": reason
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            );
+                                                                            var supplyStr = JSON.stringify(supplyArr);
+                                                                            var requestUrl = App.href + "/api/score/approve/policeApprove/supply";
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                dataType: "json",
+                                                                                url: requestUrl,
+                                                                                data: {
+                                                                                    "id": d.id,
+                                                                                    "supplyArr": supplyStr
+                                                                                },
+                                                                                success: function (data) {
+                                                                                    grid.reload();
+                                                                                    m.hide();
+                                                                                },
+                                                                                error: function (e) {
+                                                                                    console.error("请求异常。");
+                                                                                }
+                                                                            });
                                                                         }
                                                                     });
+
                                                                 }
                                                             },
                                                             {

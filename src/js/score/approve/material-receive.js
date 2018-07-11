@@ -104,23 +104,7 @@
                                     var modal = $.orangeModal({
                                         id: "view_receive_form_modal",
                                         title: "查看",
-                                        destroy: true,
-                                        buttons: [
-                                            {
-                                                text: '打印审核表',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            },
-                                            {
-                                                text: '打印材料接收单',
-                                                cls: 'btn btn-default',
-                                                handle: function (m) {
-
-                                                }
-                                            }
-                                        ]
+                                        destroy: true
                                     }).show();
                                     var requestUrl = App.href + "/api/score/materialReceive/detailAll?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
                                     $.ajax({
@@ -155,29 +139,33 @@
                                                 text: '确认送达',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
-                                                    var mIds = [];
-                                                    m.$body.find('input[name="material"]:checked').each(function () {
-                                                        mIds.push($(this).val());
-                                                    });
-                                                    if (mIds.length == 0) {
-                                                        bootbox.alert('请选择送达材料');
-                                                        return;
-                                                    }
-                                                    var requestUrl = App.href + "/api/score/materialReceive/confirmReceived";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            personId: d.personId,
-                                                            mIds: mIds.toString()
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var mIds = [];
+                                                            m.$body.find('input[name="material"]:checked').each(function () {
+                                                                mIds.push($(this).val());
+                                                            });
+                                                            if (mIds.length == 0) {
+                                                                bootbox.alert('请选择送达材料');
+                                                                return;
+                                                            }
+                                                            var requestUrl = App.href + "/api/score/materialReceive/confirmReceived";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    personId: d.personId,
+                                                                    mIds: mIds.toString()
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
                                                 }

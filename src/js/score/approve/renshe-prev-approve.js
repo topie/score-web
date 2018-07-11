@@ -221,44 +221,54 @@
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/renshePrevApprove/agree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/renshePrevApprove/agree";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
+
                                                 }
                                             },
                                             {
                                                 text: '不通过',
                                                 cls: 'btn btn-danger',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/renshePrevApprove/disAgree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/renshePrevApprove/disAgree";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
+
                                                 }
                                             },
                                             {
@@ -274,37 +284,42 @@
                                                                 text: '确认',
                                                                 cls: 'btn btn-warning',
                                                                 handle: function (m) {
-                                                                    var supplyArr = [];
-                                                                    m.$body.find("input[name=supplyMaterial]").each(
-                                                                        function (i, d) {
-                                                                            if ($(this).is(":checked")) {
-                                                                                var id = $(this).val();
-                                                                                var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
-                                                                                supplyArr.push({
-                                                                                    "id": id,
-                                                                                    "reason": reason
-                                                                                });
-                                                                            }
-                                                                        }
-                                                                    );
-                                                                    var supplyStr = JSON.stringify(supplyArr);
-                                                                    var requestUrl = App.href + "/api/score/approve/renshePrevApprove/supply";
-                                                                    $.ajax({
-                                                                        type: "POST",
-                                                                        dataType: "json",
-                                                                        url: requestUrl,
-                                                                        data: {
-                                                                            "id": d.id,
-                                                                            "supplyArr": supplyStr
-                                                                        },
-                                                                        success: function (data) {
-                                                                            grid.reload();
-                                                                            m.hide();
-                                                                        },
-                                                                        error: function (e) {
-                                                                            console.error("请求异常。");
+                                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                                        if (result) {
+                                                                            var supplyArr = [];
+                                                                            m.$body.find("input[name=supplyMaterial]").each(
+                                                                                function (i, d) {
+                                                                                    if ($(this).is(":checked")) {
+                                                                                        var id = $(this).val();
+                                                                                        var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
+                                                                                        supplyArr.push({
+                                                                                            "id": id,
+                                                                                            "reason": reason
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            );
+                                                                            var supplyStr = JSON.stringify(supplyArr);
+                                                                            var requestUrl = App.href + "/api/score/approve/renshePrevApprove/supply";
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                dataType: "json",
+                                                                                url: requestUrl,
+                                                                                data: {
+                                                                                    "id": d.id,
+                                                                                    "supplyArr": supplyStr
+                                                                                },
+                                                                                success: function (data) {
+                                                                                    grid.reload();
+                                                                                    m.hide();
+                                                                                },
+                                                                                error: function (e) {
+                                                                                    console.error("请求异常。");
+                                                                                }
+                                                                            });
                                                                         }
                                                                     });
+
                                                                 }
                                                             },
                                                             {
@@ -369,44 +384,54 @@
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/renshePrevApprove/agree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/renshePrevApprove/agree";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
+
                                                 }
                                             },
                                             {
                                                 text: '不通过',
                                                 cls: 'btn btn-danger',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/renshePrevApprove/disAgree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/renshePrevApprove/disAgree";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
+
                                                 }
                                             },
                                             {
@@ -422,38 +447,43 @@
                                                                 text: '确认',
                                                                 cls: 'btn btn-warning',
                                                                 handle: function (m) {
-                                                                    var supplyArr = [];
-                                                                    m.$body.find("input[name=supplyMaterial]").each(
-                                                                        function (i, d) {
-                                                                            if ($(this).is(":checked")) {
-                                                                                var id = $(this).val();
-                                                                                var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
-                                                                                supplyArr.push({
-                                                                                    "id": id,
-                                                                                    "reason": reason
-                                                                                });
-                                                                            }
-                                                                        }
-                                                                    );
-                                                                    var supplyStr = JSON.stringify(supplyArr);
-                                                                    var requestUrl = App.href + "/api/score/approve/renshePrevApprove/supply";
-                                                                    $.ajax({
-                                                                        type: "POST",
-                                                                        dataType: "json",
-                                                                        url: requestUrl,
-                                                                        data: {
-                                                                            "id": d.id,
-                                                                            "supplyArr": supplyStr
-                                                                        },
-                                                                        success: function (data) {
-                                                                            grid.reload();
-                                                                            m.hide();
-                                                                            mm.hide();
-                                                                        },
-                                                                        error: function (e) {
-                                                                            console.error("请求异常。");
+                                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                                        if (result) {
+                                                                            var supplyArr = [];
+                                                                            m.$body.find("input[name=supplyMaterial]").each(
+                                                                                function (i, d) {
+                                                                                    if ($(this).is(":checked")) {
+                                                                                        var id = $(this).val();
+                                                                                        var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
+                                                                                        supplyArr.push({
+                                                                                            "id": id,
+                                                                                            "reason": reason
+                                                                                        });
+                                                                                    }
+                                                                                }
+                                                                            );
+                                                                            var supplyStr = JSON.stringify(supplyArr);
+                                                                            var requestUrl = App.href + "/api/score/approve/renshePrevApprove/supply";
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                dataType: "json",
+                                                                                url: requestUrl,
+                                                                                data: {
+                                                                                    "id": d.id,
+                                                                                    "supplyArr": supplyStr
+                                                                                },
+                                                                                success: function (data) {
+                                                                                    grid.reload();
+                                                                                    m.hide();
+                                                                                    mm.hide();
+                                                                                },
+                                                                                error: function (e) {
+                                                                                    console.error("请求异常。");
+                                                                                }
+                                                                            });
                                                                         }
                                                                     });
+
                                                                 }
                                                             },
                                                             {
