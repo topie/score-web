@@ -186,9 +186,28 @@
                                     var modal = $.orangeModal({
                                         id: "view_form_modal",
                                         title: "查看申请人信息",
-                                        destroy: true
+                                        destroy: true,
+                                        buttons: [
+                                            {
+                                                text: '打印信息',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+                                                    m.$body.find("#info-tab").print({
+                                                        globalStyles: true,
+                                                        mediaPrint: false,
+                                                        stylesheet: null,
+                                                        noPrintSelector: ".no-print",
+                                                        iframe: true,
+                                                        append: null,
+                                                        prepend: null,
+                                                        manuallyCopyFormValues: true,
+                                                        deferred: $.Deferred()
+                                                    });
+                                                }
+                                            }
+                                        ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id;
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id+ "&template=identity_info_for_pre";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
@@ -331,7 +350,7 @@
                                                             }
                                                         ]
                                                     }).show();
-                                                    var requestUrl = App.href + "/api/score/info/identityInfo/materialSupply?identityInfoId=" + d.id;
+                                                    var requestUrl = App.href + "/api/score/info/identityInfo/materialSupply?identityInfoId=" + d.id+ "&template=identity_info_for_pre";;
                                                     $.ajax({
                                                         type: "GET",
                                                         dataType: "json",
@@ -515,7 +534,7 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id;
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id+ "&template=identity_info_for_pre";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
