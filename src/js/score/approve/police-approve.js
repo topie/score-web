@@ -173,32 +173,6 @@
                         actionColumnWidth: "20%",
                         actionColumns: [
                             {
-                                text: "查看",
-                                cls: "btn-danger btn-sm",
-                                handle: function (index, d) {
-                                    var modal = $.orangeModal({
-                                        id: "view_form_modal",
-                                        title: "查看申请人信息",
-                                        destroy: true
-                                    }).show();
-                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_edit";
-                                    $.ajax({
-                                        type: "GET",
-                                        dataType: "json",
-                                        url: requestUrl,
-                                        success: function (data) {
-                                            modal.$body.html(data.data.html);
-                                            var checkList = data.data.cMids;
-                                            for (var i in checkList) {
-                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
-                                            }
-                                        },
-                                        error: function (e) {
-                                            console.error("请求异常。");
-                                        }
-                                    });
-                                }
-                            }, {
                                 text: "审核材料补正",
                                 cls: "btn-info btn-sm",
                                 visible: function (i, d) {
@@ -471,6 +445,22 @@
                                         destroy: true,
                                         buttons: [
                                             {
+                                                text: '打印申请人信息',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+                                                    m.$body.find("#info-tab").print({
+                                                        globalStyles: true,
+                                                        mediaPrint: false,
+                                                        stylesheet: null,
+                                                        noPrintSelector: ".no-print",
+                                                        iframe: true,
+                                                        append: null,
+                                                        prepend: null,
+                                                        manuallyCopyFormValues: true,
+                                                        deferred: $.Deferred()
+                                                    });
+                                                }
+                                            }, {
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
