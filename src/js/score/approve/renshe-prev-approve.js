@@ -161,6 +161,12 @@
                             }
                         }
                     );
+                    if (type == "supply") {
+                        columns.push({
+                            title: '补件剩余时间',
+                            field: 'etStatus'
+                        });
+                    }
                     var grid;
                     var options = {
                         url: App.href + "/api/score/approve/renshePrevApprove/" + type,
