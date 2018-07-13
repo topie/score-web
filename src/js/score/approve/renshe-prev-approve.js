@@ -345,10 +345,37 @@
                                                         }
                                                     });
                                                 }
+                                            }, {
+                                                text: '社保情况',
+                                                cls: 'btn btn-info',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/info/identityInfo/socialInfo";
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        data: {
+                                                            personId: d.id
+                                                        },
+                                                        success: function (data) {
+                                                            var content = '<div>公司名称</div><div id="info"></div><div>社保情况</div><div id="list"></div>'
+                                                            var modal = $.orangeModal({
+                                                                title: "社保缴纳情况",
+                                                                destroy: true
+                                                            }).show();
+                                                            modal.$body.html(content);
+                                                            modal.$body.find("#info").html(data.data.info);
+                                                            modal.$body.find("#list").html(data.data.list);
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id+ "&template=identity_info_for_pre";
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_pre";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
@@ -512,7 +539,7 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id+ "&template=identity_info_for_pre";
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_pre";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
