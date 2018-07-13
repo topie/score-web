@@ -619,7 +619,7 @@
                 var ele = $.tmpl(selectTmpl, {
                     "id_": (data.id === undefined ? data.name : data.id),
                     "name_": data.name,
-                    "cls_": data.cls === undefined ? "col-lg-3" : data.cls,
+                    "cls_": data.cls === undefined ? "" : data.cls,
                     "disabled_": (data.readonly == 'readonly' ? "disabled" : ""),
                     "attribute_": (data.attribute === undefined ? ""
                         : data.attribute)

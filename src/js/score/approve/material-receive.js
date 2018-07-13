@@ -156,7 +156,8 @@
                                                                 url: requestUrl,
                                                                 data: {
                                                                     personId: d.personId,
-                                                                    mIds: mIds.toString()
+                                                                    mIds: mIds.toString(),
+                                                                    opRoleId: d.opRoleId
                                                                 },
                                                                 success: function (data) {
                                                                     grid.reload();

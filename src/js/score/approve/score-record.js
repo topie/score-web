@@ -499,7 +499,8 @@
                                                                 data: {
                                                                     personId: d.personId,
                                                                     sIds: sIds.toString(),
-                                                                    sAns: sAns.toString()
+                                                                    sAns: sAns.toString(),
+                                                                    opRoleId: d.opRoleId
                                                                 },
                                                                 success: function (data) {
                                                                     grid.reload();

@@ -15,7 +15,7 @@
             window.App.content.append(content);
             initEvents();
         }
-    }
+    };
     var initEvents = function () {
         var grid;
         var options = {
@@ -41,6 +41,13 @@
                     title: "角色名称",
                     field: "roleName",
                     sort: true
+                }, {
+                    title: "角色类型",
+                    field: "roleType",
+                    format: function (i, d) {
+                        return d.roleType === 1 ? '权限' : '部门';
+                    }
+
                 }
             ],
             actionColumnText: "操作",//操作列文本
@@ -90,6 +97,26 @@
                             },
                             message: {
                                 required: "请输入角色名"
+                            }
+                        }, {
+                            type: 'select',//类型
+                            name: 'roleType',//name
+                            id: 'roleType',//id
+                            label: '角色类型',//左边label
+                            items: [
+                                {
+                                    text: '权限',
+                                    value: 1
+                                }, {
+                                    text: '部门',
+                                    value: 0
+                                }
+                            ],
+                            rule: {
+                                required: true
+                            },
+                            message: {
+                                required: "请选择角色类型"
                             }
                         }, {
                             type: 'tree',//类型
@@ -291,6 +318,26 @@
                                     required: "请输入角色名"
                                 }
                             }, {
+                                type: 'select',//类型
+                                name: 'roleType',//name
+                                id: 'roleType',//id
+                                label: '角色类型',//左边label
+                                items: [
+                                    {
+                                        text: '权限',
+                                        value: 1
+                                    }, {
+                                        text: '部门',
+                                        value: 0
+                                    }
+                                ],
+                                rule: {
+                                    required: true
+                                },
+                                message: {
+                                    required: "请选择角色类型"
+                                }
+                            }, {
                                 type: 'tree',
                                 name: 'functions',
                                 id: 'functions',
@@ -322,6 +369,22 @@
                         label: "角色名",
                         name: "roleName",
                         placeholder: "输入要搜索的角色名"
+                    }, {
+                        type: 'select',//类型
+                        name: 'roleType',//name
+                        label: '角色类型',//左边label
+                        items: [
+                            {
+                                text: '全部',
+                                value: ''
+                            }, {
+                                text: '权限',
+                                value: 1
+                            }, {
+                                text: '部门',
+                                value: 0
+                            }
+                        ]
                     }
                 ]
             }

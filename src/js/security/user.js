@@ -26,7 +26,7 @@
             window.App.content.append(content);
             initEvents();
         }
-    }
+    };
     /**
      * 初始化事件
      */
@@ -102,6 +102,27 @@
                                     name: 'id',
                                     id: 'id'
                                 }, {
+                                    type: 'select',//类型
+                                    name: 'userType',//name
+                                    id: 'userType',//id
+                                    label: '用户类型',//左边label
+                                    span: 2,
+                                    items: [
+                                        {
+                                            text: '市行政审批',
+                                            value: 0
+                                        }, {
+                                            text: '滨海新区',
+                                            value: 1
+                                        }
+                                    ],
+                                    rule: {
+                                        required: true
+                                    },
+                                    message: {
+                                        required: "请选择角色类型"
+                                    }
+                                }, {
                                     type: 'text',
                                     name: 'loginName',
                                     id: 'loginName',
@@ -156,10 +177,10 @@
                                     name: 'roles',
                                     id: 'roles',
                                     label: '角色',
-                                    url: App.href + "/api/security/role/treeNodes",
+                                    url: App.href + "/api/security/role/treeNodesDiff",
                                     expandAll: true,
                                     autoParam: ["id", "name", "pId"],
-                                    chkStyle: "radio",
+                                    chkStyle: "checkbox",
                                     rule: {
                                         required: true
                                     },
@@ -330,6 +351,27 @@
                                     name: 'id',
                                     id: 'id'
                                 }, {
+                                    type: 'select',//类型
+                                    name: 'userType',//name
+                                    id: 'userType',//id
+                                    label: '用户类型',//左边label
+                                    span: 2,
+                                    items: [
+                                        {
+                                            text: '市行政审批',
+                                            value: 0
+                                        }, {
+                                            text: '滨海新区',
+                                            value: 1
+                                        }
+                                    ],
+                                    rule: {
+                                        required: true
+                                    },
+                                    message: {
+                                        required: "请选择角色类型"
+                                    }
+                                }, {
                                     type: 'text',
                                     name: 'loginName',
                                     id: 'loginName',
@@ -460,11 +502,10 @@
                                     name: 'roles',
                                     id: 'roles',
                                     label: '角色',
-                                    url: App.href + "/api/security/role/treeNodes",
+                                    url: App.href + "/api/security/role/treeNodesDiff",
                                     expandAll: true,
                                     autoParam: ["id", "name", "pId"],
-                                    chkStyle: "radio",
-                                    detail: "如何设置角色?<a target='_blank' href='?u=/api/security/role/pageList'>点击设置</a>",
+                                    chkStyle: "checkbox",
                                     rule: {
                                         required: true
                                     },
@@ -508,7 +549,24 @@
                     label: "昵称",
                     name: "displayName",
                     placeholder: "输入要搜索的昵称"
-                }]
+                }, {
+                    type: 'select',//类型
+                    name: 'userType',//name
+                    label: '用户类型',//左边label
+                    items: [
+                        {
+                            text: '全部',
+                            value: ''
+                        }, {
+                            text: '市行政审批',
+                            value: 0
+                        }, {
+                            text: '滨海新区',
+                            value: 1
+                        }
+                    ]
+                }
+                ]
             }
         };
         grid = window.App.content.find("#user_grid").orangeGrid(options);
