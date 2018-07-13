@@ -160,7 +160,7 @@
                             }
                         }
                     );
-                    if (type == "supply") {
+                    if (type == "approving" || type == "supply") {
                         columns.push({
                             title: '预审剩余时间',
                             field: 'epStatus'
@@ -212,24 +212,28 @@
                                                         deferred: $.Deferred()
                                                     });
                                                 }
-                                            },{
+                                            }, {
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/agree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/policePrevApprove/agree";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
                                                 }
@@ -238,21 +242,65 @@
                                                 text: '不通过',
                                                 cls: 'btn btn-danger',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/disAgree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
+                                                    var modal = $.orangeModal({
+                                                        id: "score_disagree_form_modal",
+                                                        title: "不通过",
+                                                        destroy: true
+                                                    }).show();
+                                                    modal.$body.orangeForm({
+                                                        id: "score_disagree_form",
+                                                        name: "score_disagree_form",
+                                                        method: "POST",
+                                                        action: App.href + "/api/score/approve/policePrevApprove/disAgree?id=" + d.id,
+                                                        ajaxSubmit: true,
+                                                        ajaxSuccess: function () {
+                                                            modal.hide();
                                                             m.hide();
+                                                            grid.reload();
                                                         },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
-                                                        }
+                                                        submitText: "提交",
+                                                        showReset: true,
+                                                        resetText: "重置",
+                                                        isValidate: true,
+                                                        labelInline: true,
+                                                        buttons: [{
+                                                            type: 'button',
+                                                            text: '关闭',
+                                                            handle: function () {
+                                                                modal.hide();
+                                                            }
+                                                        }],
+                                                        buttonsAlign: "center",
+                                                        items: [
+                                                            {
+                                                                type: 'select',
+                                                                name: 'reasonType',
+                                                                id: 'reasonType',
+                                                                label: '不通过原因类型',
+                                                                items: [
+                                                                    {
+                                                                        text: '社会保险出现补缴',
+                                                                        value: 1
+                                                                    },
+                                                                    {
+                                                                        text: '社会保险出现断缴',
+                                                                        value: 2
+                                                                    }, {
+                                                                        text: '社会保险缴纳单位发生变更',
+                                                                        value: 3
+                                                                    }, {
+                                                                        text: '其它',
+                                                                        value: 4
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                type: 'textarea',
+                                                                name: 'reason',
+                                                                id: 'reason',
+                                                                label: '不通过原因'
+                                                            }
+                                                        ]
                                                     });
                                                 }
                                             },
@@ -331,7 +379,7 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id+ "&template=identity_info_for_pre";
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_pre";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
@@ -364,20 +412,24 @@
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/agree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
-                                                            m.hide();
-                                                        },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+                                                            var requestUrl = App.href + "/api/score/approve/policePrevApprove/agree";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    id: d.id
+                                                                },
+                                                                success: function (data) {
+                                                                    grid.reload();
+                                                                    m.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
                                                         }
                                                     });
                                                 }
@@ -386,21 +438,65 @@
                                                 text: '不通过',
                                                 cls: 'btn btn-danger',
                                                 handle: function (m) {
-                                                    var requestUrl = App.href + "/api/score/approve/policePrevApprove/disAgree";
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        dataType: "json",
-                                                        url: requestUrl,
-                                                        data: {
-                                                            id: d.id
-                                                        },
-                                                        success: function (data) {
-                                                            grid.reload();
+                                                    var modal = $.orangeModal({
+                                                        id: "score_disagree_form_modal",
+                                                        title: "不通过",
+                                                        destroy: true
+                                                    }).show();
+                                                    modal.$body.orangeForm({
+                                                        id: "score_disagree_form",
+                                                        name: "score_disagree_form",
+                                                        method: "POST",
+                                                        action: App.href + "/api/score/approve/policePrevApprove/disAgree?id=" + d.id,
+                                                        ajaxSubmit: true,
+                                                        ajaxSuccess: function () {
+                                                            modal.hide();
                                                             m.hide();
+                                                            grid.reload();
                                                         },
-                                                        error: function (e) {
-                                                            console.error("请求异常。");
-                                                        }
+                                                        submitText: "提交",
+                                                        showReset: true,
+                                                        resetText: "重置",
+                                                        isValidate: true,
+                                                        labelInline: true,
+                                                        buttons: [{
+                                                            type: 'button',
+                                                            text: '关闭',
+                                                            handle: function () {
+                                                                modal.hide();
+                                                            }
+                                                        }],
+                                                        buttonsAlign: "center",
+                                                        items: [
+                                                            {
+                                                                type: 'select',
+                                                                name: 'reasonType',
+                                                                id: 'reasonType',
+                                                                label: '不通过原因类型',
+                                                                items: [
+                                                                    {
+                                                                        text: '社会保险出现补缴',
+                                                                        value: 1
+                                                                    },
+                                                                    {
+                                                                        text: '社会保险出现断缴',
+                                                                        value: 2
+                                                                    }, {
+                                                                        text: '社会保险缴纳单位发生变更',
+                                                                        value: 3
+                                                                    }, {
+                                                                        text: '其它',
+                                                                        value: 4
+                                                                    }
+                                                                ]
+                                                            },
+                                                            {
+                                                                type: 'textarea',
+                                                                name: 'reason',
+                                                                id: 'reason',
+                                                                label: '不通过原因'
+                                                            }
+                                                        ]
                                                     });
                                                 }
                                             },
