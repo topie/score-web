@@ -445,6 +445,87 @@
                                         destroy: true,
                                         buttons: [
                                             {
+                                                text: '修改',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+                                                    var modal = $.orangeModal({
+                                                        id: "approve_edit_form_modal",
+                                                        title: "修改申请人信息",
+                                                        width: "70%",
+                                                        height: "460px",
+                                                        destroy: true,
+                                                        buttons: [
+                                                            {
+                                                                text: '保存',
+                                                                cls: 'btn btn-warning',
+                                                                handle: function (mm) {
+                                                                    bootbox.confirm("确定修改吗?", function (result) {
+                                                                        if (result) {
+                                                                            var arr = [];
+                                                                            mm.$body.find(".edit").each(function () {
+                                                                                var that = $(this);
+                                                                                arr.push({
+                                                                                    'name': that.attr("data-name"),
+                                                                                    'id': that.attr("data-id"),
+                                                                                    'value': that.val()
+                                                                                });
+                                                                            });
+                                                                            var requestUrl = App.href + "/api/score/info/identityInfo/updateEdit";
+                                                                            $.ajax({
+                                                                                type: "POST",
+                                                                                dataType: "json",
+                                                                                url: requestUrl,
+                                                                                data: {
+                                                                                    identityInfoId: d.id,
+                                                                                    editInfo: JSON.stringify(arr)
+                                                                                },
+                                                                                success: function (data) {
+                                                                                    var requestUrl1 = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_edit";
+                                                                                    $.ajax({
+                                                                                        type: "GET",
+                                                                                        dataType: "json",
+                                                                                        url: requestUrl1,
+                                                                                        success: function (data) {
+                                                                                            m.$body.html(data.data.html);
+                                                                                        },
+                                                                                        error: function (e) {
+                                                                                            console.error("请求异常。");
+                                                                                        }
+                                                                                    });
+                                                                                    mm.hide();
+                                                                                },
+                                                                                error: function (e) {
+                                                                                    console.error("请求异常。");
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '关闭',
+                                                                cls: 'btn btn-default',
+                                                                handle: function (mm) {
+                                                                    mm.hide();
+                                                                }
+                                                            }
+                                                        ]
+                                                    }).show();
+                                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_edit1";
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        success: function (data) {
+                                                            modal.$body.html(data.data.html);
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            }, {
                                                 text: '打印申请人信息',
                                                 cls: 'btn btn-warning',
                                                 handle: function (m) {

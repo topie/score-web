@@ -162,8 +162,8 @@
                     );
                     if (type == "supply") {
                         columns.push({
-                            title: '补件剩余时间',
-                            field: 'etStatus'
+                            title: '预审剩余时间',
+                            field: 'epStatus'
                         });
                     }
                     var grid;
