@@ -55,6 +55,20 @@
                 field: "loginName",
                 sort: true
             }, {
+                title: "用户类型",
+                field: "userType",
+                format: function (i, d) {
+                    switch (d.userType) {
+                        case 0:
+                            return '市行政审批';
+                        case 1:
+                            return '滨海行政审批';
+                        case 2:
+                            return '全部';
+                    }
+                    return '-';
+                }
+            }, {
                 title: "昵称",
                 field: "displayName"
             }, {
@@ -114,6 +128,9 @@
                                         }, {
                                             text: '滨海新区',
                                             value: 1
+                                        }, {
+                                            text: '全部',
+                                            value: 2
                                         }
                                     ],
                                     rule: {
@@ -363,6 +380,9 @@
                                         }, {
                                             text: '滨海新区',
                                             value: 1
+                                        }, {
+                                            text: '全部',
+                                            value: 2
                                         }
                                     ],
                                     rule: {
@@ -556,7 +576,7 @@
                     items: [
                         {
                             text: '全部',
-                            value: ''
+                            value: 2
                         }, {
                             text: '市行政审批',
                             value: 0

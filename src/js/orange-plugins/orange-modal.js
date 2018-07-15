@@ -17,6 +17,7 @@
         backdrop: true,
         scroll: true,
         keyboard: true,
+        draggable: true,
         width: "80%",
         height: "480px",
         maxHeight: "580px",
@@ -61,7 +62,7 @@
             this.modalOpts = {};
         },
         _setOptions: function (options) {
-            if (options.id === undefined || options.id=='') {
+            if (options.id === undefined || options.id == '') {
                 this._elementId = "orange_modal_" + new Date().getTime();
             } else {
                 this._elementId = options.id;
@@ -100,6 +101,8 @@
                     that._destroyModal();
                 });
             }
+            if (this._options.draggable)
+                this.$modal.draggable();
         },
         _renderEle: function () {
             var that = this;
