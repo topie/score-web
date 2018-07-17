@@ -704,44 +704,39 @@
     };
 
     var scoreRecordIdentity = function (type) {
-        var formItems = fd.data.formItems;
-        var searchItems = fd.data.searchItems;
-        var scoreRecordStatus = fd.data.scoreRecordStatus;
-        if (searchItems == null)
-            searchItems = [];
-        var columns = [];
-        $.each(formItems, function (ii, dd) {
-            if (dd.type === 'text' || dd.name === 'id') {
-                var column = {
-                    title: dd.label,
-                    field: dd.name
-                };
-                columns.push(column);
+        var searchItems = [
+            {
+                type: "select",
+                label: "批次",
+                name: "batchId",
+                itemsUrl: App.href + '/api/score/batchConf/options'
+            }, {
+                type: 'text',
+                label: '申请人姓名',
+                name: 'personName'
+            }, {
+                type: 'text',
+                label: '申请人身份证',
+                name: 'personIdNum'
             }
-            if (dd.itemsUrl !== undefined) {
-                dd.itemsUrl = App.href + dd.itemsUrl;
+        ];
+        var columns = [
+            {
+                title: '申请人ID',
+                field: 'personId'
+            }, {
+                title: '申请人姓名',
+                field: 'personName'
+            },
+            {
+                title: '申请人身份证',
+                field: 'personIdNum'
+            },
+            {
+                title: '企业',
+                field: 'companyName'
             }
-            if (dd.url !== undefined) {
-                dd.url = App.href + dd.url;
-            }
-        });
-        columns.push({
-            title: '办理进度',
-            field: 'status',
-            format: function (i, d) {
-                return scoreRecordStatus[d.status];
-            }
-        });
-        columns.push({
-            title: '分数',
-            field: 'scoreValue',
-            format: function (i, d) {
-                if (d.status !== 4) {
-                    return '-';
-                }
-                return d.scoreValue === null ? '-' : d.scoreValue;
-            }
-        });
+        ];
         var grid;
         var options = {
             url: App.href + "/api/score/scoreRecord/identityInfo/" + type,
