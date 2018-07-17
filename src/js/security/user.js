@@ -64,7 +64,7 @@
                         case 1:
                             return '滨海行政审批';
                         case 2:
-                            return '全部';
+                            return '市行政审批+滨海行政审批';
                     }
                     return '-';
                 }
@@ -129,7 +129,7 @@
                                             text: '滨海新区',
                                             value: 1
                                         }, {
-                                            text: '全部',
+                                            text: '市行政审批+滨海行政审批',
                                             value: 2
                                         }
                                     ],
@@ -381,7 +381,7 @@
                                             text: '滨海新区',
                                             value: 1
                                         }, {
-                                            text: '全部',
+                                            text: '市行政审批+滨海行政审批',
                                             value: 2
                                         }
                                     ],
@@ -576,7 +576,7 @@
                     items: [
                         {
                             text: '全部',
-                            value: 2
+                            value: ''
                         }, {
                             text: '市行政审批',
                             value: 0

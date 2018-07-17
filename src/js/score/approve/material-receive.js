@@ -15,15 +15,46 @@
             var content = $('<div class="panel-body" >' +
                 '<div class="row">' +
                 '<div class="col-md-12" >' +
-                '<div class="panel panel-default" >' +
-                '<div class="panel-heading">待接收</div>' +
-                '<div class="panel-body" id="grid"></div>' +
+                '<div class="widget-box">' +
+                '<div class="widget-header widget-header-flat">' +
+                '<h4 class="widget-title smaller">待接收</h4>' +
+                '<div class="widget-toolbar">' +
+                '<div class="pull-right">' +
+                '<div class="btn-toolbar inline middle no-margin">' +
+                '<div class="btn-group no-margin">' +
+                '<button id="id-button" class="btn btn-sm btn-success active">' +
+                '<span class="bigger-110">按申请人查看</span>' +
+                '</button>' +
+                '<button id="in-button" class="btn btn-sm btn-success">' +
+                '<span class="bigger-110">按指标查看</span>' +
+                '</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="widget-body">' +
+                '<div class="widget-main" id="grid">' +
+                '</div>' +
+                '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>' +
                 '</div>');
             window.App.content.append(content);
-            scoreMaterialReceive("receiving");
+            scoreMaterialReceiveIdentityInfo("receiving");
+            content.find("#in-button").on("click", function () {
+                $("#id-button").removeClass("active");
+                $("#in-button").addClass("active");
+                content.find("#grid").empty();
+                scoreMaterialReceive("receiving");
+            });
+            content.find("#id-button").on("click", function () {
+                $("#in-button").removeClass("active");
+                $("#id-button").addClass("active");
+                content.find("#grid").empty();
+                scoreMaterialReceiveIdentityInfo("receiving");
+            });
         }
     };
     App.scoreMaterialReceiveReceived = {
@@ -73,6 +104,10 @@
                         }
                     });
                     columns.push({
+                        title: '接收部门',
+                        field: 'opRole'
+                    });
+                    columns.push({
                         title: '办理进度',
                         field: 'status',
                         format: function (i, d) {
@@ -106,11 +141,16 @@
                                         title: "查看",
                                         destroy: true
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/materialReceive/detailAll?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
+                                    var requestUrl = App.href + "/api/score/materialReceive/detailAll";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
                                         url: requestUrl,
+                                        data: {
+                                            "identityInfoId": d.personId,
+                                            "indicatorId": d.indicatorId,
+                                            "opRoleId": d.opRoleId
+                                        },
                                         success: function (data) {
                                             modal.$body.html(data.data.html);
                                             var clist = data.data.mCheckList;
@@ -173,11 +213,16 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/materialReceive/detailAll?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
+                                    var requestUrl = App.href + "/api/score/materialReceive/detailAll";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
                                         url: requestUrl,
+                                        data: {
+                                            "identityInfoId": d.personId,
+                                            "indicatorId": d.indicatorId,
+                                            "opRoleId": d.opRoleId
+                                        },
                                         success: function (data) {
                                             modal.$body.html(data.data.html);
                                             var clist = data.data.mCheckList;
@@ -207,6 +252,132 @@
                 console.error("请求异常。");
             }
         });
+    };
+
+    var scoreMaterialReceiveIdentityInfo = function (mode) {
+        var searchItems = [
+            {
+                type: "select",
+                label: "批次",
+                name: "batchId",
+                itemsUrl: App.href + '/api/score/batchConf/options'
+            }, {
+                type: 'text',
+                label: '申请人姓名',
+                name: 'personName'
+            }, {
+                type: 'text',
+                label: '申请人身份证',
+                name: 'personIdNum'
+            }
+        ];
+        var columns = [
+            {
+                title: '申请人ID',
+                field: 'personId'
+            }, {
+                title: '申请人姓名',
+                field: 'personName'
+            },
+            {
+                title: '申请人身份证',
+                field: 'personIdNum'
+            },
+            {
+                title: '企业',
+                field: 'companyName'
+            }
+        ];
+        var grid;
+        var options = {
+            url: App.href + "/api/score/materialReceive/identityInfo/" + mode,
+            contentType: "table",
+            contentTypeItems: "table,card,list",
+            pageNum: 1,//当前页码
+            pageSize: 15,//每页显示条数
+            idField: "id",//id域指定
+            headField: "id",
+            showCheck: true,//是否显示checkbox
+            checkboxWidth: "3%",
+            showIndexNum: false,
+            indexNumWidth: "5%",
+            pageSelect: [2, 15, 30, 50],
+            columns: columns,
+            actionColumnText: "操作",//操作列文本
+            actionColumnWidth: "20%",
+            actionColumns: [
+                {
+                    text: "接收",
+                    cls: "btn-primary btn-sm",
+                    handle: function (index, d) {
+                        var modal = $.orangeModal({
+                            id: "receive_form_modal",
+                            title: "接收",
+                            destroy: true,
+                            buttons: [
+                                {
+                                    text: '确认送达',
+                                    cls: 'btn btn-info',
+                                    handle: function (m) {
+                                        bootbox.confirm("确定该操作?", function (result) {
+                                            if (result) {
+                                                var mIds = [];
+                                                m.$body.find('input[name="material"]:checked').each(function () {
+                                                    mIds.push($(this).val());
+                                                });
+                                                if (mIds.length == 0) {
+                                                    bootbox.alert('请选择送达材料');
+                                                    return;
+                                                }
+                                                var requestUrl = App.href + "/api/score/materialReceive/identityInfo/confirmReceived";
+                                                $.ajax({
+                                                    type: "POST",
+                                                    dataType: "json",
+                                                    url: requestUrl,
+                                                    data: {
+                                                        personId: d.personId,
+                                                        mIds: mIds.toString()
+                                                    },
+                                                    success: function (data) {
+                                                        grid.reload();
+                                                        m.hide();
+                                                    },
+                                                    error: function (e) {
+                                                        console.error("请求异常。");
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                }
+                            ]
+                        }).show();
+                        var requestUrl = App.href + "/api/score/materialReceive/identityInfo/detailAll?identityInfoId=" + d.personId;
+                        $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: requestUrl,
+                            success: function (data) {
+                                modal.$body.html(data.data.html);
+                                var clist = data.data.mCheckList;
+                                for (var i in clist) {
+                                    modal.$body.find("input[name=material]:checkbox[value='" + clist[i] + "']").attr('checked', 'true');
+                                }
+                            },
+                            error: function (e) {
+                                console.error("请求异常。");
+                            }
+                        });
+                    }
+                }
+            ],
+            search: {
+                rowEleNum: 2,
+                //搜索栏元素
+                items: searchItems
+            }
+        };
+        grid = window.App.content.find("#grid").orangeGrid(options);
     };
 
 })(jQuery, window, document);

@@ -102,7 +102,7 @@
                 });
             }
             if (this._options.draggable)
-                this.$modal.draggable();
+                this.$modal.draggable({handle: ".modal-header"});
         },
         _renderEle: function () {
             var that = this;
