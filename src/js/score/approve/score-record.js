@@ -44,7 +44,7 @@
                 '</div>' +
                 '</div>');
             window.App.content.append(content);
-            scoreRecordIdentity("receiving");
+            scoreRecordIdentity("scoring");
             content.find("#in-button").on("click", function () {
                 $("#id-button").removeClass("active");
                 $("#in-button").addClass("active");
@@ -55,7 +55,7 @@
                 $("#in-button").removeClass("active");
                 $("#id-button").addClass("active");
                 content.find("#grid").empty();
-                scoreRecordIdentity("receiving");
+                scoreRecordIdentity("scoring");
             })
         }
     };
