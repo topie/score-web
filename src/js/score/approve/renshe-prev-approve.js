@@ -95,8 +95,15 @@
                     var unionApproveStatus2 = fd.data.unionApproveStatus2;
                     var unionApproveStatus1 = fd.data.unionApproveStatus1;
                     var reservationStatus = fd.data.reservationStatus;
-                    if (searchItems == null)
-                        searchItems = [];
+                    var newSearchItems = [];
+                    if (searchItems != null) {
+                        $.each(searchItems, function (ii, dd) {
+                            if (dd.name !== 'batchId') {
+                                newSearchItems.push(dd);
+                            }
+                        });
+                    }
+                    searchItems = newSearchItems;
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {

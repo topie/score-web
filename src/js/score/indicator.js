@@ -49,11 +49,33 @@
                             dd.url = App.href + dd.url;
                         }
                     });
+                    formItems.push(
+                        {
+                            type: 'select',
+                            label: '是否自动打分',
+                            items: [
+                                {
+                                    text: '否',
+                                    value: 0
+                                }, {
+                                    text: '是',
+                                    value: 1
+                                }
+                            ]
+                        }
+                    );
                     columns.push({
                         title: '题目类型',
                         field: 'itemType',
                         format: function (i, d) {
                             return d.itemType === 0 ? '单选题' : '填空题';
+                        }
+                    });
+                    columns.push({
+                        title: '是否自动打分',
+                        field: 'autoScore',
+                        format: function (i, d) {
+                            return d.itemType === 0 ? '否' : '是';
                         }
                     });
                     columns.push({

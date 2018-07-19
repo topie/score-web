@@ -94,8 +94,15 @@
                     var unionApproveStatus1 = fd.data.unionApproveStatus1;
                     var unionApproveStatus2 = fd.data.unionApproveStatus2;
                     var reservationStatus = fd.data.reservationStatus;
-                    if (searchItems == null)
-                        searchItems = [];
+                    var newSearchItems = [];
+                    if (searchItems != null) {
+                        $.each(searchItems, function (ii, dd) {
+                            if (dd.name !== 'batchId') {
+                                newSearchItems.push(dd);
+                            }
+                        });
+                    }
+                    searchItems = newSearchItems;
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
@@ -370,6 +377,33 @@
                                                             for (var i in checkList) {
                                                                 modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
                                                             }
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            }, {
+                                                text: '社保情况',
+                                                cls: 'btn btn-info',
+                                                handle: function (m) {
+                                                    var requestUrl = App.href + "/api/score/info/identityInfo/socialInfo";
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        data: {
+                                                            personId: d.id
+                                                        },
+                                                        success: function (data) {
+                                                            var content = '<div>公司名称</div><div id="info"></div><div>社保情况</div><div id="list"></div>'
+                                                            var modal = $.orangeModal({
+                                                                title: "社保缴纳情况",
+                                                                destroy: true
+                                                            }).show();
+                                                            modal.$body.html(content);
+                                                            modal.$body.find("#info").html(data.data.info);
+                                                            modal.$body.find("#list").html(data.data.list);
                                                         },
                                                         error: function (e) {
                                                             console.error("请求异常。");
