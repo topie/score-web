@@ -780,12 +780,8 @@
                                                         sAns.push($(this).attr("d-indicator") + "_" + $(this).val() + "_" + $(this).attr("d-roleId"));
                                                     }
                                                 });
-                                                if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
-                                                    bootbox.alert('请选择打分项');
-                                                    return;
-                                                }
-                                                if (m.$body.find('input[type=text]').length > 0 && sAns.length == 0) {
-                                                    bootbox.alert('请填写打分项');
+                                                if (sAns.length == 0 && sIds.length == 0) {
+                                                    bootbox.alert('请打分');
                                                     return;
                                                 }
                                                 var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/score";
@@ -820,6 +816,16 @@
                             url: requestUrl,
                             success: function (data) {
                                 modal.$body.html(data.data.html);
+                                var slist = data.data.sCheckList;
+                                for (var i in slist) {
+                                    var arr = slist[i].split("_");
+                                    modal.$body.find("input[name=score_" + arr[0] + "_" + arr[2] + "]:radio[value='" + slist[i] + "']").attr('checked', 'true');
+                                }
+                                var stList = data.data.sTextList;
+                                for (var i in stList) {
+                                    var arr = stList[i].split("_");
+                                    modal.$body.find("input[name=score_" + arr[0] + "_" + arr[2] + "]").val(parseFloat(arr[1]).toFixed(2));
+                                }
                             },
                             error: function (e) {
                                 console.error("请求异常。");
