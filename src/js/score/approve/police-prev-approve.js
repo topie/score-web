@@ -368,7 +368,7 @@
                                                     }).show();
                                                     var requestUrl = App.href + "/api/score/info/identityInfo/materialSupply?identityInfoId=" + d.id;
                                                     $.ajax({
-                                                        type: "GET",
+                                                        type: "POST",
                                                         dataType: "json",
                                                         url: requestUrl,
                                                         success: function (data) {
