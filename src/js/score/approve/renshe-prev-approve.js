@@ -411,7 +411,11 @@
                                                                 destroy: true
                                                             }).show();
                                                             modal.$body.html(content);
-                                                            modal.$body.find("#info").html(data.data.info);
+                                                            if (data.data.info.appCode === "1") {
+                                                                modal.$body.find("#info").html(data.data.info.errMsg);
+                                                            } else {
+                                                                modal.$body.find("#info").html(data.data.info.unitName);
+                                                            }
                                                             modal.$body.find("#list").html(data.data.list);
                                                         },
                                                         error: function (e) {
