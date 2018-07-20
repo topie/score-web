@@ -757,7 +757,7 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_pre";
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_edit";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
