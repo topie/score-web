@@ -216,28 +216,48 @@
                                                             m.$body.find('input[name="material"]:checked').each(function () {
                                                                 mIds.push($(this).val());
                                                             });
-                                                            if (mIds.length == 0) {
-                                                                bootbox.alert('请选择送达材料');
-                                                                return;
-                                                            }
                                                             var requestUrl = App.href + "/api/score/materialReceive/confirmReceived";
-                                                            $.ajax({
-                                                                type: "POST",
-                                                                dataType: "json",
-                                                                url: requestUrl,
-                                                                data: {
-                                                                    personId: d.personId,
-                                                                    mIds: mIds.toString(),
-                                                                    opRoleId: d.opRoleId
-                                                                },
-                                                                success: function (data) {
-                                                                    grid.reload();
-                                                                    m.hide();
-                                                                },
-                                                                error: function (e) {
-                                                                    console.error("请求异常。");
-                                                                }
-                                                            });
+                                                            if (mIds.length == 0) {
+                                                                bootbox.confirm("未勾选材料，是否确认操作?", function (result) {
+                                                                    if (result) {
+                                                                        $.ajax({
+                                                                            type: "POST",
+                                                                            dataType: "json",
+                                                                            url: requestUrl,
+                                                                            data: {
+                                                                                personId: d.personId,
+                                                                                mIds: mIds.toString(),
+                                                                                opRoleId: d.opRoleId
+                                                                            },
+                                                                            success: function (data) {
+                                                                                grid.reload();
+                                                                                m.hide();
+                                                                            },
+                                                                            error: function (e) {
+                                                                                console.error("请求异常。");
+                                                                            }
+                                                                        });
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                $.ajax({
+                                                                    type: "POST",
+                                                                    dataType: "json",
+                                                                    url: requestUrl,
+                                                                    data: {
+                                                                        personId: d.personId,
+                                                                        mIds: mIds.toString(),
+                                                                        opRoleId: d.opRoleId
+                                                                    },
+                                                                    success: function (data) {
+                                                                        grid.reload();
+                                                                        m.hide();
+                                                                    },
+                                                                    error: function (e) {
+                                                                        console.error("请求异常。");
+                                                                    }
+                                                                });
+                                                            }
                                                         }
                                                     });
                                                 }
@@ -498,7 +518,7 @@
                                                             });
                                                         }
                                                     });
-                                                }else{
+                                                } else {
                                                     $.ajax({
                                                         type: "POST",
                                                         dataType: "json",
