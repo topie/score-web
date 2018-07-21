@@ -261,6 +261,16 @@
                                                         }
                                                     });
                                                 }
+                                            },{
+                                                text: '不通过',
+                                                cls: 'btn btn-info',
+                                                handle: function (m) {
+                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                        if (result) {
+
+                                                        }
+                                                    });
+                                                }
                                             }
                                         ]
                                     }).show();
