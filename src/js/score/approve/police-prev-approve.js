@@ -389,7 +389,7 @@
                                                 handle: function (m) {
                                                     var requestUrl = App.href + "/api/score/info/identityInfo/socialInfo";
                                                     $.ajax({
-                                                        type: "GET",
+                                                        type: "POST",
                                                         dataType: "json",
                                                         url: requestUrl,
                                                         data: {
