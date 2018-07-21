@@ -734,7 +734,6 @@
             }
         });
     };
-
     var scoreRecordIdentity = function (type) {
         var searchItems = [
             {
@@ -788,8 +787,109 @@
             actionColumnWidth: "20%",
             actionColumns: [
                 {
+                    text: "审核表打印(空白)",
+                    cls: "btn-info btn-sm",
+                    visible: function (i, d) {
+                        return type === "scoring";
+                    },
+                    handle: function (index, d) {
+                        var requestUrl = App.href + "/api/score/print/approveEmptyDoc";
+                        $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: requestUrl,
+                            success: function (data) {
+                                $.orangeModal({
+                                    title: "审核表打印(空白)",
+                                    destroy: true,
+                                    buttons: [
+                                        {
+                                            text: '打印',
+                                            cls: 'btn btn-primary',
+                                            handle: function (m) {
+                                                m.$body.print({
+                                                    globalStyles: true,
+                                                    mediaPrint: false,
+                                                    stylesheet: null,
+                                                    noPrintSelector: ".no-print",
+                                                    iframe: true,
+                                                    append: null,
+                                                    prepend: null,
+                                                    manuallyCopyFormValues: true,
+                                                    deferred: $.Deferred()
+                                                });
+                                            }
+                                        }, {
+                                            type: 'button',
+                                            text: '关闭',
+                                            cls: "btn btn-default",
+                                            handle: function (m) {
+                                                m.hide()
+                                            }
+                                        }
+                                    ]
+                                }).show().$body.html(data.data.html);
+                            },
+                            error: function (e) {
+                                console.error("请求异常。");
+                            }
+                        });
+                    }
+                }, {
+                    text: "审核表打印",
+                    cls: "btn-info btn-sm",
+                    visible: function (i, d) {
+                        return type !== "scoring";
+                    },
+                    handle: function (index, d) {
+                        var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/approveDoc?identityInfoId=" + d.personId;
+                        $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: requestUrl,
+                            success: function (data) {
+                                $.orangeModal({
+                                    title: "审核表打印",
+                                    destroy: true,
+                                    buttons: [
+                                        {
+                                            text: '打印',
+                                            cls: 'btn btn-primary',
+                                            handle: function (m) {
+                                                m.$body.print({
+                                                    globalStyles: true,
+                                                    mediaPrint: false,
+                                                    stylesheet: null,
+                                                    noPrintSelector: ".no-print",
+                                                    iframe: true,
+                                                    append: null,
+                                                    prepend: null,
+                                                    manuallyCopyFormValues: true,
+                                                    deferred: $.Deferred()
+                                                });
+                                            }
+                                        }, {
+                                            type: 'button',
+                                            text: '关闭',
+                                            cls: "btn btn-default",
+                                            handle: function (m) {
+                                                m.hide()
+                                            }
+                                        }
+                                    ]
+                                }).show().$body.html(data.data.html);
+                            },
+                            error: function (e) {
+                                console.error("请求异常。");
+                            }
+                        });
+                    }
+                }, {
                     text: "审核打分",
                     cls: "btn-primary btn-sm",
+                    visible: function (i, d) {
+                        return type === "scoring";
+                    },
                     handle: function (index, d) {
                         var modal = $.orangeModal({
                             id: "score_form_modal",
@@ -840,6 +940,42 @@
                                     }
                                 }
                             ]
+                        }).show();
+                        var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/detailAll?identityInfoId=" + d.personId;
+                        $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: requestUrl,
+                            success: function (data) {
+                                modal.$body.html(data.data.html);
+                                var slist = data.data.sCheckList;
+                                for (var i in slist) {
+                                    var arr = slist[i].split("_");
+                                    modal.$body.find("input[name=score_" + arr[0] + "_" + arr[2] + "]:radio[value='" + slist[i] + "']").attr('checked', 'true');
+                                }
+                                var stList = data.data.sTextList;
+                                for (var i in stList) {
+                                    var arr = stList[i].split("_");
+                                    modal.$body.find("input[name=score_" + arr[0] + "_" + arr[2] + "]").val(parseFloat(arr[1]).toFixed(2));
+                                }
+                            },
+                            error: function (e) {
+                                console.error("请求异常。");
+                            }
+                        });
+
+                    }
+                }, {
+                    text: "查看",
+                    cls: "btn-primary btn-sm",
+                    visible: function (i, d) {
+                        return type === "scored";
+                    },
+                    handle: function (index, d) {
+                        var modal = $.orangeModal({
+                            id: "score_form_modal",
+                            title: "查看打分",
+                            destroy: true
                         }).show();
                         var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/detailAll?identityInfoId=" + d.personId;
                         $.ajax({
