@@ -373,56 +373,7 @@
                         var modal = $.orangeModal({
                             id: "view_receive_form_modal",
                             title: "查看",
-                            destroy: true,
-                            buttons: [
-                                {
-                                    text: '打印接收凭证',
-                                    cls: 'btn btn-info',
-                                    handle: function (m) {
-                                        var requestUrl = App.href + "/api/score/print/acceptMaterialDoc?personId=" + d.personId;
-                                        $.ajax({
-                                            type: "GET",
-                                            dataType: "json",
-                                            url: requestUrl,
-                                            success: function (data) {
-                                                $.orangeModal({
-                                                    title: "打印接收凭证",
-                                                    destroy: true,
-                                                    buttons: [
-                                                        {
-                                                            text: '打印',
-                                                            cls: 'btn btn-primary',
-                                                            handle: function (m) {
-                                                                m.$body.print({
-                                                                    globalStyles: true,
-                                                                    mediaPrint: false,
-                                                                    stylesheet: null,
-                                                                    noPrintSelector: ".no-print",
-                                                                    iframe: true,
-                                                                    append: null,
-                                                                    prepend: null,
-                                                                    manuallyCopyFormValues: true,
-                                                                    deferred: $.Deferred()
-                                                                });
-                                                            }
-                                                        }, {
-                                                            type: 'button',
-                                                            text: '关闭',
-                                                            cls: "btn btn-default",
-                                                            handle: function (m) {
-                                                                m.hide()
-                                                            }
-                                                        }
-                                                    ]
-                                                }).show().$body.html(data.data.html);
-                                            },
-                                            error: function (e) {
-                                                console.error("请求异常。");
-                                            }
-                                        });
-                                    }
-                                }
-                            ]
+                            destroy: true
                         }).show();
                         var requestUrl = App.href + "/api/score/materialReceive/identityInfo/detailAll?identityInfoId=" + d.personId;
                         $.ajax({
@@ -435,6 +386,55 @@
                                 for (var i in clist) {
                                     modal.$body.find("input[name=material]:checkbox[value='" + clist[i] + "']").attr('checked', 'true');
                                 }
+                            },
+                            error: function (e) {
+                                console.error("请求异常。");
+                            }
+                        });
+                    }
+                }, {
+                    text: "打印接收凭证",
+                    cls: "btn-info btn-sm",
+                    visible: function (i, d) {
+                        return mode === "received"
+                    },
+                    handle: function (index, d) {
+                        var requestUrl = App.href + "/api/score/print/acceptMaterialDoc?personId=" + d.personId;
+                        $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: requestUrl,
+                            success: function (data) {
+                                $.orangeModal({
+                                    title: "打印接收凭证",
+                                    destroy: true,
+                                    buttons: [
+                                        {
+                                            text: '打印',
+                                            cls: 'btn btn-primary',
+                                            handle: function (m) {
+                                                m.$body.print({
+                                                    globalStyles: true,
+                                                    mediaPrint: false,
+                                                    stylesheet: null,
+                                                    noPrintSelector: ".no-print",
+                                                    iframe: true,
+                                                    append: null,
+                                                    prepend: null,
+                                                    manuallyCopyFormValues: true,
+                                                    deferred: $.Deferred()
+                                                });
+                                            }
+                                        }, {
+                                            type: 'button',
+                                            text: '关闭',
+                                            cls: "btn btn-default",
+                                            handle: function (m) {
+                                                m.hide()
+                                            }
+                                        }
+                                    ]
+                                }).show().$body.html(data.data.html);
                             },
                             error: function (e) {
                                 console.error("请求异常。");
