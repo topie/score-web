@@ -106,7 +106,6 @@
                 scoreRecordIdentity("scored");
             });
             window.App.content.append(content);
-            scoreRecord("scored");
         }
     };
     App.scoreScoreRecordScoringForRenshe = {
