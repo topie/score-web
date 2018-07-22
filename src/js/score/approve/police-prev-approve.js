@@ -314,8 +314,8 @@
                                             {
                                                 text: '材料待补正',
                                                 cls: 'btn btn-danger',
-                                                handle: function (m) {
-                                                    var modal = $.orangeModal({
+                                                handle: function (mm) {
+                                                    var mmm = $.orangeModal({
                                                         id: "approve_supply_form_modal",
                                                         title: "材料待补正",
                                                         destroy: true,
@@ -350,6 +350,7 @@
                                                                         success: function (data) {
                                                                             grid.reload();
                                                                             m.hide();
+                                                                            mm.hide();
                                                                         },
                                                                         error: function (e) {
                                                                             console.error("请求异常。");
@@ -368,14 +369,14 @@
                                                     }).show();
                                                     var requestUrl = App.href + "/api/score/info/identityInfo/materialSupply?identityInfoId=" + d.id;
                                                     $.ajax({
-                                                        type: "POST",
+                                                        type: "GET",
                                                         dataType: "json",
                                                         url: requestUrl,
                                                         success: function (data) {
-                                                            modal.$body.html(data.data.html);
+                                                            mmm.$body.html(data.data.html);
                                                             var checkList = data.data.cMids;
                                                             for (var i in checkList) {
-                                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                                                mmm.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
                                                             }
                                                         },
                                                         error: function (e) {
@@ -548,7 +549,7 @@
                                                                 cls: 'btn btn-warning',
                                                                 handle: function (m) {
                                                                     var supplyArr = [];
-                                                                    mm.$body.find("input[name=supplyMaterial]").each(
+                                                                    m.$body.find("input[name=supplyMaterial]").each(
                                                                         function (i, d) {
                                                                             if ($(this).is(":checked")) {
                                                                                 var id = $(this).val();
