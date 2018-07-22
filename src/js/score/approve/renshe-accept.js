@@ -174,7 +174,7 @@
                                     return d.rensheAcceptStatus == 3;
                                 },
                                 handle: function (index, d) {
-                                    var requestUrl = App.href + "/api/score/print/acceptNotice?personId=" + d.id;
+                                    var requestUrl = App.href + "/api/score/print/acceptMaterialDoc?personId=" + d.id;
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
