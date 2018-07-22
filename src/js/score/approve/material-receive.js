@@ -319,11 +319,6 @@
     var scoreMaterialReceiveIdentityInfo = function (mode) {
         var searchItems = [
             {
-                type: "select",
-                label: "批次",
-                name: "batchId",
-                itemsUrl: App.href + '/api/score/batchConf/options'
-            }, {
                 type: 'text',
                 label: '申请人姓名',
                 name: 'personName'
