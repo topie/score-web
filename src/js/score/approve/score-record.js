@@ -259,11 +259,25 @@
                                                             m.$body.find('input[type=radio]:checked').each(function () {
                                                                 sIds.push($(this).val());
                                                             });
+                                                            var ms = 0;
+                                                            var indicatorId = "";
+                                                            var roleId = "";
                                                             m.$body.find('input[type=text]').each(function () {
-                                                                if ($.trim($(this).val()) != '') {
-                                                                    sAns.push($(this).attr("d-indicator") + "_" + $(this).val());
+                                                                if ($(this).attr("name") == "manScore") {
+                                                                    if (isNaN($(this).val())) {
+                                                                        ms += parseFloat($(this).val());
+                                                                        indicatorId = $(this).attr("d-indicator") + "";
+                                                                        roleId = $(this).attr("d-roleId") + "";
+                                                                    }
+                                                                } else {
+                                                                    if ($.trim($(this).val()) != '') {
+                                                                        sAns.push($(this).attr("d-indicator") + "_" + $(this).val() + "_" + $(this).attr("d-roleId"));
+                                                                    }
                                                                 }
                                                             });
+                                                            if (indicatorId != "" && roleId != "") {
+                                                                sAns.push(indicatorId + "_" + ms + "_" + roleId);
+                                                            }
                                                             if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
                                                                 bootbox.alert('请选择打分项');
                                                                 return;
@@ -560,9 +574,20 @@
                                                             m.$body.find('input[type=radio]:checked').each(function () {
                                                                 sIds.push($(this).val());
                                                             });
+                                                            var ms = 0;
+                                                            var indicatorId = "";
+                                                            var roleId = "";
                                                             m.$body.find('input[type=text]').each(function () {
-                                                                if ($.trim($(this).val()) != '') {
-                                                                    sAns.push($(this).attr("d-indicator") + "_" + $(this).val());
+                                                                if ($(this).attr("name") == "manScore") {
+                                                                    if (isNaN($(this).val())) {
+                                                                        ms += parseFloat($(this).val());
+                                                                        indicatorId = $(this).attr("d-indicator") + "";
+                                                                        roleId = $(this).attr("d-roleId") + "";
+                                                                    }
+                                                                } else {
+                                                                    if ($.trim($(this).val()) != '') {
+                                                                        sAns.push($(this).attr("d-indicator") + "_" + $(this).val() + "_" + $(this).attr("d-roleId"));
+                                                                    }
                                                                 }
                                                             });
                                                             if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
@@ -907,11 +932,26 @@
                                                 m.$body.find('input[type=radio]:checked').each(function () {
                                                     sIds.push($(this).val());
                                                 });
+                                                var ms = 0;
+                                                var indicatorId = "";
+                                                var roleId = "";
                                                 m.$body.find('input[type=text]').each(function () {
-                                                    if ($.trim($(this).val()) != '') {
-                                                        sAns.push($(this).attr("d-indicator") + "_" + $(this).val() + "_" + $(this).attr("d-roleId"));
+                                                    if ($(this).attr("d-name") == "manScore") {
+                                                        console.log($(this).val());
+                                                        if (parseFloat($(this).val()) > 0) {
+                                                            ms += parseFloat($(this).val());
+                                                            indicatorId = $(this).attr("d-indicator") + "";
+                                                            roleId = $(this).attr("d-roleId") + "";
+                                                        }
+                                                    } else {
+                                                        if ($.trim($(this).val()) != '') {
+                                                            sAns.push($(this).attr("d-indicator") + "_" + $(this).val() + "_" + $(this).attr("d-roleId"));
+                                                        }
                                                     }
                                                 });
+                                                if (indicatorId != "" && roleId != "") {
+                                                    sAns.push(indicatorId + "_" + ms + "_" + roleId);
+                                                }
                                                 if (sAns.length == 0 && sIds.length == 0) {
                                                     bootbox.alert('请打分');
                                                     return;
@@ -977,7 +1017,7 @@
                             title: "查看打分",
                             destroy: true
                         }).show();
-                        var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/detailAll?identityInfoId=" + d.personId;
+                        var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/detailAll?view=1&identityInfoId=" + d.personId;
                         $.ajax({
                             type: "GET",
                             dataType: "json",
