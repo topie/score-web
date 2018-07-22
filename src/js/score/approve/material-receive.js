@@ -225,6 +225,7 @@
                                                                             dataType: "json",
                                                                             url: requestUrl,
                                                                             data: {
+                                                                                indicatorId: d.indicatorId,
                                                                                 personId: d.personId,
                                                                                 mIds: mIds.toString(),
                                                                                 opRoleId: d.opRoleId
@@ -261,7 +262,7 @@
                                                         }
                                                     });
                                                 }
-                                            },{
+                                            }, {
                                                 text: '不通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
