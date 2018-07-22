@@ -548,7 +548,7 @@
                                                                 cls: 'btn btn-warning',
                                                                 handle: function (m) {
                                                                     var supplyArr = [];
-                                                                    m.$body.find("input[name=supplyMaterial]").each(
+                                                                    mm.$body.find("input[name=supplyMaterial]").each(
                                                                         function (i, d) {
                                                                             if ($(this).is(":checked")) {
                                                                                 var id = $(this).val();

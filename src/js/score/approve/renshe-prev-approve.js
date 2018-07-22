@@ -376,8 +376,9 @@
                                                                     bootbox.confirm("确定该操作?", function (result) {
                                                                         if (result) {
                                                                             var supplyArr = [];
-                                                                            m.$body.find("input[name=supplyMaterial]").each(
+                                                                            mm.$body.find("input[name=supplyMaterial]").each(
                                                                                 function (i, d) {
+                                                                                    console.log(d);
                                                                                     if ($(this).is(":checked")) {
                                                                                         var id = $(this).val();
                                                                                         var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
@@ -613,6 +614,7 @@
                                                                             m.$body.find("input[name=supplyMaterial]").each(
                                                                                 function (i, d) {
                                                                                     if ($(this).is(":checked")) {
+                                                                                        console.log(d);
                                                                                         var id = $(this).val();
                                                                                         var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
                                                                                         supplyArr.push({
