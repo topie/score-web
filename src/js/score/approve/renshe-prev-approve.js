@@ -222,7 +222,7 @@
                                                 }
                                             }, {
                                                 text: "打印材料清单",
-                                                cls: "btn-info btn-sm",
+                                                cls: "btn btn-info",
                                                 handle: function (m) {
                                                     var requestUrl = App.href + "/api/score/print/uploadMaterialDoc?personId=" + d.id;
                                                     $.ajax({

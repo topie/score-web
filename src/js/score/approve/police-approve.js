@@ -406,7 +406,7 @@
                                 }
                             }, {
                                 text: "打印确认通知书",
-                                cls: "btn-info btn-sm",
+                                cls: "btn btn-info",
                                 visible: function (i, d) {
                                     return d.policeApproveStatus == 3;
                                 },
@@ -455,7 +455,7 @@
                                 }
                             }, {
                                 text: "打印材料清单",
-                                cls: "btn-info btn-sm",
+                                cls: "btn btn-info",
                                 visible: function (i, d) {
                                     return d.policeApproveStatus == 3;
                                 },
