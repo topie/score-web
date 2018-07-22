@@ -448,6 +448,9 @@
                     }
                 }, {
                     text: "接收",
+                    visible: function (i, d) {
+                        return mode === "receiving"
+                    },
                     cls: "btn-primary btn-sm",
                     handle: function (index, d) {
                         var modal = $.orangeModal({
