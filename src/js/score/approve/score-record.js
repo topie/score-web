@@ -812,7 +812,7 @@
                         return type === "scoring";
                     },
                     handle: function (index, d) {
-                        var requestUrl = App.href + "/api/score/print/approveEmptyDoc";
+                        var requestUrl = App.href + "/api/score/print/approveEmptyDoc?identityInfoId="+d.personId;
                         $.ajax({
                             type: "GET",
                             dataType: "json",
