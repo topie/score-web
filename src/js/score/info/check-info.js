@@ -427,7 +427,7 @@
                         title: '核算状态',
                         field: 'resultStatus',
                         format: function (i, cd) {
-                            return cd.resultStatus === 0 ? '未核算' : '已核算';
+                            return cd.resultStatus === 1 ? '已核算' : '未核算';
                         }
                     });
                     var grid;
