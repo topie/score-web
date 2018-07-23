@@ -174,7 +174,7 @@
                         actionColumns: [
                             {
                                 text: "查看",
-                                cls: "btn-info btn-sm",
+                                cls: "btn-info",
                                 visible: function (i, d) {
                                     return d.policeApproveStatus != 1;
                                 },

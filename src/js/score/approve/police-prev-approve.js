@@ -192,6 +192,35 @@
                         actionColumnWidth: "20%",
                         actionColumns: [
                             {
+                                text: "查看",
+                                cls: "btn-info btn-sm",
+                                visible: function (i, d) {
+                                    return d.unionApproveStatus1 != 1;
+                                },
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "approve_form_modal",
+                                        title: "查看申请人信息",
+                                        destroy: true
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_pre";
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                            var checkList = data.data.cMids;
+                                            for (var i in checkList) {
+                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                            }
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            },{
                                 text: "审核",
                                 cls: "btn-info btn-sm",
                                 visible: function (i, d) {
