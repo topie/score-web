@@ -173,6 +173,14 @@
                             field: 'epStatus'
                         });
                     }
+                    if(type!="approving"){
+                        columns.push(
+                            {
+                                title: '审核人',
+                                field: 'opuser1'
+                            }
+                        );
+                    }
                     var grid;
                     var options = {
                         url: App.href + "/api/score/approve/policePrevApprove/" + type,

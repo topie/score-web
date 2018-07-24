@@ -149,6 +149,14 @@
                                 return rensheAcceptStatus[cd.rensheAcceptStatus];
                             }
                         });
+                    if(type!="approving"){
+                        columns.push(
+                            {
+                                title: '审核人',
+                                field: 'opuser4'
+                            }
+                        );
+                    }
                     var grid;
                     var options = {
                         url: App.href + "/api/score/approve/rensheAccept/" + type,

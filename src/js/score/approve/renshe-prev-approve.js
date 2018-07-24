@@ -174,6 +174,14 @@
                             field: 'epStatus'
                         });
                     }
+                    if (type != "approving") {
+                        columns.push(
+                            {
+                                title: '审核人',
+                                field: 'opuser2'
+                            }
+                        );
+                    }
                     var grid;
                     var options = {
                         url: App.href + "/api/score/approve/renshePrevApprove/" + type,
@@ -221,7 +229,7 @@
                                         }
                                     });
                                 }
-                            },{
+                            }, {
                                 text: "审核",
                                 cls: "btn-info btn-sm",
                                 visible: function (i, d) {
@@ -360,29 +368,27 @@
                                                             {
                                                                 type: 'select',
                                                                 name: 'reasonType',
-                                                                id: 'reasonType',
                                                                 label: '不通过原因类型',
                                                                 items: [
                                                                     {
                                                                         text: '社会保险出现补缴',
-                                                                        value: 1
+                                                                        value: '社会保险出现补缴'
                                                                     },
                                                                     {
                                                                         text: '社会保险出现断缴',
-                                                                        value: 2
+                                                                        value: '社会保险出现断缴'
                                                                     }, {
                                                                         text: '社会保险缴纳单位发生变更',
-                                                                        value: 3
+                                                                        value: '社会保险缴纳单位发生变更'
                                                                     }, {
                                                                         text: '其它',
-                                                                        value: 4
+                                                                        value: '其它'
                                                                     }
                                                                 ]
                                                             },
                                                             {
                                                                 type: 'textarea',
-                                                                name: 'reason',
-                                                                id: 'reason',
+                                                                name: 'rejectReason',
                                                                 label: '不通过原因'
                                                             }
                                                         ]
@@ -595,29 +601,27 @@
                                                             {
                                                                 type: 'select',
                                                                 name: 'reasonType',
-                                                                id: 'reasonType',
                                                                 label: '不通过原因类型',
                                                                 items: [
                                                                     {
                                                                         text: '社会保险出现补缴',
-                                                                        value: 1
+                                                                        value: '社会保险出现补缴'
                                                                     },
                                                                     {
                                                                         text: '社会保险出现断缴',
-                                                                        value: 2
+                                                                        value: '社会保险出现断缴'
                                                                     }, {
                                                                         text: '社会保险缴纳单位发生变更',
-                                                                        value: 3
+                                                                        value: '社会保险缴纳单位发生变更'
                                                                     }, {
                                                                         text: '其它',
-                                                                        value: 4
+                                                                        value: '其它'
                                                                     }
                                                                 ]
                                                             },
                                                             {
                                                                 type: 'textarea',
-                                                                name: 'reason',
-                                                                id: 'reason',
+                                                                name: 'rejectReason',
                                                                 label: '不通过原因'
                                                             }
                                                         ]
