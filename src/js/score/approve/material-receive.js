@@ -425,7 +425,19 @@
                                                     deferred: $.Deferred()
                                                 });
                                             }
+                                        }/*, {
+                                            text: '导出',
+                                            cls: 'btn btn-primary',
+                                            handle: function (m) {
+                                                m.$body.wordExport("接收凭证-" + d.personName);
+                                            }
                                         }, {
+                                            text: '导出2',
+                                            cls: 'btn btn-primary',
+                                            handle: function (m) {
+                                                window.open(App.href + "/api/score/export/acceptMaterialDoc?personId=" + d.personId)
+                                            }
+                                        }*/, {
                                             type: 'button',
                                             text: '关闭',
                                             cls: "btn btn-default",
