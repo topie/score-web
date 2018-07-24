@@ -319,6 +319,9 @@
                                                                     id: d.id
                                                                 },
                                                                 success: function (data) {
+                                                                    if (data.code !== 200) {
+                                                                        bootbox.alert(data.message);
+                                                                    }
                                                                     grid.reload();
                                                                     m.hide();
                                                                 },
@@ -552,6 +555,9 @@
                                                                     id: d.id
                                                                 },
                                                                 success: function (data) {
+                                                                    if (data.code !== 200) {
+                                                                        bootbox.alert(data.message);
+                                                                    }
                                                                     grid.reload();
                                                                     m.hide();
                                                                 },
@@ -668,6 +674,9 @@
                                                                                     "supplyArr": supplyStr
                                                                                 },
                                                                                 success: function (data) {
+                                                                                    if (data.code !== 200) {
+                                                                                        bootbox.alert(data.message);
+                                                                                    }
                                                                                     grid.reload();
                                                                                     m.hide();
                                                                                     mm.hide();

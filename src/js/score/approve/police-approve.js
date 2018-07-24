@@ -238,6 +238,10 @@
                                                                 success: function (data) {
                                                                     grid.reload();
                                                                     m.hide();
+                                                                    if (data.code !== 200) {
+                                                                        bootbox.alert(data.message);
+                                                                        return;
+                                                                    }
                                                                     var requestUrl = App.href + "/api/score/print/moveNotice?personId=" + d.id;
                                                                     $.ajax({
                                                                         type: "GET",
@@ -305,6 +309,9 @@
                                                                 success: function (data) {
                                                                     grid.reload();
                                                                     m.hide();
+                                                                    if (data.code !== 200) {
+                                                                        bootbox.alert(data.message);
+                                                                    }
                                                                 },
                                                                 error: function (e) {
                                                                     console.error("请求异常。");
@@ -357,6 +364,9 @@
                                                                                     grid.reload();
                                                                                     m.hide();
                                                                                     mm.hide();
+                                                                                    if (data.code !== 200) {
+                                                                                        bootbox.alert(data.message);
+                                                                                    }
                                                                                 },
                                                                                 error: function (e) {
                                                                                     console.error("请求异常。");
@@ -636,6 +646,10 @@
                                                                 success: function (data) {
                                                                     grid.reload();
                                                                     m.hide();
+                                                                    if (data.code !== 200) {
+                                                                        bootbox.alert(data.message);
+                                                                        return;
+                                                                    }
                                                                     var requestUrl = App.href + "/api/score/print/moveNotice?personId=" + d.id;
                                                                     $.ajax({
                                                                         type: "GET",
@@ -704,6 +718,9 @@
                                                                 success: function (data) {
                                                                     grid.reload();
                                                                     m.hide();
+                                                                    if (data.code !== 200) {
+                                                                        bootbox.alert(data.message);
+                                                                    }
                                                                 },
                                                                 error: function (e) {
                                                                     console.error("请求异常。");
@@ -756,6 +773,9 @@
                                                                                     grid.reload();
                                                                                     m.hide();
                                                                                     mm.hide();
+                                                                                    if (data.code !== 200) {
+                                                                                        bootbox.alert(data.message);
+                                                                                    }
                                                                                 },
                                                                                 error: function (e) {
                                                                                     console.error("请求异常。");

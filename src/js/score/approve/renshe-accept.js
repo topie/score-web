@@ -253,6 +253,10 @@
                                                                 success: function (data) {
                                                                     grid.reload();
                                                                     m.hide();
+                                                                    if (data.code !== 200) {
+                                                                        bootbox.alert(data.message);
+                                                                        return;
+                                                                    }
                                                                     var requestUrl = App.href + "/api/score/print/acceptNotice?personId=" + d.id;
                                                                     $.ajax({
                                                                         type: "GET",
@@ -321,6 +325,9 @@
                                                                 success: function (data) {
                                                                     grid.reload();
                                                                     m.hide();
+                                                                    if (data.code !== 200) {
+                                                                        bootbox.alert(data.message);
+                                                                    }
                                                                 },
                                                                 error: function (e) {
                                                                     console.error("请求异常。");
