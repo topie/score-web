@@ -386,7 +386,7 @@
                                         }
                                     });
                                 }
-                            }, {
+                            }/*, {
                                 text: "重新受理通过",
                                 cls: "btn-warning btn-sm",
                                 visible: function (i, d) {
@@ -417,7 +417,7 @@
                                         }
                                     });
                                 }
-                            }
+                            }*/
                         ],
                         search: {
                             rowEleNum: 2,
