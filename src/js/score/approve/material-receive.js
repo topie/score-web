@@ -602,6 +602,48 @@
                                             }
                                         });
                                     }
+                                },
+                                {
+                                    text: '全部不通过',
+                                    cls: 'btn btn-info',
+                                    handle: function (m) {
+                                        bootbox.confirm("确定该操作?", function (result) {
+                                            if (result) {
+                                                var mIds = [];
+                                                var requestUrl = App.href + "/api/score/materialReceive/identityInfo/confirmReceived";
+                                                $.ajax({
+                                                    type: "POST",
+                                                    dataType: "json",
+                                                    url: requestUrl,
+                                                    data: {
+                                                        personId: d.personId,
+                                                        mIds: mIds.toString()
+                                                    },
+                                                    success: function (data) {
+                                                        grid.reload();
+                                                        m.hide();
+                                                        var requestUrl = App.href + "/api/score/print/acceptMaterialDoc?personId=" + d.personId;
+                                                        $.ajax({
+                                                            type: "GET",
+                                                            dataType: "json",
+                                                            url: requestUrl,
+                                                            success: function (data) {
+                                                                m.hide();
+                                                                grid.reload();
+                                                            },
+                                                            error: function (e) {
+                                                                console.error("请求异常。");
+                                                            }
+                                                        });
+
+                                                    },
+                                                    error: function (e) {
+                                                        console.error("请求异常。");
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
                                 }
                             ]
                         }).show();

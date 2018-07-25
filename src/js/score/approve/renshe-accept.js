@@ -149,7 +149,7 @@
                                 return rensheAcceptStatus[cd.rensheAcceptStatus];
                             }
                         });
-                    if(type!="approving"){
+                    if (type != "approving") {
                         columns.push(
                             {
                                 title: '审核人',
@@ -340,7 +340,7 @@
                                             }
                                         ]
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id+ "&template=identity_info_for_pre";
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_pre";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
@@ -369,7 +369,7 @@
                                         title: "查看申请人信息",
                                         destroy: true
                                     }).show();
-                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id+ "&template=identity_info_for_pre";
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_pre";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
@@ -386,7 +386,38 @@
                                         }
                                     });
                                 }
-                            }
+                            }/*, {
+                                text: "重新受理通过",
+                                cls: "btn-warning btn-sm",
+                                visible: function (i, d) {
+                                    return d.rensheAcceptStatus == 3;
+                                },
+                                handle: function (index, d) {
+                                    bootbox.confirm("确定该操作?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/approve/rensheAccept/agree";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                data: {
+                                                    id: d.id
+                                                },
+                                                success: function (data) {
+                                                    grid.reload();
+                                                    m.hide();
+                                                    if (data.code !== 200) {
+                                                        bootbox.alert(data.message);
+                                                    }
+                                                },
+                                                error: function (e) {
+                                                    console.error("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }*/
                         ],
                         search: {
                             rowEleNum: 2,
