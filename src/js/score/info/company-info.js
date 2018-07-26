@@ -33,17 +33,16 @@
             success: function (fd) {
                 if (fd.code === 200) {
                     var formItems = fd.data;
-                    var columns = [];
-                    var searchItems =fd.data.searchItems;
-                    $.each(formItems, function (ii, dd) {
-                        if (dd.type === 'text' || dd.name==='id') {
-                            var column = {
-                                title: dd.label,
-                                field: dd.name
-                            };
-                            columns.push(column);
+                    var columns = [
+                        {
+                            title: 'companyName',
+                            field: '企业名称'
+                        }, {
+                            title: 'societyCode',
+                            field: '统一社会信用代码'
                         }
-                    });
+                    ];
+                    var searchItems = fd.data.searchItems;
                     var grid;
                     var options = {
                         url: App.href + "/api/score/companyInfo/list",
@@ -169,13 +168,7 @@
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
-                            items: [{
-                                name:'companyName',
-                                id:'companyName',
-                                searchType:'like',
-                                label:'企业名称',
-                                type:'text'
-                            }]
+                            items: searchItems
                         }
                     };
                     grid = window.App.content.find("#grid").orangeGrid(options);
