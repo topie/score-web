@@ -97,6 +97,12 @@
                     if (searchItems == null)
                         searchItems = [];
                     var columns = [];
+                    columns.push(
+                        {
+                            title: '受理编号',
+                            field: 'acceptNumber'
+                        }
+                    );
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
                             var column = {
@@ -154,14 +160,12 @@
                             field: 'etStatus'
                         });
                     }
-                    if(type!="approving"){
-                        columns.push(
-                            {
-                                title: '审核人',
-                                field: 'opuser3'
-                            }
-                        );
-                    }
+                    columns.push(
+                        {
+                            title: '审核人',
+                            field: 'opuser3'
+                        }
+                    );
                     var grid;
                     var options = {
                         url: App.href + "/api/score/approve/policeApprove/" + type,

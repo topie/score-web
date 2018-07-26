@@ -94,10 +94,17 @@
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
                     var hallStatus = fd.data.hallStatus;
+                    var companyNames = fd.data.companyNames;
                     var rensheAcceptStatus = fd.data.rensheAcceptStatus;
                     if (searchItems == null)
                         searchItems = [];
                     var columns = [];
+                    columns.push(
+                        {
+                            title: '受理编号',
+                            field: 'acceptNumber'
+                        }
+                    );
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
                             var column = {
@@ -134,6 +141,22 @@
                             return dd.sex === 1 ? '男' : '女';
                         }
                     });
+                    if (type == "approving") {
+                        columns.push(
+                            {
+                                title: '企业',
+                                field: 'companyId',
+                                format: function (i, cd) {
+                                    if (cd.companyWarning == 1) {
+                                        return '<span style="color: red">' + companyNames[cd.companyId] + '</span>';
+                                    } else {
+                                        return companyNames[cd.companyId];
+                                    }
+
+                                }
+                            }
+                        );
+                    }
                     columns.push(
                         {
                             title: '预约大厅状态',
@@ -149,14 +172,12 @@
                                 return rensheAcceptStatus[cd.rensheAcceptStatus];
                             }
                         });
-                    if (type != "approving") {
-                        columns.push(
-                            {
-                                title: '审核人',
-                                field: 'opuser4'
-                            }
-                        );
-                    }
+                    columns.push(
+                        {
+                            title: '审核人',
+                            field: 'opuser4'
+                        }
+                    );
                     var grid;
                     var options = {
                         url: App.href + "/api/score/approve/rensheAccept/" + type,

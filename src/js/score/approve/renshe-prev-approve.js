@@ -174,14 +174,12 @@
                             field: 'epStatus'
                         });
                     }
-                    if (type != "approving") {
-                        columns.push(
-                            {
-                                title: '审核人',
-                                field: 'opuser2'
-                            }
-                        );
-                    }
+                    columns.push(
+                        {
+                            title: '审核人',
+                            field: 'opuser2'
+                        }
+                    );
                     var grid;
                     var options = {
                         url: App.href + "/api/score/approve/renshePrevApprove/" + type,
