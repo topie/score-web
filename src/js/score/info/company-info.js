@@ -35,11 +35,11 @@
                     var formItems = fd.data;
                     var columns = [
                         {
-                            title: 'companyName',
-                            field: '企业名称'
+                            field: 'companyName',
+                            title: '企业名称'
                         }, {
-                            title: 'societyCode',
-                            field: '统一社会信用代码'
+                            field: 'societyCode',
+                            title: '统一社会信用代码'
                         }
                     ];
                     var searchItems = fd.data.searchItems;
