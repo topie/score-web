@@ -154,6 +154,14 @@
                             }
                         }
                     );
+                    if (type == "approved") {
+                        columns.push(
+                            {
+                                title: '落户编号',
+                                field: 'luohuNumber'
+                            }
+                        );
+                    }
                     if (type == "supply") {
                         columns.push({
                             title: '补件剩余时间',
