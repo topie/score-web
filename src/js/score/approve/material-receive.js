@@ -145,6 +145,10 @@
                             return scoreRecordStatus[d.status];
                         }
                     });
+                    columns.push({
+                        title: '受理日期',
+                        field: 'acceptDate'
+                    });
                     var grid;
                     var options = {
                         url: App.href + "/api/score/materialReceive/" + mode,
@@ -343,6 +347,10 @@
             {
                 title: '企业',
                 field: 'companyName'
+            },
+            {
+                title: '受理日期',
+                field: 'acceptDate'
             }
         ];
         var grid;
