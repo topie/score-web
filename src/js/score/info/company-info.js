@@ -42,7 +42,13 @@
                             title: '统一社会信用代码'
                         }
                     ];
-                    var searchItems = fd.data.searchItems;
+                    var searchItems = [
+                        {
+                            name:'companyName',
+                            label:'企业名称',
+                            type:'text'
+                        }
+                    ];
                     var grid;
                     var options = {
                         url: App.href + "/api/score/companyInfo/list",
