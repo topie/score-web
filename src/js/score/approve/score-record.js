@@ -175,6 +175,10 @@
                             return d.scoreValue === null ? '-' : d.scoreValue;
                         }
                     });
+                    columns.push({
+                        title: '办理人',
+                        field: 'opUser'
+                    });
                     var grid;
                     var options = {
                         url: App.href + "/api/score/scoreRecord/" + type,
@@ -806,104 +810,6 @@
             actionColumnWidth: "20%",
             actionColumns: [
                 {
-                    text: "审核表打印(空白)",
-                    cls: "btn-info btn-sm",
-                    visible: function (i, d) {
-                        return type === "scoring";
-                    },
-                    handle: function (index, d) {
-                        var requestUrl = App.href + "/api/score/print/approveEmptyDoc?identityInfoId="+d.personId;
-                        $.ajax({
-                            type: "GET",
-                            dataType: "json",
-                            url: requestUrl,
-                            success: function (data) {
-                                $.orangeModal({
-                                    title: "审核表打印(空白)",
-                                    destroy: true,
-                                    buttons: [
-                                        {
-                                            text: '打印',
-                                            cls: 'btn btn-primary',
-                                            handle: function (m) {
-                                                m.$body.print({
-                                                    globalStyles: true,
-                                                    mediaPrint: false,
-                                                    stylesheet: null,
-                                                    noPrintSelector: ".no-print",
-                                                    iframe: true,
-                                                    append: null,
-                                                    prepend: null,
-                                                    manuallyCopyFormValues: true,
-                                                    deferred: $.Deferred()
-                                                });
-                                            }
-                                        }, {
-                                            type: 'button',
-                                            text: '关闭',
-                                            cls: "btn btn-default",
-                                            handle: function (m) {
-                                                m.hide()
-                                            }
-                                        }
-                                    ]
-                                }).show().$body.html(data.data.html);
-                            },
-                            error: function (e) {
-                                console.error("请求异常。");
-                            }
-                        });
-                    }
-                }, {
-                    text: "审核表打印",
-                    cls: "btn-info btn-sm",
-                    visible: function (i, d) {
-                        return type !== "scoring";
-                    },
-                    handle: function (index, d) {
-                        var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/approveDoc?identityInfoId=" + d.personId;
-                        $.ajax({
-                            type: "GET",
-                            dataType: "json",
-                            url: requestUrl,
-                            success: function (data) {
-                                $.orangeModal({
-                                    title: "审核表打印",
-                                    destroy: true,
-                                    buttons: [
-                                        {
-                                            text: '打印',
-                                            cls: 'btn btn-primary',
-                                            handle: function (m) {
-                                                m.$body.print({
-                                                    globalStyles: true,
-                                                    mediaPrint: false,
-                                                    stylesheet: null,
-                                                    noPrintSelector: ".no-print",
-                                                    iframe: true,
-                                                    append: null,
-                                                    prepend: null,
-                                                    manuallyCopyFormValues: true,
-                                                    deferred: $.Deferred()
-                                                });
-                                            }
-                                        }, {
-                                            type: 'button',
-                                            text: '关闭',
-                                            cls: "btn btn-default",
-                                            handle: function (m) {
-                                                m.hide()
-                                            }
-                                        }
-                                    ]
-                                }).show().$body.html(data.data.html);
-                            },
-                            error: function (e) {
-                                console.error("请求异常。");
-                            }
-                        });
-                    }
-                }, {
                     text: "审核打分",
                     cls: "btn-primary btn-sm",
                     visible: function (i, d) {
@@ -998,6 +904,104 @@
                             }
                         });
 
+                    }
+                }, {
+                    text: "审核表打印(空白)",
+                    cls: "btn-info btn-sm",
+                    visible: function (i, d) {
+                        return type === "scoring";
+                    },
+                    handle: function (index, d) {
+                        var requestUrl = App.href + "/api/score/print/approveEmptyDoc?identityInfoId=" + d.personId;
+                        $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: requestUrl,
+                            success: function (data) {
+                                $.orangeModal({
+                                    title: "审核表打印(空白)",
+                                    destroy: true,
+                                    buttons: [
+                                        {
+                                            text: '打印',
+                                            cls: 'btn btn-primary',
+                                            handle: function (m) {
+                                                m.$body.print({
+                                                    globalStyles: true,
+                                                    mediaPrint: false,
+                                                    stylesheet: null,
+                                                    noPrintSelector: ".no-print",
+                                                    iframe: true,
+                                                    append: null,
+                                                    prepend: null,
+                                                    manuallyCopyFormValues: true,
+                                                    deferred: $.Deferred()
+                                                });
+                                            }
+                                        }, {
+                                            type: 'button',
+                                            text: '关闭',
+                                            cls: "btn btn-default",
+                                            handle: function (m) {
+                                                m.hide()
+                                            }
+                                        }
+                                    ]
+                                }).show().$body.html(data.data.html);
+                            },
+                            error: function (e) {
+                                console.error("请求异常。");
+                            }
+                        });
+                    }
+                }, {
+                    text: "审核表打印",
+                    cls: "btn-info btn-sm",
+                    visible: function (i, d) {
+                        return type !== "scoring";
+                    },
+                    handle: function (index, d) {
+                        var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/approveDoc?identityInfoId=" + d.personId;
+                        $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: requestUrl,
+                            success: function (data) {
+                                $.orangeModal({
+                                    title: "审核表打印",
+                                    destroy: true,
+                                    buttons: [
+                                        {
+                                            text: '打印',
+                                            cls: 'btn btn-primary',
+                                            handle: function (m) {
+                                                m.$body.print({
+                                                    globalStyles: true,
+                                                    mediaPrint: false,
+                                                    stylesheet: null,
+                                                    noPrintSelector: ".no-print",
+                                                    iframe: true,
+                                                    append: null,
+                                                    prepend: null,
+                                                    manuallyCopyFormValues: true,
+                                                    deferred: $.Deferred()
+                                                });
+                                            }
+                                        }, {
+                                            type: 'button',
+                                            text: '关闭',
+                                            cls: "btn btn-default",
+                                            handle: function (m) {
+                                                m.hide()
+                                            }
+                                        }
+                                    ]
+                                }).show().$body.html(data.data.html);
+                            },
+                            error: function (e) {
+                                console.error("请求异常。");
+                            }
+                        });
                     }
                 }, {
                     text: "查看",
