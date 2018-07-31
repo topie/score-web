@@ -338,7 +338,34 @@
                 field: 'personId'
             }, {
                 title: '申请人姓名',
-                field: 'personName'
+                field: 'personName',
+                dataClick:function(i,d){
+                    var requestUrl = App.href + "/api/score/info/identityInfo/detail";
+                    $.ajax({
+                        type: "GET",
+                        dataType: "json",
+                        url: requestUrl,
+                        data: {
+                            id: d.personId
+                        },
+                        success: function (data) {
+                            var hostName = window.location.host;
+                            var img = {};
+                            if (hostName == "172.16.200.68") {
+                                img = $('<img src="' + data.data.idCardPositive.replace("218.67.246.52:80", "172.16.200.68:8092") + '"><br><img src="' + data.data.idCardOpposite.replace("218.67.246.52:80", "172.16.200.68:8092") + '">');
+                            }else{
+                                img = $('<img src="' + data.data.idCardPositive + '"><br><img src="' + data.data.idCardOpposite + '">');
+                            }
+                            $.orangeModal({
+                                title: "图片预览",
+                                destroy: true
+                            }).show().$body.html(img);
+                        },
+                        error: function (e) {
+                            console.error("请求异常。");
+                        }
+                    });
+                }
             },
             {
                 title: '申请人身份证',
