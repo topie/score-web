@@ -240,7 +240,7 @@
                                     });
                                 }
                             }, {
-                                text: "审核打分",
+                                text: "确认分值",
                                 cls: "btn-primary btn-sm",
                                 visible: function (i, d) {
                                     return d.status === 3 || d.status === 1;
@@ -248,11 +248,11 @@
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
                                         id: "score_form_modal",
-                                        title: "审核打分",
+                                        title: "确认分值",
                                         destroy: true,
                                         buttons: [
                                             {
-                                                text: '审核打分',
+                                                text: '确认分值',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
                                                     bootbox.confirm("确定该操作?", function (result) {
@@ -555,7 +555,7 @@
                                     });
                                 }
                             }, {
-                                text: "审核打分",
+                                text: "确认分值",
                                 cls: "btn-primary btn-sm",
                                 visible: function (i, d) {
                                     return d.status === 3 || d.status === 1;
@@ -563,11 +563,11 @@
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
                                         id: "score_form_modal",
-                                        title: "审核打分",
+                                        title: "确认分值",
                                         destroy: true,
                                         buttons: [
                                             {
-                                                text: '审核打分',
+                                                text: '确认分值',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
                                                     bootbox.confirm("确定该操作?", function (result) {
@@ -810,7 +810,7 @@
             actionColumnWidth: "20%",
             actionColumns: [
                 {
-                    text: "审核打分",
+                    text: "确认分值",
                     cls: "btn-primary btn-sm",
                     visible: function (i, d) {
                         return type === "scoring";
@@ -818,11 +818,11 @@
                     handle: function (index, d) {
                         var modal = $.orangeModal({
                             id: "score_form_modal",
-                            title: "审核打分",
+                            title: "确认分值",
                             destroy: true,
                             buttons: [
                                 {
-                                    text: '审核打分',
+                                    text: '确认分值',
                                     cls: 'btn btn-info',
                                     handle: function (m) {
                                         bootbox.confirm("确定该操作?", function (result) {
@@ -908,9 +908,6 @@
                 }, {
                     text: "审核表打印(空白)",
                     cls: "btn-info btn-sm",
-                    visible: function (i, d) {
-                        return type === "scoring";
-                    },
                     handle: function (index, d) {
                         var requestUrl = App.href + "/api/score/print/approveEmptyDoc?identityInfoId=" + d.personId;
                         $.ajax({

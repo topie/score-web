@@ -35,9 +35,20 @@
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
                     var reservationStatus = fd.data.reservationStatus;
+                    var companyNames = fd.data.companyNames;
                     var hallStatus = fd.data.hallStatus;
                     if (searchItems == null)
                         searchItems = [];
+                    searchItems.push({
+                        type: 'select',
+                        label: '企业',
+                        name: 'companyId',
+                        items: [{
+                            text: '全部',
+                            value: ''
+                        }],
+                        itemsUrl: App.href + '/api/score/companyInfo/options'
+                    });
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
@@ -96,6 +107,13 @@
                             return cd.resultStatus === 0 ? '未核算' : '已核算';
                         }
                     });
+                    columns.push({
+                        title: '所属企业',
+                        field: 'companyId',
+                        format: function (i, cd) {
+                            return companyNames[cd.companyId];
+                        }
+                    });
                     var grid;
                     var options = {
                         url: App.href + "/api/score/info/identityInfo/list",
@@ -109,6 +127,7 @@
                         checkboxWidth: "3%",
                         showIndexNum: false,
                         indexNumWidth: "5%",
+                        select2: true,
                         pageSelect: [2, 15, 30, 50],
                         columns: columns,
                         actionColumnText: "操作",//操作列文本
