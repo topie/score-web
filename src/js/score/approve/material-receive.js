@@ -121,10 +121,45 @@
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
-                            var column = {
-                                title: dd.label,
-                                field: dd.name
-                            };
+                            var column = {};
+                            if (dd.name == 'personName') {
+                                column = {
+                                    title: dd.label,
+                                    field: dd.name,
+                                    dataClick: function (i, d) {
+                                        var requestUrl = App.href + "/api/score/info/identityInfo/detail";
+                                        $.ajax({
+                                            type: "GET",
+                                            dataType: "json",
+                                            url: requestUrl,
+                                            data: {
+                                                id: d.personId
+                                            },
+                                            success: function (data) {
+                                                var hostName = window.location.host;
+                                                var img = {};
+                                                if (hostName == "172.16.200.68") {
+                                                    img = $('<img width="400" height="300" src="' + data.data.idCardPositive.replace("218.67.246.52:80", "172.16.200.68:8092") + '"><br><img  width="400" height="300"  src="' + data.data.idCardOpposite.replace("218.67.246.52:80", "172.16.200.68:8092") + '">');
+                                                } else {
+                                                    img = $('<img width="400" height="300" src="' + data.data.idCardPositive + '"><br><img  width="400" height="300"  src="' + data.data.idCardOpposite + '">');
+                                                }
+                                                $.orangeModal({
+                                                    title: "图片预览",
+                                                    destroy: true
+                                                }).show().$body.html(img);
+                                            },
+                                            error: function (e) {
+                                                console.error("请求异常。");
+                                            }
+                                        });
+                                    }
+                                };
+                            } else {
+                                column = {
+                                    title: dd.label,
+                                    field: dd.name
+                                };
+                            }
                             columns.push(column);
                         }
                         if (dd.itemsUrl !== undefined) {
@@ -339,7 +374,7 @@
             }, {
                 title: '申请人姓名',
                 field: 'personName',
-                dataClick:function(i,d){
+                dataClick: function (i, d) {
                     var requestUrl = App.href + "/api/score/info/identityInfo/detail";
                     $.ajax({
                         type: "GET",
@@ -353,7 +388,7 @@
                             var img = {};
                             if (hostName == "172.16.200.68") {
                                 img = $('<img width="400" height="300" src="' + data.data.idCardPositive.replace("218.67.246.52:80", "172.16.200.68:8092") + '"><br><img  width="400" height="300"  src="' + data.data.idCardOpposite.replace("218.67.246.52:80", "172.16.200.68:8092") + '">');
-                            }else{
+                            } else {
                                 img = $('<img width="400" height="300" src="' + data.data.idCardPositive + '"><br><img  width="400" height="300"  src="' + data.data.idCardOpposite + '">');
                             }
                             $.orangeModal({
