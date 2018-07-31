@@ -352,9 +352,9 @@
                             var hostName = window.location.host;
                             var img = {};
                             if (hostName == "172.16.200.68") {
-                                img = $('<img src="' + data.data.idCardPositive.replace("218.67.246.52:80", "172.16.200.68:8092") + '"><br><img src="' + data.data.idCardOpposite.replace("218.67.246.52:80", "172.16.200.68:8092") + '">');
+                                img = $('<img width="300" height="200" src="' + data.data.idCardPositive.replace("218.67.246.52:80", "172.16.200.68:8092") + '"><br><img src="' + data.data.idCardOpposite.replace("218.67.246.52:80", "172.16.200.68:8092") + '">');
                             }else{
-                                img = $('<img src="' + data.data.idCardPositive + '"><br><img src="' + data.data.idCardOpposite + '">');
+                                img = $('<img width="300" height="200" src="' + data.data.idCardPositive + '"><br><img src="' + data.data.idCardOpposite + '">');
                             }
                             $.orangeModal({
                                 title: "图片预览",
