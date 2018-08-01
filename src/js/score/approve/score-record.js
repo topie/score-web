@@ -161,6 +161,7 @@
                                     field: dd.name
                                 };
                             }
+                            columns.push(column);
                         }
                         if (dd.itemsUrl !== undefined) {
                             dd.itemsUrl = App.href + dd.itemsUrl;
