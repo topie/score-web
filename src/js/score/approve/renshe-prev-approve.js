@@ -237,7 +237,7 @@
                                 text: "锁定",
                                 cls: "btn-danger btn-sm",
                                 visible: function (i, d) {
-                                    return (d.lockUser2 == null || d.lockUser2 == '') && d.unionApproveStatus2 == 1;
+                                    return (d.lockUser2 == null || d.lockUser2 == '') && (d.unionApproveStatus2 == 1 || d.unionApproveStatus2 == 4);
                                 },
                                 handle: function (index, d) {
                                     var requestUrl = App.href + "/api/score/approve/renshePrevApprove/lock?id=" + d.id;
@@ -556,7 +556,7 @@
                                 text: "审核补件",
                                 cls: "btn-warning btn-sm",
                                 visible: function (i, d) {
-                                    return d.unionApproveStatus2 == 4;
+                                    return d.unionApproveStatus2 == 4 && d.lockUser2 != null && d.lockUser2 != '';
                                 },
                                 handle: function (index, d) {
                                     var modal = $.orangeModal({
