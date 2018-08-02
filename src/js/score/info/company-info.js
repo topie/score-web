@@ -44,9 +44,13 @@
                     ];
                     var searchItems = [
                         {
-                            name:'companyName',
-                            label:'企业名称',
-                            type:'text'
+                            name: 'companyName',
+                            label: '企业名称',
+                            type: 'text'
+                        }, {
+                            name: 'societyCode',
+                            label: '企业代码',
+                            type: 'text'
                         }
                     ];
                     var grid;
