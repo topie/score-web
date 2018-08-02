@@ -6,10 +6,86 @@
     App.menu = {
         "initSideMenu": initSideMenu,
         "toggleMenu": toggleMenu,
+        "showUserInfo": showUserInfo,
         "initHMenu": initHMenu
     };
     App.menusMapping = {};
-
+    App.menu.userOption = {
+        id: "current_user_form",//表单id
+        name: "current_user_form",//表单名
+        method: "POST",//表单method
+        action: App.href + "/api/index/updateUser",
+        ajaxSubmit: true,//是否使用ajax提交表单
+        submitText: "提交",//保存按钮的文本
+        showReset: true,//是否显示重置按钮
+        resetText: "重置",//重置按钮文本
+        isValidate: true,//开启验证
+        buttonsAlign: "center",
+        items: [
+            {
+                type: 'hidden',
+                name: 'id',
+                id: 'id'
+            }, {
+                type: 'password',//类型
+                name: 'password',//name
+                id: 'password',//id
+                label: '旧密码',//左边label
+                rule: {
+                    required: true
+                },
+                message: {
+                    required: "请输入旧密码"
+                }
+            }, {
+                type: 'password',//类型
+                name: 'newPassword',//name
+                id: 'newPassword',//id
+                label: '新密码',//左边label
+                rule: {
+                    minlength: 6,
+                    maxlength: 64
+                },
+                message: {
+                    minlength: "至少{0}位",
+                    maxlength: "做多{0}位"
+                }
+            }, {
+                type: 'text',//类型
+                name: 'contactPhone',//name
+                id: 'contactPhone',//id
+                label: '手机'
+            }, {
+                type: 'text',//类型
+                name: 'email',//name
+                id: 'email',//id
+                label: '邮箱'
+            }
+        ]
+    };
+    function showUserInfo() {
+        var modal = $.orangeModal({
+            id: "userForm",
+            title: "用户信息",
+            destroy: true,
+            buttons: [
+                {
+                    type: 'button',
+                    cls: 'btn-default',
+                    text: '关闭',
+                    handle: function (m) {
+                        m.hide();
+                    }
+                }
+            ]
+        }).show();
+        App.menu.userOption.ajaxSuccess = function () {
+            modal.hide();
+            window.location.reload();
+        };
+        var form = modal.$body.orangeForm(App.menu.userOption);
+        form.loadRemote(App.href + "/api/index/loadCurrentUser");
+    }
     function toggleMenu() {
         var toggle = $.cookie('spring-menu-toggle');
         if (toggle === undefined) {
@@ -331,6 +407,9 @@
         setTimeout(function () {
             window.location.reload();
         }, 500);
+    });
+    $("#user-info").click(function () {
+        App.menu.showUserInfo();
     });
 
 })(jQuery, window, document);
