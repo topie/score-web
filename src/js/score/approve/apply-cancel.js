@@ -91,6 +91,7 @@
                 if (fd.code === 200) {
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
+                    var companyNames = fd.data.companyNames;
                     if (searchItems == null)
                         searchItems = [];
                     var columns = [];
@@ -109,6 +110,21 @@
                             dd.url = App.href + dd.url;
                         }
                     });
+                    columns.push(
+                        {
+                            title: '申请人名',
+                            field: 'personName'
+                        }
+                    );
+                    columns.push(
+                        {
+                            title: '申请人企业',
+                            field: 'companyId',
+                            format: function (i, d) {
+                                return companyNames[d.companyId];
+                            }
+                        }
+                    );
                     var grid;
                     var actionColumns = [
                         {

@@ -171,6 +171,10 @@
                         }
                     });
                     columns.push({
+                        title: '材料受理时间',
+                        field: 'submitDate'
+                    });
+                    columns.push({
                         title: '打分部门',
                         field: 'opRole'
                     });
