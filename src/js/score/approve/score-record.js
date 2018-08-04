@@ -744,7 +744,7 @@
                                             text: '导出',
                                             cls: 'btn btn-primary',
                                             handle: function (m) {
-                                                window.open(App.href + "/api/score/scoreRecord/identityInfo/export/approveDoc?personId=" + d.personId)
+                                                window.open(App.href + "/api/score/scoreRecord/identityInfo/export/approveDoc?identityInfoId=" + d.personId)
                                             }
                                         }, {
                                             type: 'button',
