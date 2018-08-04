@@ -689,7 +689,7 @@
                                             text: '导出',
                                             cls: 'btn btn-primary',
                                             handle: function (m) {
-                                                window.open(App.href + "/api/score/export/approveEmptyDoc?personId=" + d.personId)
+                                                window.open(App.href + "/api/score/export/approveEmptyDoc?identityInfoId=" + d.personId)
                                             }
                                         }, {
                                             type: 'button',
