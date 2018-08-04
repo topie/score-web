@@ -735,6 +735,12 @@
                                                 });
                                             }
                                         }, {
+                                            text: '导出',
+                                            cls: 'btn btn-primary',
+                                            handle: function (m) {
+                                                window.open(App.href + "/api/score/scoreRecord/identityInfo/export/approveDoc?personId=" + d.personId)
+                                            }
+                                        }, {
                                             type: 'button',
                                             text: '关闭',
                                             cls: "btn btn-default",
