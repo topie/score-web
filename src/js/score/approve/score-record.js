@@ -670,6 +670,13 @@
                                     destroy: true,
                                     buttons: [
                                         {
+                                            type: 'button',
+                                            text: '关闭',
+                                            cls: "btn btn-default",
+                                            handle: function (m) {
+                                                m.hide()
+                                            }
+                                        },{
                                             text: '打印',
                                             cls: 'btn btn-primary',
                                             handle: function (m) {
@@ -691,15 +698,21 @@
                                             handle: function (m) {
                                                 window.open(App.href + "/api/score/export/approveEmptyDoc?identityInfoId=" + d.personId)
                                             }
-                                        }, {
-                                            type: 'button',
-                                            text: '关闭',
-                                            cls: "btn btn-default",
-                                            handle: function (m) {
-                                                m.hide()
-                                            }
                                         }
-                                    ]
+                                    ],
+                                    onEnter:function (m) {
+                                        m.$body.print({
+                                            globalStyles: true,
+                                            mediaPrint: false,
+                                            stylesheet: null,
+                                            noPrintSelector: ".no-print",
+                                            iframe: true,
+                                            append: null,
+                                            prepend: null,
+                                            manuallyCopyFormValues: true,
+                                            deferred: $.Deferred()
+                                        });
+                                    }
                                 }).show().$body.html(data.data.html);
                             },
                             error: function (e) {
@@ -725,6 +738,13 @@
                                     destroy: true,
                                     buttons: [
                                         {
+                                            type: 'button',
+                                            text: '关闭',
+                                            cls: "btn btn-default",
+                                            handle: function (m) {
+                                                m.hide()
+                                            }
+                                        },{
                                             text: '打印',
                                             cls: 'btn btn-primary',
                                             handle: function (m) {
@@ -745,13 +765,6 @@
                                             cls: 'btn btn-primary',
                                             handle: function (m) {
                                                 window.open(App.href + "/api/score/scoreRecord/identityInfo/export/approveDoc?identityInfoId=" + d.personId)
-                                            }
-                                        }, {
-                                            type: 'button',
-                                            text: '关闭',
-                                            cls: "btn btn-default",
-                                            handle: function (m) {
-                                                m.hide()
                                             }
                                         }
                                     ]

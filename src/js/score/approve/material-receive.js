@@ -480,6 +480,13 @@
                                     destroy: true,
                                     buttons: [
                                         {
+                                            type: 'button',
+                                            text: '关闭',
+                                            cls: "btn btn-default",
+                                            handle: function (m) {
+                                                m.hide()
+                                            }
+                                        }, {
                                             text: '打印',
                                             cls: 'btn btn-primary',
                                             handle: function (m) {
@@ -500,13 +507,6 @@
                                             cls: 'btn btn-primary',
                                             handle: function (m) {
                                                 window.open(App.href + "/api/score/export/acceptMaterialDoc?personId=" + d.personId)
-                                            }
-                                        }, {
-                                            type: 'button',
-                                            text: '关闭',
-                                            cls: "btn btn-default",
-                                            handle: function (m) {
-                                                m.hide()
                                             }
                                         }
                                     ]
@@ -531,7 +531,7 @@
                             buttons: [
                                 {
                                     text: '确认送达',
-                                    cls: 'btn btn-info',
+                                    cls: 'btn btn-success',
                                     handle: function (m) {
                                         bootbox.confirm("确定该操作?", function (result) {
                                             if (result) {
@@ -565,6 +565,13 @@
                                                                                 destroy: true,
                                                                                 buttons: [
                                                                                     {
+                                                                                        type: 'button',
+                                                                                        text: '关闭',
+                                                                                        cls: "btn btn-default",
+                                                                                        handle: function (m) {
+                                                                                            m.hide()
+                                                                                        }
+                                                                                    }, {
                                                                                         text: '打印',
                                                                                         cls: 'btn btn-primary',
                                                                                         handle: function (m) {
@@ -579,13 +586,6 @@
                                                                                                 manuallyCopyFormValues: true,
                                                                                                 deferred: $.Deferred()
                                                                                             });
-                                                                                        }
-                                                                                    }, {
-                                                                                        type: 'button',
-                                                                                        text: '关闭',
-                                                                                        cls: "btn btn-default",
-                                                                                        handle: function (m) {
-                                                                                            m.hide()
                                                                                         }
                                                                                     }
                                                                                 ]
@@ -626,6 +626,13 @@
                                                                         destroy: true,
                                                                         buttons: [
                                                                             {
+                                                                                type: 'button',
+                                                                                text: '关闭',
+                                                                                cls: "btn btn-default",
+                                                                                handle: function (m) {
+                                                                                    m.hide()
+                                                                                }
+                                                                            }, {
                                                                                 text: '打印',
                                                                                 cls: 'btn btn-primary',
                                                                                 handle: function (m) {
@@ -640,13 +647,6 @@
                                                                                         manuallyCopyFormValues: true,
                                                                                         deferred: $.Deferred()
                                                                                     });
-                                                                                }
-                                                                            }, {
-                                                                                type: 'button',
-                                                                                text: '关闭',
-                                                                                cls: "btn btn-default",
-                                                                                handle: function (m) {
-                                                                                    m.hide()
                                                                                 }
                                                                             }
                                                                         ]
@@ -669,7 +669,7 @@
                                 },
                                 {
                                     text: '全部不通过',
-                                    cls: 'btn btn-info',
+                                    cls: 'btn btn-danger',
                                     handle: function (m) {
                                         bootbox.confirm("确定该操作?", function (result) {
                                             if (result) {

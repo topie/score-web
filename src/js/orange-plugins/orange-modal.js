@@ -103,6 +103,13 @@
             }
             if (this._options.draggable)
                 this.$modal.draggable({handle: ".modal-header"});
+            if (this._options.onEnter !== undefined) {
+                this.$modal.on("keypress", function (event) {
+                    if (event.keyCode == "13") {
+                        that._options.onEnter(that);
+                    }
+                });
+            }
         },
         _renderEle: function () {
             var that = this;
