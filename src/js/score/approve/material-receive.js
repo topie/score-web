@@ -509,7 +509,20 @@
                                                 window.open(App.href + "/api/score/export/acceptMaterialDoc?personId=" + d.personId)
                                             }
                                         }
-                                    ]
+                                    ],
+                                    onEnter:function (m) {
+                                        m.$body.print({
+                                            globalStyles: true,
+                                            mediaPrint: false,
+                                            stylesheet: null,
+                                            noPrintSelector: ".no-print",
+                                            iframe: true,
+                                            append: null,
+                                            prepend: null,
+                                            manuallyCopyFormValues: true,
+                                            deferred: $.Deferred()
+                                        });
+                                    }
                                 }).show().$body.html(data.data.html);
                             },
                             error: function (e) {
