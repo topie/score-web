@@ -174,6 +174,10 @@
                         field: 'opRole'
                     });
                     columns.push({
+                        title: '办理人',
+                        field: 'opUser'
+                    });
+                    columns.push({
                         title: '办理进度',
                         field: 'status',
                         format: function (i, d) {

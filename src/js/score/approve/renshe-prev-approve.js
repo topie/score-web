@@ -95,6 +95,7 @@
                     var unionApproveStatus2 = fd.data.unionApproveStatus2;
                     var unionApproveStatus1 = fd.data.unionApproveStatus1;
                     var reservationStatus = fd.data.reservationStatus;
+                    var companyNames = fd.data.companyNames;
                     var newSearchItems = [];
                     if (searchItems != null) {
                         $.each(searchItems, function (ii, dd) {
@@ -147,6 +148,20 @@
                             field: 'unionApproveStatus1',
                             format: function (i, cd) {
                                 return unionApproveStatus1[cd.unionApproveStatus1];
+                            }
+                        }
+                    );
+                    columns.push(
+                        {
+                            title: '企业',
+                            field: 'companyId',
+                            format: function (i, cd) {
+                                if (cd.companyWarning == 1) {
+                                    return '<span style="color: red">' + companyNames[cd.companyId] + '</span>';
+                                } else {
+                                    return companyNames[cd.companyId];
+                                }
+
                             }
                         }
                     );
@@ -214,7 +229,26 @@
                                     var modal = $.orangeModal({
                                         id: "approve_form_modal",
                                         title: "查看申请人信息",
-                                        destroy: true
+                                        destroy: true,
+                                        buttons: [
+                                            {
+                                                text: '打印申请人信息',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+                                                    m.$body.find("#info-tab").print({
+                                                        globalStyles: true,
+                                                        mediaPrint: false,
+                                                        stylesheet: null,
+                                                        noPrintSelector: ".no-print",
+                                                        iframe: true,
+                                                        append: null,
+                                                        prepend: null,
+                                                        manuallyCopyFormValues: true,
+                                                        deferred: $.Deferred()
+                                                    });
+                                                }
+                                            }
+                                        ]
                                     }).show();
                                     var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_pre";
                                     $.ajax({
@@ -227,6 +261,55 @@
                                             for (var i in checkList) {
                                                 modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
                                             }
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            }, {
+                                text: "打印材料清单",
+                                cls: "btn btn-info",
+                                visible: function (i, d) {
+                                    return d.unionApproveStatus2 == 2 || d.unionApproveStatus2 == 4;
+                                },
+                                handle: function (index, d) {
+                                    var requestUrl = App.href + "/api/score/print/materialList";
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            $.orangeModal({
+                                                title: "打印材料清单",
+                                                destroy: true,
+                                                buttons: [
+                                                    {
+                                                        text: '打印',
+                                                        cls: 'btn btn-primary',
+                                                        handle: function (m) {
+                                                            m.$body.print({
+                                                                globalStyles: true,
+                                                                mediaPrint: false,
+                                                                stylesheet: null,
+                                                                noPrintSelector: ".no-print",
+                                                                iframe: true,
+                                                                append: null,
+                                                                prepend: null,
+                                                                manuallyCopyFormValues: true,
+                                                                deferred: $.Deferred()
+                                                            });
+                                                        }
+                                                    }, {
+                                                        type: 'button',
+                                                        text: '关闭',
+                                                        cls: "btn btn-default",
+                                                        handle: function (m) {
+                                                            m.hide()
+                                                        }
+                                                    }
+                                                ]
+                                            }).show().$body.html(data.data.html);
                                         },
                                         error: function (e) {
                                             console.error("请求异常。");
