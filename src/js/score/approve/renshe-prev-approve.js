@@ -270,11 +270,8 @@
                             }, {
                                 text: "打印材料清单",
                                 cls: "btn btn-info",
-                                visible: function (i, d) {
-                                    return d.unionApproveStatus2 == 2 || d.unionApproveStatus2 == 4;
-                                },
-                                handle: function (index, d) {
-                                    var requestUrl = App.href + "/api/score/print/materialList";
+                                handle: function (i, d) {
+                                    var requestUrl = App.href + "/api/score/print/uploadMaterialDoc?personId=" + d.id;
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
