@@ -172,7 +172,8 @@
                     });
                     columns.push({
                         title: '材料受理时间',
-                        field: 'submitDate'
+                        field: 'submitDate',
+                        sort: true
                     });
                     columns.push({
                         title: '打分部门',
@@ -498,7 +499,7 @@
             }, {
                 title: '申请人姓名',
                 field: 'personName',
-                dataClick:function(i,d){
+                dataClick: function (i, d) {
                     var requestUrl = App.href + "/api/score/info/identityInfo/detail";
                     $.ajax({
                         type: "GET",
@@ -512,7 +513,7 @@
                             var img = {};
                             if (hostName == "172.16.200.68") {
                                 img = $('<img src="' + data.data.idCardPositive.replace("218.67.246.52:80", "172.16.200.68:8092") + '"><br><img src="' + data.data.idCardOpposite.replace("218.67.246.52:80", "172.16.200.68:8092") + '">');
-                            }else{
+                            } else {
                                 img = $('<img src="' + data.data.idCardPositive + '"><br><img src="' + data.data.idCardOpposite + '">');
                             }
                             $.orangeModal({
@@ -533,6 +534,11 @@
             {
                 title: '企业',
                 field: 'companyName'
+            },
+            {
+                title: '受理日期',
+                field: 'acceptDate',
+                sort: true
             }
         ];
         var grid;
@@ -676,7 +682,7 @@
                                             handle: function (m) {
                                                 m.hide()
                                             }
-                                        },{
+                                        }, {
                                             text: '打印',
                                             cls: 'btn btn-primary',
                                             handle: function (m) {
@@ -700,7 +706,7 @@
                                             }
                                         }
                                     ],
-                                    onEnter:function (m) {
+                                    onEnter: function (m) {
                                         m.$body.print({
                                             globalStyles: true,
                                             mediaPrint: false,
@@ -744,7 +750,7 @@
                                             handle: function (m) {
                                                 m.hide()
                                             }
-                                        },{
+                                        }, {
                                             text: '打印',
                                             cls: 'btn btn-primary',
                                             handle: function (m) {
@@ -768,7 +774,7 @@
                                             }
                                         }
                                     ],
-                                    onEnter:function (m) {
+                                    onEnter: function (m) {
                                         m.$body.print({
                                             globalStyles: true,
                                             mediaPrint: false,

@@ -186,7 +186,8 @@
                     });
                     columns.push({
                         title: '受理日期',
-                        field: 'acceptDate'
+                        field: 'acceptDate',
+                        sort: true
                     });
                     var grid;
                     var options = {
@@ -416,7 +417,8 @@
             },
             {
                 title: '受理日期',
-                field: 'acceptDate'
+                field: 'acceptDate',
+                sort: true
             }
         ];
         var grid;
@@ -514,7 +516,7 @@
                                             }
                                         }
                                     ],
-                                    onEnter:function (m) {
+                                    onEnter: function (m) {
                                         m.$body.print({
                                             globalStyles: true,
                                             mediaPrint: false,
