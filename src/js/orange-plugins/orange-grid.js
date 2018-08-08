@@ -181,31 +181,31 @@
     };
     Grid.statics = {
         toolRowTmpl: '<div class="table-toolbar"><div class="row">'
-        + '<div ele-type="tools" class="col-md-6"></div>'
-        + '<div ele-type="dropdowns" class="col-md-6"></div>'
-        + '</div></div>',
+            + '<div ele-type="tools" class="col-md-6"></div>'
+            + '<div ele-type="dropdowns" class="col-md-6"></div>'
+            + '</div></div>',
         dropdownTmpl: '<div class="btn-group"><button class="btn ${cls_} dropdown-toggle" data-toggle="dropdown"  aria-expanded="true">${text_}<i class="fa fa-angle-down"></i></button>'
-        + '<ul class="dropdown-menu" role="menu"></ul></div>',
+            + '<ul class="dropdown-menu" role="menu"></ul></div>',
         liTmpl: '<li><a href="javascript:;">${text_}</a></li>',
         searchRowTmpl: '<div class="form"><form ele-type="search" role="form">'
-        + '<div class="form-body"><div role="row" class="row"></div></div>'
-        + '<div class="form-actions right" style="border-top: 0px;padding: 0px 0px 0px;background: none;"></div>'
-        + '</form></div>',
+            + '<div class="form-body"><div role="row" class="row"></div></div>'
+            + '<div class="form-actions right" style="border-top: 0px;padding: 0px 0px 0px;background: none;"></div>'
+            + '</form></div>',
         searchElementTmpl: '<div class="col-md-${span_}"><div class="form-group">'
-        + '</div></div>',
+            + '</div></div>',
         gridWrapperTmpl: '<div id="${id_}_wrapper" class="table-responsive no-footer"></div>',
         tableRowTmpl: '<div class="row">' +
-        '<div role="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>' +
-        '</div>',
+            '<div role="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>' +
+            '</div>',
         cardRowTmpl: '<div class="row" style="margin-top: 10px;margin-bottom: 0px;">' +
-        '<div role="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>' +
-        '</div>',
+            '<div role="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>' +
+            '</div>',
         listRowTmpl: '<div class="row" style="margin-top: 10px;margin-bottom: 0px;">' +
-        '<div role="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>' +
-        '</div>',
+            '<div role="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>' +
+            '</div>',
         chartRowTmpl: '<div class="row" style="margin-top: 10px;margin-bottom: 0px;">' +
-        '<div role="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>' +
-        '</div>',
+            '<div role="content" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>' +
+            '</div>',
         pagingRowTmpl: '<div class="row"><div role="select" class="col-md-3 col-sm-12 hidden-xs hidden-sm"></div><div role="info" class="col-md-4 col-sm-12 hidden-xs hidden-sm"></div><div role="goPage" class="col-md-2 col-sm-12 hidden-xs hidden-sm" style="text-align: right;"></div><div role="page" class="col-md-3 col-sm-12"></div></div>',
         labelTmpl: '<label>${label_}</label>',
         textTmpl: '<input type="text" name="${name_}" id="${id_}" class="form-control ${span_}" placeholder="${placeholder_}" value="${value_}">',
@@ -214,20 +214,20 @@
         optionTmpl: '<option value="${value_}" ${selected}>${text_}</option>',
         checkboxGroupTmpl: '<div class="checkbox-list" id="${id_}" name="${name_}"></div>',
         checkboxTmpl: '<label>'
-        + '<input type="checkbox" id="${id_}" name="${name_}" value="${value_}">${text_}</label>',
+            + '<input type="checkbox" id="${id_}" name="${name_}" value="${value_}">${text_}</label>',
         inlineCheckboxTmpl: '<label class="checkbox-inline">'
-        + '<input type="checkbox" id="${id_}" name="${name_}" value="${value_}">${text_}</label>',
+            + '<input type="checkbox" id="${id_}" name="${name_}" value="${value_}">${text_}</label>',
         radioGroupTmpl: '<div class="radio-list" id="${id_}" name="${name_}"></div>',
         radioTmpl: '<label>'
-        + '<input type="radio" id="${id_}" name="${name_}" value="${value_}">${text_}</label>',
+            + '<input type="radio" id="${id_}" name="${name_}" value="${value_}">${text_}</label>',
         inlineRadioTmpl: '<label class="radio-inline">'
-        + '<input type="radio" id="${id_}" name="${name_}" value="${value_}">${text_}</label>',
+            + '<input type="radio" id="${id_}" name="${name_}" value="${value_}">${text_}</label>',
         displayTmpl: '<p class="form-control-static">${text_}</p>',
         buttonTmpl: '<button type="${type_}" class="${class_}" title="${title_}" ${attribute_}>${text_}</button>',
         tableTmpl: '<table class="table table-scrollable table-striped table-bordered table-hover dataTable no-footer" id="${id_}_table"  aria-describedby="${id_}_info"></table>',
         alertTmpl: '<div class="alert alert-${type_} alert-dismissable" role="alert">'
-        + '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'
-        + '<strong>提示:</strong>${alert_}</div>'
+            + '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>'
+            + '<strong>提示:</strong>${alert_}</div>'
     };
     Grid.prototype = {
         reload: function (options) {
@@ -789,6 +789,11 @@
                                 itemDiv.find(".form-group").append(ele);
                                 var config = (item.config == undefined ? {} : item.config);
                                 var option = $.extend(true, Grid.dateDefaults, config);
+                                if (item.single === true) {
+                                    option.singleDatePicker = true;
+                                    option.timePicker = false;
+                                    option.locale.format = "YYYY-MM-DD";
+                                }
                                 if (item.callback != undefined) {
                                     ele.find('[role="date-input"]').daterangepicker(option, item.callback);
                                 } else {

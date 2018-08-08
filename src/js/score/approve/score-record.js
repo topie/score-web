@@ -484,12 +484,30 @@
         var searchItems = [
             {
                 type: 'text',
+                label: '申请人身份证',
+                name: 'personIdNum'
+            }, {
+                type: 'text',
                 label: '申请人姓名',
                 name: 'personName'
             }, {
-                type: 'text',
-                label: '申请人身份证',
-                name: 'personIdNum'
+                type: 'select',
+                label: '受理日期查询设置',
+                name: 'dateSearch',
+                items: [
+                    {
+                        text: '关闭',
+                        value: 0
+                    }, {
+                        text: '开启',
+                        value: 1
+                    }
+                ]
+            }, {
+                type: 'datepicker',
+                label: '受理日期',
+                name: 'acceptDate',
+                single: true
             }
         ];
         var columns = [
