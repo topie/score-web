@@ -193,7 +193,7 @@
                             if (d.status !== 4) {
                                 return '-';
                             }
-                            return d.scoreValue === null ? '-' : d.scoreValue;
+                            return d.scoreValue === null ? '-' : parseFloat(d.scoreValue).toFixed(2);
                         }
                     });
                     columns.push({
