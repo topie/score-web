@@ -177,7 +177,8 @@
         chartPieType: 0,
         select2: false,
         pageSelect: [10, 15, 20, 50],
-        changeLoad: true
+        changeLoad: true,
+        fontSize: '16px'
     };
     Grid.statics = {
         toolRowTmpl: '<div class="table-toolbar"><div class="row">'
@@ -1872,6 +1873,9 @@
             var table = $.tmpl(Grid.statics.tableTmpl, {
                 "id_": that._elementId
             });
+            if (that._options.fontSize !== undefined) {
+                table.css("font-size", that._options.fontSize);
+            }
             // colgrop
             var cols = function (width) {
                 return $.tmpl(colTmpl, {
