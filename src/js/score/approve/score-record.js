@@ -246,11 +246,13 @@
                                             for (var i in slist) {
                                                 var arr = slist[i].split("_");
                                                 modal.$body.find("input[name=score_" + arr[0] + "_" + arr[2] + "]:radio[value='" + slist[i] + "']").attr('checked', 'true');
+                                                modal.$body.find("#button_" + arr[0] + "_" + arr[2]).show();
                                             }
                                             var stList = data.data.sTextList;
                                             for (var i in stList) {
                                                 var arr = stList[i].split("_");
                                                 modal.$body.find("input[name=score_" + arr[0] + "_" + arr[2] + "]").val(parseFloat(arr[1]).toFixed(2));
+                                                modal.$body.find("#button_" + arr[0] + "_" + arr[2]).show();
                                             }
                                             modal.$body.find("input").each(function () {
                                                 $(this).attr("readonly", "readonly");
@@ -835,12 +837,62 @@
                                 for (var i in slist) {
                                     var arr = slist[i].split("_");
                                     modal.$body.find("input[name=score_" + arr[0] + "_" + arr[2] + "]:radio[value='" + slist[i] + "']").attr('checked', 'true');
+                                    modal.$body.find("#button_" + arr[0] + "_" + arr[2]).show();
+
                                 }
                                 var stList = data.data.sTextList;
                                 for (var i in stList) {
                                     var arr = stList[i].split("_");
                                     modal.$body.find("input[name=score_" + arr[0] + "_" + arr[2] + "]").val(parseFloat(arr[1]).toFixed(2));
+                                    modal.$body.find("#button_" + arr[0] + "_" + arr[2]).show();
                                 }
+
+                                modal.$body.find("a[role=apply]").on("click", function () {
+                                    var id = $(this).attr("scoreRecord")
+                                    var modal1 = $.orangeModal({
+                                        id: "score_apply_form_modal",
+                                        title: "申请重新打分",
+                                        destroy: true
+                                    }).show();
+                                    modal1.$body.orangeForm({
+                                        id: "apply_form",
+                                        name: "apply_form",
+                                        method: "POST",
+                                        action: App.href + "/api/score/applyScore/apply?scoreRecordId=" + id,
+                                        ajaxSubmit: true,
+                                        ajaxSuccess: function () {
+                                            bootbox.alert('申请也发出，请耐心等待');
+                                            modal1.hide();
+                                        },
+                                        submitText: "提交",
+                                        showReset: true,
+                                        resetText: "重置",
+                                        isValidate: true,
+                                        labelInline: true,
+                                        buttons: [{
+                                            type: 'button',
+                                            text: '关闭',
+                                            handle: function () {
+                                                modal1.hide();
+                                            }
+                                        }],
+                                        buttonsAlign: "center",
+                                        items: [
+                                            {
+                                                type: 'textarea',
+                                                name: 'reason',
+                                                id: 'reason',
+                                                label: '申请原因',
+                                                rule: {
+                                                    required: true
+                                                },
+                                                message: {
+                                                    required: "请输入申请原因"
+                                                }
+                                            }
+                                        ]
+                                    });
+                                });
                             },
                             error: function (e) {
                                 console.error("请求异常。");
