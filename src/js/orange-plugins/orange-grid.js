@@ -6,7 +6,8 @@
     var Grid = function (element, options) {
         this._setVariable(element, options);
         this._setOptions(this._options);
-        this._initEmpty();
+        if (this._columns !== undefined)
+            this._initEmpty();
         if (!this._autoLoad)
             return
         if (this._url != undefined) {
@@ -409,7 +410,11 @@
                     success: function (data) {
                         if (data.code === 200) {
                             that.$element.unblock();
-                            that._setData(data.data);
+                            if (that._options.dataTransform != undefined) {
+                                that._options.dataTransform(data, that);
+                            } else {
+                                that._setData(data.data);
+                            }
                             that._init();
                         } else if (data.code === 401) {
                             that.$element.unblock();

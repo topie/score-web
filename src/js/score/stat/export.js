@@ -5,7 +5,8 @@
 (function ($, window, document, undefined) {
     var uploadMapping = {
         "/api/score/stat/export/list1": "exportList1",
-        "/api/score/stat/export/list2": "exportList2"
+        "/api/score/stat/export/list2": "exportList2",
+        "/api/score/stat/export/list3": "exportList3"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
     App.exportList1 = {
@@ -209,6 +210,96 @@
                             cls: "btn btn-danger btn-sm",
                             handle: function (g) {
                                 var downloadUrl = App.href + "/api/score/stat/export/export2?" + g.$searchForm.serialize();
+                                window.open(downloadUrl);
+                            }
+                        }
+                    ]
+                }
+            };
+            grid = window.App.content.find("#grid").orangeGrid(options);
+        }
+    };
+
+    App.exportList3 = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="panel panel-default" >' +
+                '<div class="panel-heading">列表3</div>' +
+                '<div class="panel-body" id="grid"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            var search = [
+                {
+                    type: 'select',
+                    name: 'batchId',
+                    id: 'batchId',
+                    label: '批次',
+                    itemsUrl: App.href + '/api/score/batchConf/options'
+                },
+                {
+                    type: 'text',
+                    name: 'personIdNum',
+                    id: 'personIdNum',
+                    label: '身份证号'
+                },
+                {
+                    type: 'text',
+                    name: 'personName',
+                    id: 'personName',
+                    label: '名字'
+                },
+                {
+                    type: 'text',
+                    name: 'companyName',
+                    id: 'companyName',
+                    label: '企业名称'
+                }
+            ];
+            var grid;
+            var options = {
+                url: App.href + "/api/score/stat/export/list3",
+                contentType: "table",
+                contentTypeItems: "table,card,list",
+                pageNum: 1,//当前页码
+                pageSize: 15,//每页显示条数
+                idField: "id",//id域指定
+                headField: "id",
+                showCheck: true,//是否显示checkbox
+                checkboxWidth: "3%",
+                showIndexNum: true,
+                select2: true,
+                indexNumWidth: "5%",
+                pageSelect: [2, 15, 30, 50],
+                dataTransform: function (resultData, grid) {
+                    grid._columns = resultData.data.columns;
+                    grid._grids = resultData.data.data;
+                    grid._total = resultData.data.total;
+                    grid._data = {
+                        data: resultData.data.data,
+                        total: resultData.data.total,
+                        html: resultData.data.html
+                    }
+                },
+                actionColumnText: "操作",//操作列文本
+                actionColumnWidth: "20%",
+                search: {
+                    rowEleNum: 2,
+                    //搜索栏元素
+                    items: search,
+                    buttons: [
+                        {
+                            type: 'button',
+                            text: '导出',
+                            cls: "btn btn-danger btn-sm",
+                            handle: function (g) {
+                                var downloadUrl = App.href + "/api/score/stat/export/export3?" + g.$searchForm.serialize();
                                 window.open(downloadUrl);
                             }
                         }
