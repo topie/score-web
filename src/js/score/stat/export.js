@@ -237,13 +237,6 @@
             window.App.content.append(content);
             var search = [
                 {
-                    type: 'select',
-                    name: 'batchId',
-                    id: 'batchId',
-                    label: '批次',
-                    itemsUrl: App.href + '/api/score/batchConf/options'
-                },
-                {
                     type: 'text',
                     name: 'personIdNum',
                     id: 'personIdNum',
