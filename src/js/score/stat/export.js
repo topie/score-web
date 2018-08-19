@@ -321,6 +321,23 @@
             window.App.content.append(content);
             var search = [
                 {
+                    type: 'select',
+                    name: 'acceptAddressId',
+                    id: 'acceptAddressId',
+                    label: '受理地区',
+                    items: [
+                        {
+                            text: '全部',
+                            value: ''
+                        }, {
+                            text: '市',
+                            value: 1
+                        }, {
+                            text: '滨海',
+                            value: 2
+                        }
+                    ]
+                }, {
                     type: 'text',
                     name: 'personIdNum',
                     id: 'personIdNum',
