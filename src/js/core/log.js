@@ -50,48 +50,12 @@
             headField: "ID",
             showCheck: true,//是否显示checkbox
             checkboxWidth: "3%",
-            showIndexNum: false,
+            showIndexNum: true,
             indexNumWidth: "5%",
             pageSelect: [2, 15, 30, 50],
             columns: columns,
             actionColumnText: "操作",//操作列文本
-            actionColumnWidth: "20%",
-            actionColumns: [
-                {
-                    text: "删除",
-                    cls: "btn-danger btn-sm",
-                    handle: function (index, data) {
-                        bootbox.confirm("确定该操作?", function (result) {
-                            if (result) {
-                                var requestUrl = App.href + "/api/core/log/delete";
-                                $.ajax({
-                                    type: "POST",
-                                    dataType: "json",
-                                    data: {
-                                        id: data.ID
-                                    },
-                                    url: requestUrl,
-                                    success: function (data) {
-                                        if (data.code === 200) {
-                                            grid.reload();
-                                        } else {
-                                            alert(data.message);
-                                        }
-                                    },
-                                    error: function (e) {
-                                        alert("请求异常。");
-                                    }
-                                });
-                            }
-                        });
-                    }
-                }
-            ],
-            search: {
-                rowEleNum: 2,
-                //搜索栏元素
-                items: searchItems
-            }
+            actionColumnWidth: "20%"
         };
         grid = window.App.content.find("#grid").orangeGrid(options);
     }
