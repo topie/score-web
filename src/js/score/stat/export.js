@@ -283,6 +283,7 @@
                 showCheck: true,//是否显示checkbox
                 checkboxWidth: "3%",
                 showIndexNum: true,
+                autoLoad: false,
                 select2: true,
                 indexNumWidth: "5%",
                 pageSelect: [2, 15, 30, 50],
@@ -398,6 +399,7 @@
                 showCheck: true,//是否显示checkbox
                 checkboxWidth: "3%",
                 showIndexNum: true,
+                autoLoad: false,
                 select2: true,
                 indexNumWidth: "5%",
                 pageSelect: [2, 15, 30, 50],
