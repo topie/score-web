@@ -254,6 +254,21 @@
                     name: 'companyName',
                     id: 'companyName',
                     label: '企业名称'
+                },
+                {
+                    type: "datepicker",
+                    label: "受理日期",
+                    name: "period",
+                    placeholder: "日期",
+                    config: {
+                        locale: {
+                            "format": 'YYYY-MM-DD'
+                        },
+                        "timePicker": false,
+                        "singleDatePicker": false,
+                        "startDate": moment().subtract(7, 'day'),
+                        "endDate": moment().subtract(1, 'day')
+                    }
                 }
             ];
             var grid;
@@ -354,6 +369,21 @@
                     name: 'companyName',
                     id: 'companyName',
                     label: '企业名称'
+                },
+                {
+                    type: "datepicker",
+                    label: "受理日期",
+                    name: "period",
+                    placeholder: "日期",
+                    config: {
+                        locale: {
+                            "format": 'YYYY-MM-DD'
+                        },
+                        "timePicker": false,
+                        "singleDatePicker": false,
+                        "startDate": moment().subtract(7, 'day'),
+                        "endDate": moment().subtract(1, 'day')
+                    }
                 }
             ];
             var grid;
