@@ -6,8 +6,7 @@
     var Grid = function (element, options) {
         this._setVariable(element, options);
         this._setOptions(this._options);
-        if (this._columns !== undefined)
-            this._initEmpty();
+        this._initEmpty();
         if (!this._autoLoad)
             return
         if (this._url != undefined) {
@@ -463,7 +462,8 @@
                 this._renderTool();
                 this._toolsInited = true;
             }
-            this._renderGridWrapper();
+            if (this._columns !== undefined)
+                this._renderGridWrapper();
         },
         // 渲染工具栏
         _renderTool: function () {
