@@ -119,6 +119,20 @@
                     var edit = fd.data.edit;
                     if (searchItems == null)
                         searchItems = [];
+                    searchItems.push(
+                        {
+                            type: "select",
+                            label: "企业",
+                            name: "companyId",
+                            items: [
+                                {
+                                    text: '全部',
+                                    value: ''
+                                }
+                            ],
+                            itemsUrl: App.href + '/api/score/companyInfo/options'
+                        }
+                    );
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
@@ -205,6 +219,7 @@
                         indexNumWidth: "5%",
                         pageSelect: [2, 15, 30, 50],
                         columns: columns,
+                        select2:true,
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
                         actionColumns: [
@@ -391,6 +406,20 @@
                 single: true
             }
         ];
+        searchItems.push(
+            {
+                type: "select",
+                label: "企业",
+                name: "companyId",
+                items: [
+                    {
+                        text: '全部',
+                        value: ''
+                    }
+                ],
+                itemsUrl: App.href + '/api/score/companyInfo/options'
+            }
+        );
         var columns = [
             {
                 title: '申请人ID',
@@ -455,6 +484,7 @@
             indexNumWidth: "5%",
             pageSelect: [2, 15, 30, 50],
             columns: columns,
+            select2:true,
             actionColumnText: "操作",//操作列文本
             actionColumnWidth: "20%",
             actionColumns: [
