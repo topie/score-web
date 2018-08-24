@@ -146,7 +146,32 @@
                                                 }
                                                 $.orangeModal({
                                                     title: "图片预览",
-                                                    destroy: true
+                                                    destroy: true,buttons:[
+                                                        {
+                                                            text: '打印',
+                                                            cls: 'btn btn-primary',
+                                                            handle: function (m) {
+                                                                m.$body.print({
+                                                                    globalStyles: true,
+                                                                    mediaPrint: false,
+                                                                    stylesheet: null,
+                                                                    noPrintSelector: ".no-print",
+                                                                    iframe: true,
+                                                                    append: null,
+                                                                    prepend: null,
+                                                                    manuallyCopyFormValues: true,
+                                                                    deferred: $.Deferred()
+                                                                });
+                                                            }
+                                                        }, {
+                                                            type: 'button',
+                                                            text: '关闭',
+                                                            cls: "btn btn-default",
+                                                            handle: function (m) {
+                                                                m.hide()
+                                                            }
+                                                        }
+                                                    ]
                                                 }).show().$body.html(img);
                                             },
                                             error: function (e) {
@@ -584,7 +609,32 @@
                             }
                             $.orangeModal({
                                 title: "图片预览",
-                                destroy: true
+                                destroy: true,buttons:[
+                                    {
+                                        text: '打印',
+                                        cls: 'btn btn-primary',
+                                        handle: function (m) {
+                                            m.$body.print({
+                                                globalStyles: true,
+                                                mediaPrint: false,
+                                                stylesheet: null,
+                                                noPrintSelector: ".no-print",
+                                                iframe: true,
+                                                append: null,
+                                                prepend: null,
+                                                manuallyCopyFormValues: true,
+                                                deferred: $.Deferred()
+                                            });
+                                        }
+                                    }, {
+                                        type: 'button',
+                                        text: '关闭',
+                                        cls: "btn btn-default",
+                                        handle: function (m) {
+                                            m.hide()
+                                        }
+                                    }
+                                ]
                             }).show().$body.html(img);
                         },
                         error: function (e) {
