@@ -176,6 +176,9 @@
                             format: function (i, cd) {
                                 return hallStatus[cd.hallStatus];
                             }
+                        }, {
+                            title: '预约日期',
+                            field: 'reservationDate'
                         },
                         {
                             title: '人社受理状态',
@@ -205,7 +208,7 @@
                         indexNumWidth: "5%",
                         pageSelect: [2, 15, 30, 50],
                         columns: columns,
-                        select2:true,
+                        select2: true,
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
                         actionColumns: [
