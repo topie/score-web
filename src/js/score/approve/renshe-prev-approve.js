@@ -105,6 +105,18 @@
                         });
                     }
                     searchItems = newSearchItems;
+                    searchItems.push({
+                        type: "select",
+                        label: "企业",
+                        name: "companyId",
+                        items: [
+                            {
+                                text: '全部',
+                                value: ''
+                            }
+                        ],
+                        itemsUrl: App.href + '/api/score/companyInfo/options'
+                    });
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
@@ -215,6 +227,7 @@
                         showIndexNum: false,
                         indexNumWidth: "5%",
                         pageSelect: [2, 15, 30, 50],
+                        select2: true,
                         columns: columns,
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
