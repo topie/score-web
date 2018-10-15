@@ -35,8 +35,30 @@
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
                     var reservationStatus = fd.data.reservationStatus;
-                    if (searchItems == null)
-                        searchItems = [];
+                    var companyNames = fd.data.companyNames;//企业名称，包含数据库所有的企业
+                    var personBatchStatusRecords = fd.data.personBatchStatusRecords;//审核过程，包含所有通过人社受理审核的人
+                    var newSearchItems = [];
+                    if (searchItems != null) {
+                        $.each(searchItems, function (ii, dd) {
+                            if (dd.name !== 'batchId') {
+                                newSearchItems.push(dd);
+                            }
+                        });
+                    }
+                    searchItems = newSearchItems;
+                    searchItems.push({
+                        type: "select",
+                        label: "企业",
+                        name: "companyId",
+                        items: [
+                            {
+                                text: '全部',
+                                value: ''
+                            }
+                        ],
+                        itemsUrl: App.href + '/api/score/companyInfo/options'
+                    });
+
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
@@ -74,6 +96,34 @@
                             return dd.sex === 1 ? '男' : '女';
                         }
                     });
+                    columns.push({
+                        title:'受理地点',
+                        field:'acceptAddressId',
+                        format: function (ii, dd) {
+                            return dd.acceptAddressId === 1 ? '市级行政许可中心' : '滨海新区行政服务中心';
+                        }
+                    });
+                    columns.push({
+                       title: "受理日期",//通过人社受理审核日期
+                        field: "STATUS_TIME",
+                        format: function (i, cd) {
+                            return personBatchStatusRecords[cd.id];
+                        }
+                    });
+                    columns.push(
+                        {
+                            title: '企业',
+                            field: 'companyId',
+                            format: function (i, cd) {
+                                if (cd.companyWarning == 1) {
+                                    return '<span style="color: red">' + companyNames[cd.companyId] + '</span>';
+                                } else {
+                                    return companyNames[cd.companyId];
+                                }
+
+                            }
+                        }
+                    );
                     var grid;
                     var options = {
                         url: App.href + "/api/score/monitor/scoreInfo/list",
@@ -88,6 +138,7 @@
                         showIndexNum: false,
                         indexNumWidth: "5%",
                         pageSelect: [2, 15, 30, 50],
+                        select2: true,
                         columns: columns,
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
