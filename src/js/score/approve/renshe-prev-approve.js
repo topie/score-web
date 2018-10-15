@@ -117,6 +117,18 @@
                         ],
                         itemsUrl: App.href + '/api/score/companyInfo/options'
                     });
+                    searchItems.push({
+                        type: "select",
+                        label: "锁定人",
+                        name: "lockUser2",
+                        items:[
+                            {
+                                text : '全部',
+                                value : ''
+                            }
+                        ],
+                        itemsUrl: App.href + '/api/score/info/identityInfo/options'
+                    });
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
