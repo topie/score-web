@@ -195,160 +195,177 @@
         });
     };
     var scoreRecord = function (personId) {
-        var modal = $.orangeModal({
-            id: "view_score_form_modal",
-            title: "查看申请人打分信息",
-            destroy: true
-        }).show();
+        /*
+        2018年10月18日，在弹窗上显示当前总分
+         */
+        var sumScore = 0;
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: App.href + "/api/score/monitor/scoreInfo/score/formItems",
+            url: App.href + "/api/score/monitor/scoreInfo/score/SumScoreValue?personId=" + personId,
             success: function (fd) {
-                if (fd.code === 200) {
-                    var formItems = fd.data.formItems;
-                    var searchItems = fd.data.searchItems;
-                    var scoreRecordStatus = fd.data.scoreRecordStatus;
-                    if (searchItems == null)
-                        searchItems = [];
-                    var columns = [];
-                    $.each(formItems, function (ii, dd) {
-                        if (dd.type === 'text') {
-                            var column = {
-                                title: dd.label,
-                                field: dd.name
-                            };
-                            columns.push(column);
-                        }
-                        if (dd.itemsUrl !== undefined) {
-                            dd.itemsUrl = App.href + dd.itemsUrl;
-                        }
-                        if (dd.url !== undefined) {
-                            dd.url = App.href + dd.url;
-                        }
-                    });
-                    columns.push({
-                        title: '打分',
-                        field: 'scoreValue'
-                    });
-                    columns.push({
-                        title: '办理进度',
-                        field: 'status',
-                        format: function (i, d) {
-                            return scoreRecordStatus[d.status];
-                        }
-                    });
-                    var grid;
-                    var options = {
-                        url: App.href + "/api/score/monitor/scoreInfo/score/list?personId=" + personId,
-                        contentType: "table",
-                        contentTypeItems: "table,card,list",
-                        pageNum: 1,//当前页码
-                        pageSize: 15,//每页显示条数
-                        idField: "id",//id域指定
-                        headField: "id",
-                        showCheck: true,//是否显示checkbox
-                        checkboxWidth: "3%",
-                        showIndexNum: false,
-                        indexNumWidth: "5%",
-                        pageSelect: [2, 15, 30, 50],
-                        columns: columns,
-                        actionColumnText: "操作",//操作列文本
-                        actionColumnWidth: "20%",
-                        actionColumns: [
-                            {
-                                text: "查看",
-                                cls: "btn-danger btn-sm",
-                                handle: function (index, d) {
-                                    var modal = $.orangeModal({
-                                        id: "view_score_detail_form_modal",
-                                        title: "查看打分信息",
-                                        destroy: true
-                                    }).show();
-                                    var requestUrl = App.href + "/api/score/monitor/scoreInfo/scoreDetail?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
-                                    $.ajax({
-                                        type: "GET",
-                                        dataType: "json",
-                                        url: requestUrl,
-                                        success: function (data) {
-                                            modal.$body.html(data.data.html);
-                                            var slist = data.data.sCheckList;
-                                            for (var i in slist) {
-                                                modal.$body.find("input[name=score]:radio[value='" + slist[i] + "']").attr('checked', 'true');
-                                            }
-                                            var stList = data.data.sTextList;
-                                            for (var i in stList) {
-                                                var arr = stList[i].split("_");
-                                                modal.$body.find("input[d-indicator=" + arr[0] + "_" + arr[1] + "]").val(parseFloat(arr[2]).toFixed(2));
-                                            }
-                                        },
-                                        error: function (e) {
-                                            console.error("请求异常。");
-                                        }
-                                    });
+                sumScore = fd.data.sumScore;
+                var modal = $.orangeModal({
+                    id: "view_score_form_modal",
+                    title: "查看申请人打分信息，总分："+sumScore,
+                    destroy: true
+                }).show();
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: App.href + "/api/score/monitor/scoreInfo/score/formItems",
+                    success: function (fd) {
+                        if (fd.code === 200) {
+                            var formItems = fd.data.formItems;
+                            var searchItems = fd.data.searchItems;
+                            var scoreRecordStatus = fd.data.scoreRecordStatus;
+                            if (searchItems == null)
+                                searchItems = [];
+                            var columns = [];
+                            $.each(formItems, function (ii, dd) {
+                                if (dd.type === 'text') {
+                                    var column = {
+                                        title: dd.label,
+                                        field: dd.name
+                                    };
+                                    columns.push(column);
                                 }
-                            }, {
-                                text: "申请重新打分",
-                                cls: "btn-warning btn-sm",
-                                visible: function (i, d) {
-                                    return d.status === 4;
-                                },
-                                handle: function (index, d) {
-                                    var modal = $.orangeModal({
-                                        id: "score_apply_form_modal",
-                                        title: "申请重新打分",
-                                        destroy: true
-                                    }).show();
-                                    modal.$body.orangeForm({
-                                        id: "apply_form",
-                                        name: "apply_form",
-                                        method: "POST",
-                                        action: App.href + "/api/score/applyScore/apply?scoreRecordId=" + d.id,
-                                        ajaxSubmit: true,
-                                        ajaxSuccess: function () {
-                                            bootbox.alert('申请也发出，请耐心等待');
-                                            modal.hide();
-                                        },
-                                        submitText: "提交",
-                                        showReset: true,
-                                        resetText: "重置",
-                                        isValidate: true,
-                                        labelInline: true,
-                                        buttons: [{
-                                            type: 'button',
-                                            text: '关闭',
-                                            handle: function () {
-                                                modal.hide();
-                                            }
-                                        }],
-                                        buttonsAlign: "center",
-                                        items: [
-                                            {
-                                                type: 'textarea',
-                                                name: 'reason',
-                                                id: 'reason',
-                                                label: '申请原因',
-                                                rule: {
-                                                    required: true
+                                if (dd.itemsUrl !== undefined) {
+                                    dd.itemsUrl = App.href + dd.itemsUrl;
+                                }
+                                if (dd.url !== undefined) {
+                                    dd.url = App.href + dd.url;
+                                }
+                            });
+                            columns.push({
+                                title: '打分',
+                                field: 'scoreValue'
+                            });
+                            columns.push({
+                                title: '办理进度',
+                                field: 'status',
+                                format: function (i, d) {
+                                    return scoreRecordStatus[d.status];
+                                }
+                            });
+                            var grid;
+                            var options = {
+                                url: App.href + "/api/score/monitor/scoreInfo/score/list?personId=" + personId,
+                                contentType: "table",
+                                contentTypeItems: "table,card,list",
+                                pageNum: 1,//当前页码
+                                pageSize: 15,//每页显示条数
+                                idField: "id",//id域指定
+                                headField: "id",
+                                showCheck: true,//是否显示checkbox
+                                checkboxWidth: "3%",
+                                showIndexNum: false,
+                                indexNumWidth: "5%",
+                                pageSelect: [2, 15, 30, 50],
+                                columns: columns,
+                                actionColumnText: "操作",//操作列文本
+                                actionColumnWidth: "20%",
+                                actionColumns: [
+                                    {
+                                        text: "查看",
+                                        cls: "btn-danger btn-sm",
+                                        handle: function (index, d) {
+                                            var modal = $.orangeModal({
+                                                id: "view_score_detail_form_modal",
+                                                title: "查看打分信息",
+                                                destroy: true
+                                            }).show();
+                                            var requestUrl = App.href + "/api/score/monitor/scoreInfo/scoreDetail?identityInfoId=" + d.personId + "&indicatorId=" + d.indicatorId;
+                                            $.ajax({
+                                                type: "GET",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                success: function (data) {
+                                                    modal.$body.html(data.data.html);
+                                                    var slist = data.data.sCheckList;
+                                                    for (var i in slist) {
+                                                        modal.$body.find("input[name=score]:radio[value='" + slist[i] + "']").attr('checked', 'true');
+                                                    }
+                                                    var stList = data.data.sTextList;
+                                                    for (var i in stList) {
+                                                        var arr = stList[i].split("_");
+                                                        modal.$body.find("input[d-indicator=" + arr[0] + "_" + arr[1] + "]").val(parseFloat(arr[2]).toFixed(2));
+                                                    }
                                                 },
-                                                message: {
-                                                    required: "请输入申请原因"
+                                                error: function (e) {
+                                                    console.error("请求异常。");
                                                 }
-                                            }
-                                        ]
-                                    });
-                                }
-                            }
-                        ]
-                    };
-                    grid = modal.$body.orangeGrid(options);
-                } else {
-                    alert(fd.message);
-                }
+                                            });
+                                        }
+                                    }, {
+                                        text: "申请重新打分",
+                                        cls: "btn-warning btn-sm",
+                                        visible: function (i, d) {
+                                            return d.status === 4;
+                                        },
+                                        handle: function (index, d) {
+                                            var modal = $.orangeModal({
+                                                id: "score_apply_form_modal",
+                                                title: "申请重新打分",
+                                                destroy: true
+                                            }).show();
+                                            modal.$body.orangeForm({
+                                                id: "apply_form",
+                                                name: "apply_form",
+                                                method: "POST",
+                                                action: App.href + "/api/score/applyScore/apply?scoreRecordId=" + d.id,
+                                                ajaxSubmit: true,
+                                                ajaxSuccess: function () {
+                                                    bootbox.alert('申请也发出，请耐心等待');
+                                                    modal.hide();
+                                                },
+                                                submitText: "提交",
+                                                showReset: true,
+                                                resetText: "重置",
+                                                isValidate: true,
+                                                labelInline: true,
+                                                buttons: [{
+                                                    type: 'button',
+                                                    text: '关闭',
+                                                    handle: function () {
+                                                        modal.hide();
+                                                    }
+                                                }],
+                                                buttonsAlign: "center",
+                                                items: [
+                                                    {
+                                                        type: 'textarea',
+                                                        name: 'reason',
+                                                        id: 'reason',
+                                                        label: '申请原因',
+                                                        rule: {
+                                                            required: true
+                                                        },
+                                                        message: {
+                                                            required: "请输入申请原因"
+                                                        }
+                                                    }
+                                                ]
+                                            });
+                                        }
+                                    }
+                                ]
+                            };
+                            grid = modal.$body.orangeGrid(options);
+                        } else {
+                            alert(fd.message);
+                        }
+                    },
+                    error: function (e) {
+                        console.error("请求异常。");
+                    }
+                });
             },
             error: function (e) {
                 console.error("请求异常。");
             }
         });
+
+
     };
 })(jQuery, window, document);
