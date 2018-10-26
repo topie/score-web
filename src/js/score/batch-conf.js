@@ -156,6 +156,28 @@
                                     dateConfig(d);
                                 }
                             }, {
+                                text: "人数统计",
+                                cls: "btn-primary btn-sm",
+                                handle: function (index, d) {
+                                    var modal = $.orangeModal({
+                                        id: "view_form_modal",
+                                        title: "人数统计",
+                                        destroy: true
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/applicationCount?batchId=" + d.id;
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            },{
                                 text: "删除",
                                 cls: "btn-danger btn-sm",
                                 handle: function (index, data) {
