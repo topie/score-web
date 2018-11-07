@@ -49,6 +49,17 @@
                         }],
                         itemsUrl: App.href + '/api/score/companyInfo/options'
                     });
+                    searchItems.push({
+                        type: 'select',
+                        label: '批次',
+                        name: 'batchId',
+                        items: [{
+                            text: '全部',
+                            value: ''
+                        }],
+                        itemsUrl: App.href + '/api/score/batchConf/options'
+                    });
+
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
