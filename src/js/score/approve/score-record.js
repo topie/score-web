@@ -655,6 +655,10 @@
                 title: '受理日期',
                 field: 'acceptDate',
                 sort: true
+            },
+            {
+                title:'公安落户编号',
+                field:'acceptNumber',
             }
         ];
         var grid;
