@@ -177,32 +177,27 @@
                                         }
                                     });
                                 }
-                            },{
+                            }, {
                                 text: "给公安提供数据",
+                                visible: function (i, d) {
+                                    return parseInt(d.process) >= 3
+                                },
                                 cls: "btn-info btn-sm",
                                 handle: function (index, d) {
-                                    /*var modal = $.orangeModal({
-                                        id: "view_form_modal",
-                                        title: "人数统计",
-                                        destroy: true
-                                    }).show();*/
                                     var requestUrl = App.href + "/api/score/info/identityInfo/provideDataToPolice?batchId=" + d.id;
                                     window.location.href = requestUrl;
-                                    /*$.ajax({
-                                        type: "GET",
-                                        dataType: "json",
-                                        url: requestUrl,
-                                        success: function (data) {
-                                            //modal.$body.html(data.data.html);
-                                            alert("成功！");
-                                        },
-                                        error: function (e) {
-                                            console.error("请求异常。");
-                                        }
-                                    });*/
                                 }
                             },
-
+                            {
+                                text: "有落户资格的申请人名单与收件地址",
+                                visible: function (i, d) {
+                                    return parseInt(d.process) >= 3
+                                },
+                                cls: "btn-primary btn-sm",
+                                handle: function (index, d) {
+                                    window.location.href = App.href + "/api/score/info/identityInfo/identityInfoRecipient?batchId=" + d.id;
+                                }
+                            },
                             {
                                 text: "删除",
                                 cls: "btn-danger btn-sm",
