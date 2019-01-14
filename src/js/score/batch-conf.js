@@ -191,7 +191,7 @@
                             {
                                 text: "有落户资格的申请人名单与收件地址",
                                 visible: function (i, d) {
-                                    return parseInt(d.process) >= 3
+                                    return d.scoreValue != null && parseInt(d.process) >= 3;
                                 },
                                 cls: "btn-primary btn-sm",
                                 handle: function (index, d) {
