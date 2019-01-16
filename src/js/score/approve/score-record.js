@@ -146,7 +146,7 @@
                                                 }
                                                 $.orangeModal({
                                                     title: "图片预览",
-                                                    destroy: true,buttons:[
+                                                    destroy: true, buttons: [
                                                         {
                                                             text: '打印',
                                                             cls: 'btn btn-primary',
@@ -350,68 +350,90 @@
                                                 text: '确认分值',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
-                                                    bootbox.confirm("确定该操作?", function (result) {
-                                                        if (result) {
-                                                            var sIds = [];
-                                                            var sAns = [];
-                                                            var sDetails = [];
-                                                            m.$body.find('input[type=radio]:checked').each(function () {
-                                                                sIds.push($(this).val());
-                                                            });
-                                                            var ms = 0;
-                                                            var indicatorId = "";
-                                                            var roleId = "";
-                                                            m.$body.find('input[type=text]').each(function () {
-                                                                if ($(this).attr("d-name") == "manScore") {
-                                                                    if (isNaN($(this).val())) {
-                                                                        ms += parseFloat($(this).val());
-                                                                        indicatorId = $(this).attr("d-indicator") + "";
-                                                                        roleId = $(this).attr("d-roleId") + "";
-                                                                    }
-                                                                } else {
-                                                                    if ($.trim($(this).val()) != '') {
-                                                                        sAns.push($(this).attr("d-indicator") + "_" + $(this).val() + "_" + $(this).attr("d-roleId"));
-                                                                    }
-                                                                }
-                                                            });
-                                                            m.$body.find('textarea[d-name="reason"]').each(function () {
-                                                                var indicatorId = $(this).attr("d-indicator") + "";
-                                                                var roleId = $(this).attr("d-roleId") + "";
-                                                                sDetails.push(indicatorId + "_" + $(this).val() + "_" + roleId);
-                                                            });
-                                                            if (indicatorId != "" && roleId != "") {
-                                                                sAns.push(indicatorId + "_" + ms + "_" + roleId);
-                                                            }
-                                                            if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
-                                                                bootbox.alert('请选择打分项');
-                                                                return;
-                                                            }
-                                                            if (m.$body.find('input[type=text]').length > 0 && sAns.length == 0) {
-                                                                bootbox.alert('请填写打分项');
-                                                                return;
-                                                            }
-                                                            var requestUrl = App.href + "/api/score/scoreRecord/score";
-                                                            $.ajax({
-                                                                type: "POST",
-                                                                dataType: "json",
-                                                                url: requestUrl,
-                                                                data: {
-                                                                    personId: d.personId,
-                                                                    sIds: sIds.toString(),
-                                                                    sAns: sAns.toString(),
-                                                                    sDetails: sDetails.toString()
-                                                                },
-                                                                success: function (data) {
-                                                                    grid.reload();
-                                                                    m.hide();
-                                                                },
-                                                                error: function (e) {
-                                                                    console.error("请求异常。");
+                                                    var confirmMessage = "<div style='margin: auto;width: 60%'><table class='table table-hover table-bordered table-condensed' >";
+                                                    $(".table_needScore").each(function () {
+                                                        var scoreTabel = $(this).next();
+                                                        var scoreValue = "未打分";
+                                                        scoreTabel.find('input[type=radio]:checked').each(function () {
+                                                            scoreValue = $(this).parent().next().next().text();
+                                                        });
+                                                        if (scoreValue == "未打分") {
+                                                            scoreTabel.find('.needscore_inputValue').each(function () {
+                                                                if ($(this).val().trim() != "") {
+                                                                    scoreValue = $(this).val() + "分";
                                                                 }
                                                             });
                                                         }
+                                                        confirmMessage += "<tr>" + "<td>" + $(this).find(".th_needScore").text() + ":</td><td>" +
+                                                            scoreValue + "</td>" + "</tr>";
                                                     });
+                                                    confirmMessage += "</table></div>";
 
+                                                    bootbox.confirm({
+                                                        title: "确定打分吗?",
+                                                        message: confirmMessage,
+                                                        callback: function (result) {
+                                                            if (result) {
+                                                                var sIds = [];
+                                                                var sAns = [];
+                                                                var sDetails = [];
+                                                                m.$body.find('input[type=radio]:checked').each(function () {
+                                                                    sIds.push($(this).val());
+                                                                });
+                                                                var ms = 0;
+                                                                var indicatorId = "";
+                                                                var roleId = "";
+                                                                m.$body.find('input[type=text]').each(function () {
+                                                                    if ($(this).attr("d-name") == "manScore") {
+                                                                        if (isNaN($(this).val())) {
+                                                                            ms += parseFloat($(this).val());
+                                                                            indicatorId = $(this).attr("d-indicator") + "";
+                                                                            roleId = $(this).attr("d-roleId") + "";
+                                                                        }
+                                                                    } else {
+                                                                        if ($.trim($(this).val()) != '') {
+                                                                            sAns.push($(this).attr("d-indicator") + "_" + $(this).val() + "_" + $(this).attr("d-roleId"));
+                                                                        }
+                                                                    }
+                                                                });
+                                                                m.$body.find('textarea[d-name="reason"]').each(function () {
+                                                                    var indicatorId = $(this).attr("d-indicator") + "";
+                                                                    var roleId = $(this).attr("d-roleId") + "";
+                                                                    sDetails.push(indicatorId + "_" + $(this).val() + "_" + roleId);
+                                                                });
+                                                                if (indicatorId != "" && roleId != "") {
+                                                                    sAns.push(indicatorId + "_" + ms + "_" + roleId);
+                                                                }
+                                                                if (m.$body.find('input[type=radio]').length > 0 && sIds.length == 0) {
+                                                                    bootbox.alert('请选择打分项');
+                                                                    return;
+                                                                }
+                                                                if (m.$body.find('input[type=text]').length > 0 && sAns.length == 0) {
+                                                                    bootbox.alert('请填写打分项');
+                                                                    return;
+                                                                }
+                                                                var requestUrl = App.href + "/api/score/scoreRecord/score";
+                                                                $.ajax({
+                                                                    type: "POST",
+                                                                    dataType: "json",
+                                                                    url: requestUrl,
+                                                                    data: {
+                                                                        personId: d.personId,
+                                                                        sIds: sIds.toString(),
+                                                                        sAns: sAns.toString(),
+                                                                        sDetails: sDetails.toString()
+                                                                    },
+                                                                    success: function (data) {
+                                                                        grid.reload();
+                                                                        m.hide();
+                                                                    },
+                                                                    error: function (e) {
+                                                                        console.error("请求异常。");
+                                                                    }
+                                                                });
+                                                            }
+                                                        }
+                                                    });
                                                 }
                                             }
                                         ]
@@ -609,7 +631,7 @@
                             }
                             $.orangeModal({
                                 title: "图片预览",
-                                destroy: true,buttons:[
+                                destroy: true, buttons: [
                                     {
                                         text: '打印',
                                         cls: 'btn btn-primary',
@@ -657,8 +679,8 @@
                 sort: true
             },
             {
-                title:'公安落户编号',
-                field:'acceptNumber',
+                title: '公安落户编号',
+                field: 'acceptNumber'
             }
         ];
         var grid;
@@ -695,64 +717,86 @@
                                     text: '确认分值',
                                     cls: 'btn btn-info',
                                     handle: function (m) {
-                                        bootbox.confirm("确定该操作?", function (result) {
-                                            if (result) {
-                                                var sIds = [];
-                                                var sAns = [];
-                                                var sDetails = [];
-                                                m.$body.find('input[type=radio]:checked').each(function () {
-                                                    sIds.push($(this).val());
-                                                });
-                                                var ms = 0;
-                                                var indicatorId = "";
-                                                var roleId = "";
-                                                m.$body.find('input[type=text]').each(function () {
-                                                    if ($(this).attr("d-name") == "manScore") {
-                                                        if (parseFloat($(this).val()) > 0) {
-                                                            ms += parseFloat($(this).val());
-                                                            indicatorId = $(this).attr("d-indicator") + "";
-                                                            roleId = $(this).attr("d-roleId") + "";
-                                                        }
-                                                    } else {
-                                                        if ($.trim($(this).val()) != '') {
-                                                            sAns.push($(this).attr("d-indicator") + "_" + $(this).val() + "_" + $(this).attr("d-roleId"));
-                                                        }
-                                                    }
-                                                });
-                                                m.$body.find('textarea[d-name="reason"]').each(function () {
-                                                    var indicatorId = $(this).attr("d-indicator") + "";
-                                                    var roleId = $(this).attr("d-roleId") + "";
-                                                    sDetails.push(indicatorId + "_" + $(this).val() + "_" + roleId);
-                                                });
-                                                if (indicatorId != "" && roleId != "") {
-                                                    sAns.push(indicatorId + "_" + ms + "_" + roleId);
-                                                }
-                                                if (sAns.length == 0 && sIds.length == 0) {
-                                                    bootbox.alert('请打分');
-                                                    return;
-                                                }
-                                                var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/score";
-                                                $.ajax({
-                                                    type: "POST",
-                                                    dataType: "json",
-                                                    url: requestUrl,
-                                                    data: {
-                                                        personId: d.personId,
-                                                        sIds: sIds.toString(),
-                                                        sAns: sAns.toString(),
-                                                        sDetails: sDetails.toString()
-                                                    },
-                                                    success: function (data) {
-                                                        grid.reload();
-                                                        m.hide();
-                                                    },
-                                                    error: function (e) {
-                                                        console.error("请求异常。");
+                                        var confirmMessage = "<div style='margin: auto;width: 60%'><table class='table table-hover table-bordered table-condensed' >";
+                                        $(".table_needScore").each(function () {
+                                            var scoreTabel = $(this).next();
+                                            var scoreValue = "未打分";
+                                            scoreTabel.find('input[type=radio]:checked').each(function () {
+                                                scoreValue = $(this).parent().next().next().text();
+                                            });
+                                            if (scoreValue == "未打分") {
+                                                scoreTabel.find('.needscore_inputValue').each(function () {
+                                                    if ($(this).val().trim() != "") {
+                                                        scoreValue = $(this).val() + "分";
                                                     }
                                                 });
                                             }
+                                            confirmMessage += "<tr>" + "<td>" + $(this).find(".th_needScore").text() + ":</td><td>" +
+                                                scoreValue + "</td>" + "</tr>";
                                         });
+                                        confirmMessage += "</table></div>";
 
+                                        bootbox.confirm({
+                                            title: "确定打分吗?",
+                                            message: confirmMessage,
+                                            callback: function (result) {
+                                                if (result) {
+                                                    var sIds = [];
+                                                    var sAns = [];
+                                                    var sDetails = [];
+                                                    m.$body.find('input[type=radio]:checked').each(function () {
+                                                        sIds.push($(this).val());
+                                                    });
+                                                    var ms = 0;
+                                                    var indicatorId = "";
+                                                    var roleId = "";
+                                                    m.$body.find('input[type=text]').each(function () {
+                                                        if ($(this).attr("d-name") == "manScore") {
+                                                            if (parseFloat($(this).val()) > 0) {
+                                                                ms += parseFloat($(this).val());
+                                                                indicatorId = $(this).attr("d-indicator") + "";
+                                                                roleId = $(this).attr("d-roleId") + "";
+                                                            }
+                                                        } else {
+                                                            if ($.trim($(this).val()) != '') {
+                                                                sAns.push($(this).attr("d-indicator") + "_" + $(this).val() + "_" + $(this).attr("d-roleId"));
+                                                            }
+                                                        }
+                                                    });
+                                                    m.$body.find('textarea[d-name="reason"]').each(function () {
+                                                        var indicatorId = $(this).attr("d-indicator") + "";
+                                                        var roleId = $(this).attr("d-roleId") + "";
+                                                        sDetails.push(indicatorId + "_" + $(this).val() + "_" + roleId);
+                                                    });
+                                                    if (indicatorId != "" && roleId != "") {
+                                                        sAns.push(indicatorId + "_" + ms + "_" + roleId);
+                                                    }
+                                                    if (sAns.length == 0 && sIds.length == 0) {
+                                                        bootbox.alert('请打分');
+                                                        return;
+                                                    }
+                                                    var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/score";
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        data: {
+                                                            personId: d.personId,
+                                                            sIds: sIds.toString(),
+                                                            sAns: sAns.toString(),
+                                                            sDetails: sDetails.toString()
+                                                        },
+                                                        success: function (data) {
+                                                            grid.reload();
+                                                            m.hide();
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
                                     }
                                 }
                             ]
