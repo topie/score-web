@@ -161,7 +161,7 @@
                                                 $.orangeModal({
                                                     title: "图片预览",
                                                     destroy: true,
-                                                    buttons:[
+                                                    buttons: [
                                                         {
                                                             text: '打印',
                                                             cls: 'btn btn-primary',
@@ -245,7 +245,7 @@
                         indexNumWidth: "5%",
                         pageSelect: [2, 15, 30, 50],
                         columns: columns,
-                        select2:true,
+                        select2: true,
                         actionColumnText: "操作",//操作列文本
                         actionColumnWidth: "20%",
                         actionColumns: [
@@ -403,6 +403,25 @@
     };
 
     var scoreMaterialReceiveIdentityInfo = function (mode) {
+        //是否显示家庭关系（卫健委）按钮
+        var isVisibleRelationship = false;
+        var authoritiesArray = window.App.currentUser['authorities'];
+        if (authoritiesArray != undefined) {
+            outLoop:
+                for (var index in authoritiesArray) {
+                    if (authoritiesArray.hasOwnProperty(index)) {
+                        switch (authoritiesArray[index]['authority']) {
+                            //人社
+                            case '3':
+                            //卫健委
+                            case '12':
+                                isVisibleRelationship = true;
+                                break outLoop;
+                        }
+                    }
+                }
+        }
+
         var searchItems = [
             {
                 type: 'text',
@@ -473,7 +492,7 @@
                             var modal = $.orangeModal({
                                 title: "图片预览",
                                 destroy: true,
-                                buttons:[
+                                buttons: [
                                     {
                                         text: '打印',
                                         cls: 'btn btn-primary',
@@ -523,8 +542,8 @@
                 sort: true
             },
             {
-                title:'公安落户编号',
-                field:'acceptNumber',
+                title: '公安落户编号',
+                field: 'acceptNumber'
             }
         ];
         var grid;
@@ -542,7 +561,7 @@
             indexNumWidth: "5%",
             pageSelect: [2, 15, 30, 50],
             columns: columns,
-            select2:true,
+            select2: true,
             actionColumnText: "操作",//操作列文本
             actionColumnWidth: "20%",
             actionColumns: [
@@ -937,6 +956,16 @@
                                 console.error("请求异常。");
                             }
                         });
+                    }
+                }, {
+                    text: "家庭关系（卫健委）",
+                    cls: "btn-info btn-sm",
+                    visible: function (i, d) {
+                        return isVisibleRelationship
+                    },
+                    handle: function (index, d) {
+                        var requestUrl = App.href + "/api/score/materialReceive/identityInfo/getIdentityInfoExcelWJW?identityInfoId=" + d.personId;
+                        window.open(requestUrl);
                     }
                 }
             ],
