@@ -576,6 +576,25 @@
     };
 
     var scoreRecordIdentity = function (type) {
+        //是否显示家庭关系（卫健委）按钮
+        var isVisibleRelationship = false;
+        var authoritiesArray = window.App.currentUser['authorities'];
+        if (authoritiesArray != undefined) {
+            outLoop:
+                for (var index in authoritiesArray) {
+                    if (authoritiesArray.hasOwnProperty(index)) {
+                        switch (authoritiesArray[index]['authority']) {
+                            //人社
+                            case '3':
+                            //卫健委
+                            case '12':
+                                isVisibleRelationship = true;
+                                break outLoop;
+                        }
+                    }
+                }
+        }
+
         var searchItems = [
             {
                 type: 'text',
@@ -889,6 +908,16 @@
                                 console.error("请求异常。");
                             }
                         });
+                    }
+                }, {
+                    text: "积分审核表(市卫健委)",
+                    cls: "btn-info btn-sm",
+                    visible: function (i, d) {
+                        return isVisibleRelationship
+                    },
+                    handle: function (index, d) {
+                        var requestUrl = App.href + "/api/score/materialReceive/identityInfo/getIdentityInfoExcelWJW?identityInfoId=" + d.personId;
+                        window.open(requestUrl);
                     }
                 }, {
                     text: "审核表打印",

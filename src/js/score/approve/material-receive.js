@@ -958,7 +958,7 @@
                         });
                     }
                 }, {
-                    text: "家庭关系（卫健委）",
+                    text: "积分审核表(市卫健委)",
                     cls: "btn-info btn-sm",
                     visible: function (i, d) {
                         return isVisibleRelationship
