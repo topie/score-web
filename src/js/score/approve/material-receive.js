@@ -895,8 +895,92 @@
                                             }
                                         });
                                     }
-                                },
-                                {
+                                }, {
+                                    text: '材料待补正',
+                                    cls: 'btn btn-danger',
+                                    handle: function (mm) {
+                                        var modal = $.orangeModal({
+                                            id: "approve_supply_form_modal",
+                                            title: "材料待补正",
+                                            destroy: true,
+                                            buttons: [
+                                                {
+                                                    text: '确认',
+                                                    cls: 'btn btn-warning',
+                                                    handle: function (m) {
+                                                        bootbox.confirm("确定该操作?", function (result) {
+                                                            if (result) {
+                                                                var supplyArr = [];
+                                                                m.$body.find("input[name=supplyMaterial]").each(
+                                                                    function (i, d) {
+                                                                        if ($(this).is(":checked")) {
+                                                                            var id = $(this).val();
+                                                                            var reason = $(this).parent().parent().next("tr").find("input[name=supplyReason]").val();
+                                                                            supplyArr.push({
+                                                                                "id": id,
+                                                                                "reason": reason
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                );
+                                                                if (supplyArr.length == 0) {
+                                                                    bootbox.alert("请勾选待补正材料!");
+                                                                } else {
+                                                                    var supplyStr = JSON.stringify(supplyArr);
+                                                                    var requestUrl = App.href + "/api/score/materialReceive/identityInfo/supply";
+                                                                    $.ajax({
+                                                                        type: "POST",
+                                                                        dataType: "json",
+                                                                        url: requestUrl,
+                                                                        data: {
+                                                                            "id": d.personId,
+                                                                            "supplyArr": supplyStr
+                                                                        },
+                                                                        success: function (data) {
+                                                                            if (data.code !== 200) {
+                                                                                bootbox.alert(data.message);
+                                                                            }
+                                                                            grid.reload();
+                                                                            m.hide();
+                                                                            mm.hide();
+                                                                        },
+                                                                        error: function (e) {
+                                                                            console.error("请求异常。");
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+                                                        });
+
+                                                    }
+                                                },
+                                                {
+                                                    text: '关闭',
+                                                    cls: 'btn btn-default',
+                                                    handle: function (m) {
+                                                        m.hide();
+                                                    }
+                                                }
+                                            ]
+                                        }).show();
+                                        var requestUrl = App.href + "/api/score/info/identityInfo/materialSupply?identityInfoId=" + d.personId;
+                                        $.ajax({
+                                            type: "GET",
+                                            dataType: "json",
+                                            url: requestUrl,
+                                            success: function (data) {
+                                                modal.$body.html(data.data.html);
+                                                var checkList = data.data.cMids;
+                                                for (var i in checkList) {
+                                                    modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                                }
+                                            },
+                                            error: function (e) {
+                                                console.error("请求异常。");
+                                            }
+                                        });
+                                    }
+                                }, {
                                     text: '全部不通过',
                                     cls: 'btn btn-danger',
                                     handle: function (m) {
