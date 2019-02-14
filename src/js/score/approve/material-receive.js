@@ -1048,8 +1048,51 @@
                         return isVisibleRelationship
                     },
                     handle: function (index, d) {
-                        var requestUrl = App.href + "/api/score/materialReceive/identityInfo/getIdentityInfoExcelWJW?identityInfoId=" + d.personId;
-                        window.open(requestUrl);
+                        var requestUrl = App.href + "/api/score/print/approvewjwExcel?identityInfoId=" + d.personId;
+                        $.ajax({
+                            type: "GET",
+                            dataType: "json",
+                            url: requestUrl,
+                            success: function (data) {
+                                $.orangeModal({
+                                    title: "积分审核表(市卫健委)",
+                                    destroy: true,
+                                    buttons: [
+                                        {
+                                            type: 'button',
+                                            text: '关闭',
+                                            cls: "btn btn-default",
+                                            handle: function (m) {
+                                                m.hide()
+                                            }
+                                        }, {
+                                            text: '导出',
+                                            cls: 'btn btn-primary',
+                                            handle: function (m) {
+                                                var requestUrl = App.href + "/api/score/materialReceive/identityInfo/getIdentityInfoExcelWJW?identityInfoId=" + d.personId;
+                                                window.open(requestUrl);
+                                            }
+                                        }
+                                    ],
+                                    onEnter: function (m) {
+                                        m.$body.print({
+                                            globalStyles: true,
+                                            mediaPrint: false,
+                                            stylesheet: null,
+                                            noPrintSelector: ".no-print",
+                                            iframe: true,
+                                            append: null,
+                                            prepend: null,
+                                            manuallyCopyFormValues: true,
+                                            deferred: $.Deferred()
+                                        });
+                                    }
+                                }).show().$body.html(data.data.html);
+                            },
+                            error: function (e) {
+                                console.error("请求异常。");
+                            }
+                        });
                     }
                 }
             ],
