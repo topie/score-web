@@ -401,22 +401,115 @@
                                     return d.rensheAcceptStatus != 1;
                                 },
                                 handle: function (index, d) {
-                                    var modal = $.orangeModal({
-                                        id: "approve_form_modal",
-                                        title: "查看申请人信息",
-                                        destroy: true
-                                    }).show();
                                     var requestUrl = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_pre";
                                     $.ajax({
                                         type: "GET",
                                         dataType: "json",
                                         url: requestUrl,
                                         success: function (data) {
-                                            modal.$body.html(data.data.html);
-                                            var checkList = data.data.cMids;
-                                            for (var i in checkList) {
-                                                modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
-                                            }
+                                            $.orangeModal({
+                                                title: "查看申请人信息",
+                                                destroy: true,
+                                                buttons: [
+                                                    {
+                                                        type: 'button',
+                                                        text: '关闭',
+                                                        cls: "btn btn-default",
+                                                        handle: function (m) {
+                                                            m.hide()
+                                                        }
+                                                    }, {
+                                                        text: '全部打印',
+                                                        cls: 'btn btn-primary',
+                                                        handle: function (m) {
+                                                            var printDiv = $('#to_point');
+                                                            printDiv.html("");
+                                                            var count = 0;
+                                                            var picpic = $("[name='picpic']");
+                                                            picpic.each(function () {
+                                                                if ($(this).parent().prev().children().first()[0].checked) {
+                                                                    count++;
+                                                                }
+                                                            });
+                                                            var loadImg;
+                                                            var realWidth;
+                                                            var realHeight;
+                                                            var putWidth;
+                                                            var putHeight;
+                                                            var maxWidth = 630;
+                                                            var maxHeight = 958;
+                                                            var ratio = 0;
+
+                                                            picpic.each(function () {
+                                                                if ($(this).parent().prev().children().first()[0].checked) {
+                                                                    $("<img/>").attr("src", $(this).attr("src")).load(function () {
+                                                                        loadImg = $(this);
+                                                                        realWidth = this.width;
+                                                                        realHeight = this.height;
+                                                                        if (realWidth > realHeight) {
+                                                                            loadImg.css("transform", 'rotate(90deg)');
+                                                                            realWidth = realWidth ^ realHeight;
+                                                                            realHeight = realWidth ^ realHeight;
+                                                                            realWidth = realWidth ^ realHeight;
+                                                                        }
+
+                                                                        // 检查图片是否超宽
+                                                                        if (realWidth > maxWidth) {
+                                                                            ratio = maxWidth / realWidth;
+                                                                            putWidth = maxWidth;
+                                                                            realHeight = realHeight * ratio;
+                                                                            putHeight = realHeight;
+                                                                        } else {
+                                                                            putWidth = realWidth;
+                                                                        }
+
+                                                                        // 检查图片是否超高
+                                                                        if (realHeight > maxHeight) {
+                                                                            ratio = maxHeight / realHeight;
+                                                                            putHeight = maxHeight;
+                                                                            putWidth = putWidth * ratio;
+                                                                        } else {
+                                                                            putHeight = realHeight;
+                                                                        }
+
+                                                                        loadImg.css("width", putWidth);
+                                                                        loadImg.css("height", putHeight);
+
+                                                                        var topMargin = (maxHeight - putHeight) / 2;
+                                                                        var leftMargin = (maxWidth - putWidth) / 2;
+                                                                        printDiv.append("<div style='width: 650px;height: 978px'>" +
+                                                                            "<div style='padding: " + topMargin + "px " + leftMargin + "px'>" +
+                                                                            "</div></div>");
+                                                                        printDiv.children("div:last-child").children().first().append(loadImg);
+                                                                        count--;
+                                                                        if (count === 0) {
+                                                                            printDiv.show();
+                                                                            printDiv.print({
+                                                                                globalStyles: true,
+                                                                                mediaPrint: true,
+                                                                                stylesheet: null,
+                                                                                noPrintSelector: ".no-print",
+                                                                                iframe: false,
+                                                                                append: null,
+                                                                                prepend: null,
+                                                                                manuallyCopyFormValues: true,
+                                                                                deferred: $.Deferred()
+                                                                            });
+                                                                            printDiv.hide();
+                                                                        }
+                                                                    });
+
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                ]
+                                            }).show().$body.html(data.data.html);
+                                            /* modal.$body.html(data.data.html);
+                                             var checkList = data.data.cMids;
+                                             for (var i in checkList) {
+                                             modal.$body.find("input[name=material]:checkbox[value='" + checkList[i] + "']").attr('checked', 'true');
+                                             }*/
                                         },
                                         error: function (e) {
                                             console.error("请求异常。");
