@@ -702,6 +702,17 @@
                 field: 'acceptNumber'
             }
         ];
+
+        if (type === "scoring") {
+            columns.splice(4, 0,
+                {
+                    title: '剩余未打分项',
+                    field: 'score_value',
+                    format: function (i, d) {
+                        return d.scoreValue === null ? '无' : '剩余' + d.scoreValue + '项';
+                    }
+                });
+        }
         var grid;
         var options = {
             url: App.href + "/api/score/scoreRecord/identityInfo/" + type,
