@@ -168,6 +168,38 @@
                             }
                         }
                     ];
+                    if (type === "agree") {
+                        actionColumns.push({
+                            text: "撤回",
+                            cls: "btn-danger btn-sm",
+                            handle: function (index, d) {
+                                bootbox.confirm("确定该操作?", function (result) {
+                                    if (result) {
+                                        var requestUrl = App.href + "/api/score/applyCancel/revocation";
+                                        $.ajax({
+                                            type: "POST",
+                                            dataType: "json",
+                                            data: {
+                                                id: d.id
+                                            },
+                                            url: requestUrl,
+                                            success: function (data) {
+                                                if (data.code === 200) {
+                                                    mm.hide();
+                                                    grid.reload();
+                                                } else {
+                                                    alert(data.message);
+                                                }
+                                            },
+                                            error: function (e) {
+                                                console.error("请求异常。");
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
                     if (type === "ing") {
                         actionColumns.push({
                             text: "审核",
