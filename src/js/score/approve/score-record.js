@@ -828,6 +828,151 @@
                                             }
                                         });
                                     }
+                                },{
+                                    text: '确定并打印审核表',
+                                    cls: 'btn btn-info',
+                                    handle: function (m) {
+                                        var confirmMessage = "<div style='margin: auto;width: 60%'><table class='table table-hover table-bordered table-condensed' >";
+                                        $(".table_needScore").each(function () {
+                                            var scoreTabel = $(this).next();
+                                            var scoreValue = "未打分";
+                                            scoreTabel.find('input[type=radio]:checked').each(function () {
+                                                scoreValue = $(this).parent().next().next().text();
+                                            });
+                                            if (scoreValue == "未打分") {
+                                                scoreTabel.find('.needscore_inputValue').each(function () {
+                                                    if ($(this).val().trim() != "") {
+                                                        scoreValue = $(this).val() + "分";
+                                                    }
+                                                });
+                                            }
+                                            confirmMessage += "<tr>" + "<td>" + $(this).find(".th_needScore").text() + ":</td><td>" +
+                                                scoreValue + "</td>" + "</tr>";
+                                        });
+                                        confirmMessage += "</table></div>";
+
+                                        bootbox.confirm({
+                                            title: "确定打分吗?",
+                                            message: confirmMessage,
+                                            callback: function (result) {
+                                                if (result) {
+                                                    var sIds = [];
+                                                    var sAns = [];
+                                                    var sDetails = [];
+                                                    m.$body.find('input[type=radio]:checked').each(function () {
+                                                        sIds.push($(this).val());
+                                                    });
+                                                    var ms = 0;
+                                                    var indicatorId = "";
+                                                    var roleId = "";
+                                                    m.$body.find('input[type=text]').each(function () {
+                                                        if ($(this).attr("d-name") == "manScore") {
+                                                            if (parseFloat($(this).val()) > 0) {
+                                                                ms += parseFloat($(this).val());
+                                                                indicatorId = $(this).attr("d-indicator") + "";
+                                                                roleId = $(this).attr("d-roleId") + "";
+                                                            }
+                                                        } else {
+                                                            if ($.trim($(this).val()) != '') {
+                                                                sAns.push($(this).attr("d-indicator") + "_" + $(this).val() + "_" + $(this).attr("d-roleId"));
+                                                            }
+                                                        }
+                                                    });
+                                                    m.$body.find('textarea[d-name="reason"]').each(function () {
+                                                        var indicatorId = $(this).attr("d-indicator") + "";
+                                                        var roleId = $(this).attr("d-roleId") + "";
+                                                        sDetails.push(indicatorId + "_" + $(this).val() + "_" + roleId);
+                                                    });
+                                                    if (indicatorId != "" && roleId != "") {
+                                                        sAns.push(indicatorId + "_" + ms + "_" + roleId);
+                                                    }
+                                                    if (sAns.length == 0 && sIds.length == 0) {
+                                                        bootbox.alert('请打分');
+                                                        return;
+                                                    }
+                                                    var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/score";
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        dataType: "json",
+                                                        url: requestUrl,
+                                                        data: {
+                                                            personId: d.personId,
+                                                            sIds: sIds.toString(),
+                                                            sAns: sAns.toString(),
+                                                            sDetails: sDetails.toString()
+                                                        },
+                                                        success: function (data) {
+                                                            grid.reload();
+                                                            m.hide();
+                                                            var requestUrl = App.href + "/api/score/scoreRecord/identityInfo/approveDoc?identityInfoId=" + d.personId;
+                                                            $.ajax({
+                                                                type: "GET",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                success: function (data) {
+                                                                    $.orangeModal({
+                                                                        title: "审核表打印",
+                                                                        destroy: true,
+                                                                        buttons: [
+                                                                            {
+                                                                                type: 'button',
+                                                                                text: '关闭',
+                                                                                cls: "btn btn-default",
+                                                                                handle: function (m) {
+                                                                                    m.hide()
+                                                                                }
+                                                                            }, {
+                                                                                text: '打印',
+                                                                                cls: 'btn btn-primary',
+                                                                                handle: function (m) {
+                                                                                    m.$body.print({
+                                                                                        globalStyles: true,
+                                                                                        mediaPrint: false,
+                                                                                        stylesheet: null,
+                                                                                        noPrintSelector: ".no-print",
+                                                                                        iframe: true,
+                                                                                        append: null,
+                                                                                        prepend: null,
+                                                                                        manuallyCopyFormValues: true,
+                                                                                        deferred: $.Deferred()
+                                                                                    });
+                                                                                }
+                                                                            }, {
+                                                                                text: '导出',
+                                                                                cls: 'btn btn-primary',
+                                                                                handle: function (m) {
+                                                                                    window.open(App.href + "/api/score/scoreRecord/identityInfo/export/approveDoc?identityInfoId=" + d.personId)
+                                                                                }
+                                                                            }
+                                                                        ],
+                                                                        onEnter: function (m) {
+                                                                            m.$body.print({
+                                                                                globalStyles: true,
+                                                                                mediaPrint: false,
+                                                                                stylesheet: null,
+                                                                                noPrintSelector: ".no-print",
+                                                                                iframe: true,
+                                                                                append: null,
+                                                                                prepend: null,
+                                                                                manuallyCopyFormValues: true,
+                                                                                deferred: $.Deferred()
+                                                                            });
+                                                                        }
+                                                                    }).show().$body.html(data.data.html);
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
+                                                        },
+                                                        error: function (e) {
+                                                            console.error("请求异常。");
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
                                 }
                             ]
                         }).show();
