@@ -292,6 +292,34 @@
                                     });
                                 }
                             }, {
+                                text: "关联提供虚假材料的申请人",
+                                visible: function (i, d) {
+                                    return d.process === 2 || d.process === 3;
+                                },
+                                cls: "btn-danger btn-sm",
+                                handle: function (index, d) {
+                                    bootbox.confirm("确定该操作?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/info/checkInfo/relationFakeRecord";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                data: {
+                                                    batchId: d.id
+                                                },
+                                                success: function (result) {
+                                                    grid.reload();
+                                                },
+                                                error: function (e) {
+                                                    console.error("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            },
+                            {
                                 text: "取消汇总发布",
                                 visible: function (i, d) {
                                     return d.process === 2 || d.process === 3;
