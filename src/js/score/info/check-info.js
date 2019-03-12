@@ -294,7 +294,7 @@
                             }, {
                                 text: "关联提供虚假材料的申请人",
                                 visible: function (i, d) {
-                                    return d.process === 2 || d.process === 3;
+                                    return d.process === 1 ;
                                 },
                                 cls: "btn-danger btn-sm",
                                 handle: function (index, d) {
