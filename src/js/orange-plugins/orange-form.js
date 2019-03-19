@@ -967,7 +967,7 @@
             },
             'image': function (data, form) {
                 var imageTmpl = '<div><div class="fileinput fileinput-new" data-provides="fileinput">'
-                    + '<div class="fileinput-preview thumbnail" role="preview" data-trigger="fileinput" style="width: 200px; height: 150px; line-height: 150px;"></div>'
+                    + '<div class="fileinput-preview thumbnail" role="preview" data-trigger="fileinput" style="width: 900px; height: 1200px; line-height: 150px;"></div>'
                     + '<div role="imageDiv">'
                     + '<span class="btn btn-sm btn-default btn-file">'
                     + '<span class="fileinput-new">选择图片 </span>'
