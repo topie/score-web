@@ -567,7 +567,7 @@
             actionColumns: [
                 {
                     text: "查看",
-                    cls: "btn-danger btn-sm",
+                    cls: "btn-success btn-sm",
                     visible: function (i, d) {
                         return mode === "received"
                     },
@@ -596,7 +596,7 @@
                     }
                 }, {
                     text: '修改',
-                    cls: 'btn-warning btn-sm',
+                    cls: 'btn-danger btn-sm',
                     visible: function (i, d) {
                         return d.edit === 1;
                     },
