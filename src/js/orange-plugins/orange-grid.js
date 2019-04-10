@@ -170,7 +170,7 @@
         contentTypeItems: "table,card,list",
         showSearch: true,
         showPaging: true,
-        simplePaging: true,
+        simplePaging: false,
         actionColumnText: "操作",
         actionColumnAlign: "left",
         actionColumnWidth: "20%",
