@@ -175,9 +175,10 @@
                             items: [
                                 {
                                     type: "text",
-                                    label: "ID",
-                                    name: "id",
-                                    placeholder: "输入ID"
+                                    label: "申请人姓名",
+                                    name: "userName",
+                                    id:"userName",
+                                    placeholder: "输入申请人名字"
                                 }
                             ]
                         }

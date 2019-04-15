@@ -175,9 +175,10 @@
                             items: [
                                 {
                                     type: "text",
-                                    label: "ID",
-                                    name: "id",
-                                    placeholder: "输入ID"
+                                    label: "请输入公司名字",
+                                    name: "companyName",
+                                    id:"companyName",
+                                    placeholder: "请输入公司名字"
                                 }
                             ]
                         }
