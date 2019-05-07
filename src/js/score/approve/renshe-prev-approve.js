@@ -296,7 +296,7 @@
                                 text: "打印材料清单",
                                 cls: "btn btn-info btn-sm",
                                 visible: function (i, d) {
-                                    return d.unionApproveStatus2 != 1;
+                                    return d.unionApproveStatus2 != 1 && d.unionApproveStatus2 != 3 && d.unionApproveStatus2 != 4;
                                 },
                                 handle: function (i, d) {
                                     var requestUrl = App.href + "/api/score/print/uploadMaterialDoc?personId=" + d.id;
