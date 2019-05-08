@@ -389,7 +389,7 @@
                                                         deferred: $.Deferred()
                                                     });
                                                 }
-                                            }, {
+                                            }, /*{
                                                 text: "打印材料清单",
                                                 cls: "btn btn-info",
                                                 handle: function (m) {
@@ -435,7 +435,7 @@
                                                         }
                                                     });
                                                 }
-                                            },
+                                            },*/
                                             {
                                                 text: '通过',
                                                 cls: 'btn btn-info',
