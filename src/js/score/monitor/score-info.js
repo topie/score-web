@@ -316,7 +316,7 @@
                                                 action: App.href + "/api/score/applyScore/apply?scoreRecordId=" + d.id,
                                                 ajaxSubmit: true,
                                                 ajaxSuccess: function () {
-                                                    bootbox.alert('申请也发出，请耐心等待');
+                                                    bootbox.alert('申请已发出，请耐心等待');
                                                     modal.hide();
                                                 },
                                                 submitText: "提交",
