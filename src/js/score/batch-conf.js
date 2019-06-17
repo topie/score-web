@@ -178,11 +178,21 @@
                                     });
                                 }
                             }, {
+                                text: "申请人总分数排名",
+                                visible: function (i, d) {
+                                    return parseInt(d.process) >= 2
+                                },
+                                cls: "btn-info btn-sm",
+                                handle: function (index, d) {
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/provideTotalScore?batchId=" + d.id;
+                                    window.location.href = requestUrl;
+                                }
+                            }, {
                                 text: "给公安提供数据",
                                 visible: function (i, d) {
                                     return parseInt(d.process) >= 3
                                 },
-                                cls: "btn-info btn-sm",
+                                cls: "btn-primary btn-sm",
                                 handle: function (index, d) {
                                     var requestUrl = App.href + "/api/score/info/identityInfo/provideDataToPolice?batchId=" + d.id;
                                     window.location.href = requestUrl;
@@ -193,7 +203,7 @@
                                 visible: function (i, d) {
                                     return d.scoreValue != null && parseInt(d.process) >= 3;
                                 },
-                                cls: "btn-primary btn-sm",
+                                cls: "btn-info btn-sm",
                                 handle: function (index, d) {
                                     window.location.href = App.href + "/api/score/info/identityInfo/identityInfoRecipient?batchId=" + d.id;
                                 }
