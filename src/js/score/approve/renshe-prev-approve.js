@@ -129,6 +129,12 @@
                         ],
                         itemsUrl: App.href + '/api/score/info/identityInfo/options'
                     });
+                    searchItems.push({
+                        type: "datepicker",
+                        label: "申请审核日期",
+                        name: "preApprove",
+                        single: true
+                    });
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
@@ -223,6 +229,13 @@
                         {
                             title: '审核人',
                             field: 'opuser2'
+                        }
+                    );
+                    columns.push(
+                        {
+                            title: '申请审核日期',
+                            field: 'preApprove',
+                            sort: true
                         }
                     );
                     var grid;
