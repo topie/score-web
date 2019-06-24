@@ -129,12 +129,12 @@
                         ],
                         itemsUrl: App.href + '/api/score/info/identityInfo/options'
                     });
-                    searchItems.push({
-                        type: "datepicker",
-                        label: "申请审核日期",
-                        name: "preApprove",
-                        single: true
-                    });
+                    // searchItems.push({
+                    //     type: "datepicker",
+                    //     label: "申请审核日期",
+                    //     name: "preApprove",
+                    //     single: true
+                    // });
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
@@ -234,8 +234,7 @@
                     columns.push(
                         {
                             title: '申请审核日期',
-                            field: 'preApprove',
-                            sort: true
+                            field: 'regionName'
                         }
                     );
                     var grid;
@@ -886,18 +885,7 @@
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
-                            items: searchItems,
-                            buttons: [
-                                {
-                                    type: 'button',
-                                    text: '导出',
-                                    cls: "btn btn-danger btn-sm",
-                                    handle: function (g) {
-                                        var downloadUrl = App.href + "/api/score/stat/export/export5?" + g.$searchForm.serialize();
-                                        window.open(downloadUrl);
-                                    }
-                                }
-                            ]
+                            items: searchItems
                         }
                     };
                     grid = window.App.content.find("#grid").orangeGrid(options);
