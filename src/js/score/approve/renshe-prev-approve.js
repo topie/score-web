@@ -344,6 +344,13 @@
                                                         handle: function (m) {
                                                             m.hide()
                                                         }
+                                                    }, {
+                                                        type: 'button',
+                                                        text: '下载材料清单',
+                                                        cls: "btn btn-info",
+                                                        handle: function (m) {
+                                                            $("#printMaterialDoc").wordExport("材料清单_"+$("#printname").html()+$("#printidNumber").html());
+                                                        }
                                                     }
                                                 ]
                                             }).show().$body.html(data.data.html);
@@ -385,6 +392,14 @@
                                         title: "审核申请人信息",
                                         destroy: true,
                                         buttons: [
+                                            {
+                                                text: '下载申请人信息',
+                                                cls: 'btn btn-info',
+                                                handle: function (m) {
+                                                    //window.location.href = App.href + "/api/score/approve/renshePrevApprove/downloadWord?id=" + d.id;
+                                                    $("#info-tab").wordExport("材料清单_"+$("#infotab_name").html()+$("#infotab_idnumber").html());
+                                                }
+                                            },
                                             {
                                                 text: '打印申请人信息',
                                                 cls: 'btn btn-warning',
