@@ -397,7 +397,7 @@
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
                                                     //window.location.href = App.href + "/api/score/approve/renshePrevApprove/downloadWord?id=" + d.id;
-                                                    $("#info-tab").wordExport("材料清单_"+$("#infotab_name").html()+$("#infotab_idnumber").html());
+                                                    $("#info-tab").wordExport("申请人信息_"+$("#infotab_name").html()+$("#infotab_idnumber").html());
                                                 }
                                             },
                                             {
