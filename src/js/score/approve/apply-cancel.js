@@ -202,12 +202,12 @@
                     }
                     if (type === "ing") {
                         actionColumns.push({
-                            text: "审核",
+                            text: "登记",
                             cls: "btn-danger btn-sm",
                             handle: function (index, d) {
                                 var modal = $.orangeModal({
                                     id: "approve_form_modal",
-                                    title: "审核",
+                                    title: "登记",
                                     destroy: true,
                                     buttons: [
                                         {
