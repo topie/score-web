@@ -1273,12 +1273,12 @@
 
                     }
                 }, {
-                    text: "申请取消资格",
+                    text: "取消资格",
                     cls: "btn-danger btn-sm",
                     handle: function (index, d) {
                         var modal = $.orangeModal({
                             id: "score_apply_form_modal",
-                            title: "申请取消资格",
+                            title: "取消资格",
                             destroy: true
                         }).show();
                         modal.$body.orangeForm({
