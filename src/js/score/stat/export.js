@@ -469,6 +469,18 @@
                 }, {
                     title: '关系',
                     field: 'RELATIONSHIP'
+                }, {
+                    title: '经办人1',
+                    field: 'OPERATOR'
+                }, {
+                    title: '经办人1身份证号',
+                    field: 'IDCARDNUMBER_1'
+                }, {
+                    title: '经办人2',
+                    field: 'OPERATOR2'
+                }, {
+                    title: '经办人2身份证号',
+                    field: 'IDCARDNUMBER_2'
                 }
             ];
             var search = [
