@@ -5,7 +5,8 @@
 (function ($, window, document, undefined) {
     var uploadMapping = {
         "/api/score/materialReceive/receiving": "scoreMaterialReceiveReceiving",
-        "/api/score/materialReceive/received": "scoreMaterialReceiveReceived"
+        "/api/score/materialReceive/received": "scoreMaterialReceiveReceived",
+        "/api/score/materialReceive/refused": "scoreMaterialReceiveRefused"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
     App.scoreMaterialReceiveReceiving = {
@@ -106,6 +107,57 @@
             });
         }
     };
+
+    App.scoreMaterialReceiveRefused = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="widget-box">' +
+                '<div class="widget-header widget-header-flat">' +
+                '<h4 class="widget-title smaller">已接收</h4>' +
+                '<div class="widget-toolbar">' +
+                '<div class="pull-right">' +
+                '<div class="btn-toolbar inline middle no-margin">' +
+                '<div class="btn-group no-margin">' +
+                '<button id="id-button" class="btn btn-sm btn-success active">' +
+                '<span class="bigger-110">按申请人查看</span>' +
+                '</button>' +
+                '<button id="in-button" class="btn btn-sm btn-success">' +
+                '<span class="bigger-110">按指标查看</span>' +
+                '</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '<div class="widget-body">' +
+                '<div class="widget-main" id="grid">' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            scoreMaterialReceiveIdentityInfo("refused");
+            content.find("#in-button").on("click", function () {
+                $("#id-button").removeClass("active");
+                $("#in-button").addClass("active");
+                content.find("#grid").empty();
+               // scoreMaterialReceive("received");
+            });
+            content.find("#id-button").on("click", function () {
+                $("#in-button").removeClass("active");
+                $("#id-button").addClass("active");
+                content.find("#grid").empty();
+                scoreMaterialReceiveIdentityInfo("refused");
+            });
+        }
+    };
+
     var scoreMaterialReceive = function (mode) {
         $.ajax({
             type: "GET",
