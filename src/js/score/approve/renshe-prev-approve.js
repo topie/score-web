@@ -84,6 +84,16 @@
         }
     };
     var scoreRenshePrevApprove = function (type) {
+
+        //是否显示家庭关系（卫健委）按钮
+        var isVisibleRelationship = false;
+        var userType = window.App.currentUser['userType'];
+        // 2019年7月29日，将这个表格添加到审核中心——人社预审——待审核——操作列，滨海新区人社权限用户可见
+        // 管理员也可见，0：市区；1：滨海；2：市区+滨海
+        if(userType==1 || userType==2){
+            isVisibleRelationship = true;
+        }
+
         $.ajax({
             type: "GET",
             dataType: "json",
@@ -899,7 +909,7 @@
                                 text: "积分审核表(市卫健委)",
                                 cls: "btn-primary btn-sm",
                                 visible: function (i, d) {
-                                    return true;
+                                    return isVisibleRelationship;
                                 },
                                 handle: function (index, d) {
                                     var requestUrl = App.href + "/api/score/print/approvewjwExcel?identityInfoId=" + d.id;
