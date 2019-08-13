@@ -1032,7 +1032,7 @@
                                             }
                                         });
                                     }
-                                }, {
+                                }/*, {
                                     text: '全部不通过',
                                     cls: 'btn btn-danger',
                                     handle: function (m) {
@@ -1073,7 +1073,7 @@
                                             }
                                         });
                                     }
-                                }
+                                }*/
                             ]
                         }).show();
                         var requestUrl = App.href + "/api/score/materialReceive/identityInfo/detailAll?identityInfoId=" + d.personId;
