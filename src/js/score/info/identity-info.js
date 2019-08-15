@@ -297,6 +297,36 @@
                                         }
                                     });
                                 }
+                            }, {
+                                text: "恢复到测评前",
+                                cls: "btn-danger btn-sm",
+                                visible: function (i, d) {
+                                    return true;
+                                },
+                                handle: function (index, d) {
+                                    bootbox.confirm("确定该操作，恢复此人到测评前?", function (result) {
+                                        if (result) {
+                                            var requestUrl = App.href + "/api/score/approve/rensheAccept/selfTest";
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                data: {
+                                                    id: d.id
+                                                },
+                                                success: function (data) {
+                                                    grid.reload();
+                                                    if (data.code !== 200) {
+                                                        bootbox.alert(data.message);
+                                                    }
+                                                },
+                                                error: function (e) {
+                                                    console.error("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
                             }
                         ],
                         search: {
