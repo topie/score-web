@@ -119,6 +119,25 @@
                     var scoreRecordStatus = fd.data.scoreRecordStatus;
                     if (searchItems == null)
                         searchItems = [];
+                    searchItems.push({
+                        type: 'select',
+                        label: '打分日期查询设置',
+                        name: 'dateSearch',
+                        items: [
+                            {
+                                text: '关闭',
+                                value: 0
+                            }, {
+                                text: '开启',
+                                value: 1
+                            }
+                        ]
+                    },{
+                        type: "datepicker",
+                        label: "打分日期",
+                        name: "scoreDate",
+                        single: true
+                    });
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
                         if (dd.type === 'text' || dd.name === 'id') {
@@ -561,7 +580,18 @@
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
-                            items: searchItems
+                            items: searchItems,
+                            buttons: [
+                                {
+                                    type: 'button',
+                                    text: '导出',
+                                    cls: "btn btn-danger btn-sm",
+                                    handle: function (g) {
+                                        var downloadUrl = App.href + "/api/score/stat/export/exportScored?" + g.$searchForm.serialize();
+                                        window.open(downloadUrl);
+                                    }
+                                }
+                            ]
                         }
                     };
                     grid = window.App.content.find("#grid").orangeGrid(options);
