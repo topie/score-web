@@ -255,6 +255,116 @@
                                     });
                                 }
                             }, {
+                                text: '修改材料+打分状态',
+                                cls: 'btn-danger btn-sm',
+                                visible: function (i, d) {
+                                    return true;
+                                },
+                                handle: function (i, d) {
+                                    var modal = $.orangeModal({
+                                        id: "approve_edit_form_modal",
+                                        title: "修改申请人材料+打分状态",
+                                        width: "70%",
+                                        height: "460px",
+                                        destroy: true,
+                                        buttons: [
+                                            {
+                                                text: '保存',
+                                                cls: 'btn btn-warning',
+                                                handle: function (mm) {
+                                                    bootbox.confirm("确定修改吗?", function (result) {
+                                                        if (result) {
+                                                            var arr = [];
+                                                            mm.$body.find(".id").each(function () {
+                                                                var that = $(this);
+                                                                arr.push({
+                                                                    'id': that.val()
+                                                                });
+                                                            });
+                                                            // 材料接收与打分的状态
+                                                            var arr2 = [];
+                                                            mm.$body.find(".status").each(function () {
+                                                                var that = $(this);
+                                                                arr2.push({
+                                                                    'status': that.val()
+                                                                });
+                                                            });
+                                                            // 得分
+                                                            var arr3 = [];
+                                                            mm.$body.find(".scoreValue").each(function () {
+                                                                var that = $(this);
+                                                                arr3.push({
+                                                                    'scoreValue': that.val()
+                                                                });
+                                                            });
+
+                                                            // 打分项目
+                                                            var arr4 = [];
+                                                            mm.$body.find(".indicatorName").each(function () {
+                                                                var that = $(this);
+                                                                arr4.push({
+                                                                    'indicatorName': that.val()
+                                                                });
+                                                            });
+
+                                                            var requestUrl = App.href + "/api/score/info/identityInfo/saveChange";
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                dataType: "json",
+                                                                url: requestUrl,
+                                                                data: {
+                                                                    ids: JSON.stringify(arr),
+                                                                    statuss:JSON.stringify(arr2),
+                                                                    scoreValues:JSON.stringify(arr3),
+                                                                    indicatorNames:JSON.stringify(arr4)
+                                                                },
+                                                                success: function (data) {
+                                                                    var requestUrl1 = App.href + "/api/score/info/identityInfo/detailAll?identityInfoId=" + d.id + "&template=identity_info_for_edit";
+                                                                    $.ajax({
+                                                                        type: "GET",
+                                                                        dataType: "json",
+                                                                        url: requestUrl1,
+                                                                        success: function (data) {
+                                                                            modal.$body.html(data.data.html);
+                                                                        },
+                                                                        error: function (e) {
+                                                                            console.error("请求异常。");
+                                                                        }
+                                                                    });
+                                                                    mm.hide();
+                                                                },
+                                                                error: function (e) {
+                                                                    console.error("请求异常。");
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+
+                                                }
+                                            },
+                                            {
+                                                text: '关闭',
+                                                cls: 'btn btn-default',
+                                                handle: function (mm) {
+                                                    mm.hide();
+                                                }
+                                            }
+                                        ]
+                                    }).show();
+                                    var requestUrl = App.href + "/api/score/info/identityInfo/changeMaterialAndScore?identityInfoId=" + d.id + "&template=score_record_edit";
+                                    $.ajax({
+                                        type: "GET",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            modal.$body.html(data.data.html);
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            }, {
                                 text: "审核过程",
                                 cls: "btn-success btn-sm",
                                 handle: function (index, data) {
