@@ -34,7 +34,7 @@ jQuery
 
 				return io;
 			},
-			createUploadForm : function(id, fileElementId) {
+			createUploadForm : function(id, fileElementId,data) {
 				// create form
 				var formId = 'jUploadForm' + id;
 				var fileId = 'jUploadFile' + id;
@@ -46,6 +46,11 @@ jQuery
 				jQuery(oldElement).attr('id', fileId);
 				jQuery(oldElement).before(newElement);
 				jQuery(oldElement).appendTo(form);
+				if (data){
+					for (var i in data){
+                        $('<input type="hidden" name="' + i + '" value="' + data[i] + '" />').appendTo(form);
+                    }
+				}
 				// set attributes
 				jQuery(form).css('position', 'absolute');
 				jQuery(form).css('top', '-1200px');
@@ -59,7 +64,7 @@ jQuery
 				// them for all requests, not only timeout
 				s = jQuery.extend({}, jQuery.ajaxSettings, s);
 				var id = s.fileElementId;
-				var form = jQuery.createUploadForm(id, s.fileElementId);
+				var form = jQuery.createUploadForm(id, s.fileElementId, s.data);
 				var io = jQuery.createUploadIframe(id, s.secureuri);
 				var frameId = 'jUploadFrame' + id;
 				var formId = 'jUploadForm' + id;
