@@ -110,20 +110,20 @@
                             return personBatchStatusRecords[cd.id];
                         }
                     });
-                    columns.push(
-                        {
-                            title: '企业',
-                            field: 'companyId',
-                            format: function (i, cd) {
-                                if (cd.companyWarning == 1) {
-                                    return '<span style="color: red">' + companyNames[cd.companyId] + '</span>';
-                                } else {
-                                    return companyNames[cd.companyId];
-                                }
-
-                            }
-                        }
-                    );
+                    // columns.push(
+                    //     {
+                    //         title: '企业',
+                    //         field: 'companyId',
+                    //         format: function (i, cd) {
+                    //             if (cd.companyWarning == 1) {
+                    //                 return '<span style="color: red">' + companyNames[cd.companyId] + '</span>';
+                    //             } else {
+                    //                 return companyNames[cd.companyId];
+                    //             }
+                    //
+                    //         }
+                    //     }
+                    // );
                     var grid;
                     var options = {
                         url: App.href + "/api/score/monitor/scoreInfo/list",
