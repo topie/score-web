@@ -122,7 +122,8 @@
                         title: '所属企业',
                         field: 'companyId',
                         format: function (i, cd) {
-                            return companyNames[cd.companyId];
+                            // return companyNames[cd.companyId];
+                            return "";
                         }
                     });
                     var grid;
