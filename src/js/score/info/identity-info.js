@@ -48,7 +48,7 @@
                             value: ''
                         }],
                         itemsUrl: App.href + '/api/score/companyInfo/options'
-                    });*/
+                    });
                     searchItems.push({
                         type: 'select',
                         label: '批次',
@@ -58,7 +58,7 @@
                             value: ''
                         }],
                         itemsUrl: App.href + '/api/score/batchConf/options'
-                    });
+                    });*/
 
                     var columns = [];
                     $.each(formItems, function (ii, dd) {
