@@ -39,7 +39,7 @@
                     var hallStatus = fd.data.hallStatus;
                     if (searchItems == null)
                         searchItems = [];
-                    searchItems.push({
+                    /*searchItems.push({
                         type: 'select',
                         label: '企业',
                         name: 'companyId',
@@ -48,7 +48,7 @@
                             value: ''
                         }],
                         itemsUrl: App.href + '/api/score/companyInfo/options'
-                    });
+                    });*/
                     searchItems.push({
                         type: 'select',
                         label: '批次',
