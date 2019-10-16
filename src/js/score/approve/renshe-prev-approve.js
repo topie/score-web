@@ -191,20 +191,20 @@
                             }
                         }
                     );
-                    // columns.push(
-                    //     {
-                    //         title: '企业',
-                    //         field: 'companyId',
-                    //         format: function (i, cd) {
-                    //             if (cd.companyWarning == 1) {
-                    //                 return '<span style="color: red">' + companyNames[cd.companyId] + '</span>';
-                    //             } else {
-                    //                 return companyNames[cd.companyId];
-                    //             }
-                    //
-                    //         }
-                    //     }
-                    // );
+                    columns.push(
+                        {
+                            title: '企业',
+                            field: 'companyId',
+                            format: function (i, cd) {
+                                if (cd.companyWarning == 1) {
+                                    return '<span style="color: red">' + cd.isPreviewd + '</span>';
+                                } else {
+                                    return cd.isPreviewd;
+                                }
+
+                            }
+                        }
+                    );
                     columns.push(
                         {
                             title: '人社审核状态',
