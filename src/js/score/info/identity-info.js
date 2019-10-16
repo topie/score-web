@@ -118,14 +118,14 @@
                             return cd.resultStatus === 0 ? '未核算' : '已核算';
                         }
                     });
-                    columns.push({
-                        title: '所属企业',
-                        field: 'companyId',
-                        format: function (i, cd) {
-                            // return companyNames[cd.companyId];
-                            return "";
-                        }
-                    });
+                    // columns.push({
+                    //     title: '所属企业',
+                    //     field: 'companyId',
+                    //     format: function (i, cd) {
+                    //         // return companyNames[cd.companyId];
+                    //         return "";
+                    //     }
+                    // });
                     var grid;
                     var options = {
                         url: App.href + "/api/score/info/identityInfo/list",
