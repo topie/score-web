@@ -259,7 +259,7 @@
                                 text: '修改材料+打分状态',
                                 cls: 'btn-danger btn-sm',
                                 visible: function (i, d) {
-                                    return true;
+                                    return d.formerName==100;
                                 },
                                 handle: function (i, d) {
                                     var modal = $.orangeModal({
