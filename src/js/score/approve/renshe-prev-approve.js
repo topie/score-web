@@ -315,6 +315,34 @@
                                     });
                                 }
                             }, {
+                                text: "退回至未审核",
+                                cls: "btn-danger btn-sm",
+                                visible: function (i, d) {
+                                    return d.unionApproveStatus2 != 1 && d.unionApproveStatus2 != 4;
+                                },
+                                handle: function (index, d) {
+                                    if (d.policeApproveStatus !=0 || reservationStatus == 11){
+                                        alert("已流转到下一个流程，退回失败！");
+                                        return false;
+                                    }
+                                    bootbox.confirm("确定该操作？", function (result) {
+                                        if (result){
+                                            var requestUrl = App.href + "/api/score/approve/renshePrevApprove/backStart?id=" + d.id;
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                success: function (data) {
+                                                    grid.reload();
+                                                },
+                                                error: function (e) {
+                                                    console.error("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            }, {
                                 text: "打印材料清单",
                                 cls: "btn btn-info btn-sm",
                                 visible: function (i, d) {
