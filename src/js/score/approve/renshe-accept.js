@@ -747,6 +747,31 @@
                                         }
                                     });
                                 }
+                            }, {
+                                text: "退回至受理待审核",
+                                cls: "btn-primary btn-sm",
+                                visible: function (i, d) {
+                                    return (d.rensheAcceptStatus == 3) || (d.rensheAcceptStatus == 4);
+                                },
+                                handle: function (index, d) {
+                                    bootbox.confirm("确定该操作？", function (result) {
+                                        if (result){
+                                            var requestUrl = App.href + "/api/score/approve/rensheAccept/backRensheApprove?id=" + d.id;
+                                            $.ajax({
+                                                type: "POST",
+                                                dataType: "json",
+                                                url: requestUrl,
+                                                success: function (data) {
+                                                    grid.reload();
+                                                },
+                                                error: function (e) {
+                                                    console.error("请求异常。");
+                                                }
+                                            });
+                                        }
+                                    });
+
+                                }
                             }
                         ],
                         search: {
