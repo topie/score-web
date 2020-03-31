@@ -636,7 +636,7 @@
                 name: 'personName'
             }, {
                 type: 'select',
-                label: '受理日期查询设置',
+                label: '申请审核日期查询设置',
                 name: 'dateSearch',
                 items: [
                     {
@@ -649,7 +649,7 @@
                 ]
             }, {
                 type: 'datepicker',
-                label: '受理日期',
+                label: '申请审核日期',
                 name: 'acceptDate',
                 single: true
             }
@@ -719,11 +719,15 @@
                 field: 'personIdNum'
             },
             {
+                title: '合同/产权证',
+                field: 'scoreDetail'
+            },
+            {
                 title: '企业',
                 field: 'companyName'
             },
             {
-                title: '受理日期',
+                title: '申请审核日期',
                 field: 'acceptDate',
                 sort: true
             },

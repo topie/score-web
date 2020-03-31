@@ -585,6 +585,10 @@
                 field: 'personIdNum'
             },
             {
+                title: '合同/产权证',
+                field: 'scoreDetail'
+            },
+            {
                 title: '企业',
                 field: 'companyName'
             },
