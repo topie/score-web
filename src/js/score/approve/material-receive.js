@@ -805,7 +805,7 @@
                 }, {
                     text: "接收",
                     visible: function (i, d) {
-                        return mode === "receiving"
+                        return (mode === "receiving" || mode === "refused");
                     },
                     cls: "btn-primary btn-sm",
                     handle: function (index, d) {
