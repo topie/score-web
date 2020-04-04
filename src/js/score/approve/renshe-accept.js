@@ -284,6 +284,23 @@
                                         destroy: true,
                                         buttons: [
                                             {
+                                                text: '打印申请人信息',
+                                                cls: 'btn btn-warning',
+                                                handle: function (m) {
+                                                    m.$body.find("#info-tab").print({
+                                                        globalStyles: true,
+                                                        mediaPrint: false,
+                                                        stylesheet: null,
+                                                        noPrintSelector: ".no-print",
+                                                        iframe: true,
+                                                        append: null,
+                                                        prepend: null,
+                                                        manuallyCopyFormValues: true,
+                                                        deferred: $.Deferred()
+                                                    });
+                                                }
+                                            },
+                                            {
                                                 text: '通过',
                                                 cls: 'btn btn-info',
                                                 handle: function (m) {
@@ -510,6 +527,23 @@
                                                         cls: "btn btn-default",
                                                         handle: function (m) {
                                                             m.hide()
+                                                        }
+                                                    },
+                                                    {
+                                                        text: '打印申请人信息',
+                                                        cls: 'btn btn-warning',
+                                                        handle: function (m) {
+                                                            m.$body.find("#info-tab").print({
+                                                                globalStyles: true,
+                                                                mediaPrint: false,
+                                                                stylesheet: null,
+                                                                noPrintSelector: ".no-print",
+                                                                iframe: true,
+                                                                append: null,
+                                                                prepend: null,
+                                                                manuallyCopyFormValues: true,
+                                                                deferred: $.Deferred()
+                                                            });
                                                         }
                                                     }, {
                                                         text: '材料上传全部打印',
