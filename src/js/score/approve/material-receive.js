@@ -501,6 +501,64 @@
                 label: '受理日期',
                 name: 'acceptDate',
                 single: true
+            }, {
+                type: 'select',
+                label: '房子合同/产权证',
+                name: 'rightProperty',
+                items: [
+                    {
+                        text: '请选择',
+                        value: 0
+                    }, {
+                        text: '持有“不动产权证”',
+                        value: 1
+                    }, {
+                        text: '持有《天津市商品房买卖合同》或《天津市二手房买卖协议》，未取得“不动产权证”',
+                        value: 2
+                    }
+                ]
+            }
+            , {
+                type: 'select',
+                label: '受教育程度',
+                name: 'cultureDegree',
+                items: [
+                    {
+                        text: '请选择',
+                        value: 0
+                    }, {
+                        text: '本科及以上学历',
+                        value: 4
+                    }, {
+                        text: '大专学历',
+                        value: 5
+                    }
+                    , {
+                        text: '高级技工学校高级班',
+                        value: 1011
+                    }
+                    , {
+                        text: '无',
+                        value: 1013
+                    }
+                ]
+            }
+            , {
+                type: 'select',
+                label: '配偶是否在天津就业且用人单位依法缴纳社会保险累计满24个月',
+                name: 'inTianjin',
+                items: [
+                    {
+                        text: '请选择',
+                        value: 0
+                    }, {
+                        text: '是',
+                        value: 1
+                    }, {
+                        text: '否',
+                        value: 2
+                    }
+                ]
             }
         ];
         searchItems.push(
@@ -583,10 +641,6 @@
             {
                 title: '申请人身份证',
                 field: 'personIdNum'
-            },
-            {
-                title: '合同/产权证',
-                field: 'scoreDetail'
             },
             {
                 title: '企业',
