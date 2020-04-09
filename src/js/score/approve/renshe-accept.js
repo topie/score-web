@@ -120,6 +120,24 @@
                                 }
                             ],
                             itemsUrl: App.href + '/api/score/companyInfo/options'
+                        },{
+                            type: 'select',
+                            label: '受理日期查询设置',
+                            name: 'dateSearch',
+                            items: [
+                                {
+                                    text: '关闭',
+                                    value: 0
+                                }, {
+                                    text: '开启',
+                                    value: 1
+                                }
+                            ]
+                        },{
+                            type: "datepicker",
+                            label: "申请审核日期",
+                            name: "reservationDate",
+                            single: true
                         }
                     );
                     var columns = [];
@@ -187,7 +205,7 @@
                                 return hallStatus[cd.hallStatus];
                             }
                         }, {
-                            title: '预约日期',
+                            title: '申请审核日期',
                             field: 'reservationDate'
                         },
                         {
