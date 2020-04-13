@@ -559,6 +559,22 @@
                         value: 2
                     }
                 ]
+            }, {
+                type: 'select',
+                label: '是否缴存住房公积金',
+                name: 'providentFund',
+                items: [
+                    {
+                        text: '请选择',
+                        value: 0
+                    }, {
+                        text: '是',
+                        value: 1
+                    }, {
+                        text: '否',
+                        value: 2
+                    }
+                ]
             }
         ];
         searchItems.push(
