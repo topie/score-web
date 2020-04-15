@@ -207,6 +207,9 @@
                         }, {
                             title: '申请审核日期',
                             field: 'reservationDate'
+                        },{
+                            title: '不通过原因',
+                            field: 'rejectReason'
                         },
                         {
                             title: '人社受理状态',
