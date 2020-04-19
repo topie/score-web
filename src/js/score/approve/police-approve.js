@@ -152,6 +152,9 @@
                             format: function (i, cd) {
                                 return policeApproveStatus[cd.policeApproveStatus];
                             }
+                        }, {
+                            title: '申请审核日期',
+                            field: 'reservationDate'
                         }
                     );
                     if (type == "approved") {
