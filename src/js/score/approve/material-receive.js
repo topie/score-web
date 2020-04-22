@@ -561,6 +561,28 @@
                 ]
             }, {
                 type: 'select',
+                label: '服役期间立功情况',
+                name: 'soldierMeritorious',
+                items: [
+                    {
+                        text: '请选择',
+                        value: 0
+                    }, {
+                        text: '荣立个人一等功',
+                        value: 47
+                    }, {
+                        text: '荣立个人二等功',
+                        value: 48
+                    }, {
+                        text: '荣立个人三等功',
+                        value: 49
+                    }, {
+                        text: '无',
+                        value: 50
+                    }
+                ]
+            }, {
+                type: 'select',
                 label: '是否缴存住房公积金',
                 name: 'providentFund',
                 items: [
@@ -577,20 +599,20 @@
                 ]
             }
         ];
-        searchItems.push(
-            {
-                type: "select",
-                label: "企业",
-                name: "companyId",
-                items: [
-                    {
-                        text: '全部',
-                        value: ''
-                    }
-                ],
-                itemsUrl: App.href + '/api/score/companyInfo/options'
-            }
-        );
+        // searchItems.push(
+        //     {
+        //         type: "select",
+        //         label: "企业",
+        //         name: "companyId",
+        //         items: [
+        //             {
+        //                 text: '全部',
+        //                 value: ''
+        //             }
+        //         ],
+        //         itemsUrl: App.href + '/api/score/companyInfo/options'
+        //     }
+        // );
         var columns = [
             {
                 title: '申请人ID',
