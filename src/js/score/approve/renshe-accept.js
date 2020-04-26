@@ -220,6 +220,12 @@
                         });
                     columns.push(
                         {
+                            title: '锁定人',
+                            field: 'lockUser2'
+                        }
+                    );
+                    columns.push(
+                        {
                             title: '审核人',
                             field: 'opuser4'
                         }
@@ -286,6 +292,26 @@
                                                     }
                                                 ]
                                             }).show().$body.html(data.data.html);
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            },{
+                                text: "锁定",
+                                cls: "btn-danger btn-sm",
+                                visible: function (i, d) {
+                                    return (d.lockUser2 == null || d.lockUser2 == '');
+                                },
+                                handle: function (index, d) {
+                                    var requestUrl = App.href + "/api/score/approve/renshePrevApprove/lock?id=" + d.id;
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            grid.reload();
                                         },
                                         error: function (e) {
                                             console.error("请求异常。");
