@@ -109,7 +109,7 @@
                     if (searchItems == null)
                         searchItems = [];
                     searchItems.push(
-                        {
+                        /*{
                             type: "select",
                             label: "企业",
                             name: "companyId",
@@ -120,7 +120,7 @@
                                 }
                             ],
                             itemsUrl: App.href + '/api/score/companyInfo/options'
-                        },{
+                        },*/{
                             type: 'select',
                             label: '受理日期查询设置',
                             name: 'dateSearch',
@@ -140,7 +140,7 @@
                             single: true
                         }, {
                             type: 'text',
-                            label: '公司名字',
+                            label: '单位名称',
                             name: 'rentHouseAddress'
                         }
                     );

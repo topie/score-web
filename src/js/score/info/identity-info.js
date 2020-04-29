@@ -60,7 +60,7 @@
                         itemsUrl: App.href + '/api/score/batchConf/options'
                     }, {
                         type: 'text',
-                        label: '公司名字',
+                        label: '单位名称',
                         name: 'rentHouseAddress'
                     });
 
