@@ -138,6 +138,10 @@
                             label: "申请审核日期",
                             name: "reservationDate",
                             single: true
+                        }, {
+                            type: 'text',
+                            label: '公司名字',
+                            name: 'rentHouseAddress'
                         }
                     );
                     var columns = [];

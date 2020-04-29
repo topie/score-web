@@ -58,6 +58,10 @@
                             value: ''
                         }],
                         itemsUrl: App.href + '/api/score/batchConf/options'
+                    }, {
+                        type: 'text',
+                        label: '公司名字',
+                        name: 'rentHouseAddress'
                     });
 
                     var columns = [];
