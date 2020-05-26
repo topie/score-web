@@ -4,7 +4,7 @@
 ;
 (function ($, window, document, undefined) {
     var uploadMapping = {
-        "/api/score/scoreRecord/toReview": "toReview"
+        "/api/score/approve/renshePrevApprove/toReview": "toReview"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
     App.toReview = {
@@ -32,7 +32,7 @@
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: App.href + "/api/score/scoreRecord/formItems",
+            url: App.href + "/api/score/approve/renshePrevApprove/formItems",
             success: function (fd) {
                 if (fd.code === 200) {
                     var formItems = fd.data.formItems;
@@ -58,14 +58,14 @@
                             items: [
                                 {
                                     text: '全部',
-                                    value: 10
+                                    value: 12
                                 },
                                 {
                                     text: '没处理',
-                                    value: 0
+                                    value: 1
                                 }, {
                                     text: '已处理',
-                                    value: 1
+                                    value: 2
                                 }
                             ]
                         }
@@ -77,23 +77,15 @@
                     });
                     columns.push({
                         title: '姓名',
-                        field: 'personName',
+                        field: 'name',
                     });
                     columns.push({
                         title: '身份证号码',
-                        field: 'personIdNum'
-                    });
-                    columns.push({
-                        title: '申报单位',
-                        field: 'companyName'
-                    });
-                    columns.push({
-                        title: '指标名称',
-                        field: 'indicatorName'
+                        field: 'idNumber'
                     });
                     columns.push({
                         title: '申请人申请复核的理由',
-                        field: 'toreviewreason'
+                        field: 'cancelReason'
                     });
                     columns.push({
                         title: '申请复核的时间',
@@ -101,15 +93,15 @@
                     });
                     columns.push({
                         title: '申请复核是否完毕',
-                        field: 'idreviewend',
+                        field: 'istoreview',
                         format: function (ii, dd) {
-                            return dd.idreviewend === 1 ? '完毕' : '复核中';
+                            return dd.istoreview === 2 ? '完毕' : '复核中';
                         }
                     });
 
                     var grid;
                     var options = {
-                        url: App.href + "/api/score/scoreRecord/" + type,
+                        url: App.href + "/api/score/approve/rensheAccept/" + type,
                         contentType: "table",
                         contentTypeItems: "table,card,list",
                         pageNum: 1,//当前页码
@@ -130,12 +122,12 @@
                                 text: "点击受理",
                                 cls: "btn-danger btn-sm",
                                 visible: function (i, d) {
-                                    return d.unionApproveStatus2 != 1 && d.unionApproveStatus2 != 4;
+                                    return d.istoreview == 1;
                                 },
                                 handle: function (index, d) {
                                     bootbox.confirm("确定该操作？", function (result) {
                                         if (result){
-                                            var requestUrl = App.href + "/api/score/scoreRecord/clickHandle?id=" + d.id;
+                                            var requestUrl = App.href + "/api/score/approve/rensheAccept/clickHandle?id=" + d.id;
                                             $.ajax({
                                                 type: "POST",
                                                 dataType: "json",
