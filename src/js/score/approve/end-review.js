@@ -130,7 +130,7 @@
                                 text: "点击受理",
                                 cls: "btn-danger btn-sm",
                                 visible: function (i, d) {
-                                    return d.unionApproveStatus2 != 1 && d.unionApproveStatus2 != 4;
+                                    return d.idreviewend!=1;
                                 },
                                 handle: function (index, d) {
                                     bootbox.confirm("确定该操作？", function (result) {

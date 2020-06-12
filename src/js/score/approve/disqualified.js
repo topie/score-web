@@ -4,10 +4,10 @@
 ;
 (function ($, window, document, undefined) {
     var uploadMapping = {
-        "/api/score/approve/renshePrevApprove/toReview": "toReview"
+        "/api/score/approve/renshePrevApprove/toReview": "toReview2"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
-    App.toReview = {
+    App.toReview2 = {
         page: function (title) {
             window.App.content.empty();
             window.App.title(title);
