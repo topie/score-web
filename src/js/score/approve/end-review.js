@@ -88,6 +88,10 @@
                         field: 'companyName'
                     });
                     columns.push({
+                        title: '打分用户',
+                        field: 'opUser'
+                    });
+                    columns.push({
                         title: '指标名称',
                         field: 'indicatorName'
                     });
@@ -155,7 +159,18 @@
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
-                            items: searchItems
+                            items: searchItems,
+                            buttons: [
+                                {
+                                    type: 'button',
+                                    text: '导出',
+                                    cls: "btn btn-danger btn-sm",
+                                    handle: function (g) {
+                                        var downloadUrl = App.href + "/api/score/stat/export/exportReview?" + g.$searchForm.serialize();
+                                        window.open(downloadUrl);
+                                    }
+                                }
+                            ]
                         }
                     };
                     grid = window.App.content.find("#grid").orangeGrid(options);
