@@ -119,7 +119,7 @@
                         actionColumnWidth: "20%",
                         actionColumns: [
                             {
-                                text: "点击受理",
+                                text: "点击办结",
                                 cls: "btn-danger btn-sm",
                                 visible: function (i, d) {
                                     return d.istoreview == 1;
