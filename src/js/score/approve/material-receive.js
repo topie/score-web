@@ -937,7 +937,7 @@
                                                                         dataType: "json",
                                                                         url: requestUrl,
                                                                         success: function (data) {
-                                                                            $.orangeModal({
+                                                                            /*$.orangeModal({
                                                                                 title: "打印接收凭证",
                                                                                 destroy: true,
                                                                                 buttons: [
@@ -966,7 +966,7 @@
                                                                                         }
                                                                                     }
                                                                                 ]
-                                                                            }).show().$body.html(data.data.html);
+                                                                            }).show().$body.html(data.data.html);*/
                                                                         },
                                                                         error: function (e) {
                                                                             console.error("请求异常。");
@@ -998,7 +998,7 @@
                                                                 dataType: "json",
                                                                 url: requestUrl,
                                                                 success: function (data) {
-                                                                    $.orangeModal({
+                                                                    /*$.orangeModal({
                                                                         title: "打印接收凭证",
                                                                         destroy: true,
                                                                         buttons: [
@@ -1027,7 +1027,7 @@
                                                                                 }
                                                                             }
                                                                         ]
-                                                                    }).show().$body.html(data.data.html);
+                                                                    }).show().$body.html(data.data.html);*/
                                                                 },
                                                                 error: function (e) {
                                                                     console.error("请求异常。");
