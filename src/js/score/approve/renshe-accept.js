@@ -306,7 +306,7 @@
                                 text: "锁定",
                                 cls: "btn-danger btn-sm",
                                 visible: function (i, d) {
-                                    return (d.lockUser2 == null || d.lockUser2 == '');
+                                    return (d.lockUser2 == null || d.lockUser2 == '') && (d.rensheOrGongan == 4);
                                 },
                                 handle: function (index, d) {
                                     var requestUrl = App.href + "/api/score/approve/renshePrevApprove/lock?id=" + d.id;
@@ -980,7 +980,7 @@
                                 text: "退回至受理待审核",
                                 cls: "btn-primary btn-sm",
                                 visible: function (i, d) {
-                                    return (d.rensheAcceptStatus == 3) || (d.rensheAcceptStatus == 4);
+                                    return (d.rensheAcceptStatus == 3 || d.rensheAcceptStatus == 4) && (d.rensheOrGongan == 4);
                                 },
                                 handle: function (index, d) {
                                     bootbox.confirm("确定该操作？", function (result) {
