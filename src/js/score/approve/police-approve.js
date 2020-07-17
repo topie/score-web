@@ -840,8 +840,46 @@
                                             {
                                                 text: '不通过',
                                                 cls: 'btn btn-danger',
-                                                handle: function (m) {
-                                                    bootbox.confirm("确定该操作?", function (result) {
+                                                handle: function (mm) {
+                                                    var modal = $.orangeModal({
+                                                        id: "score_disagree_form_modal",
+                                                        title: "不通过",
+                                                        destroy: true
+                                                    }).show();
+                                                    modal.$body.orangeForm({
+                                                        id: "score_disagree_form",
+                                                        name: "score_disagree_form",
+                                                        method: "POST",
+                                                        //action: App.href + "/api/score/approve/rensheAccept/disAgree?id=" + d.id,
+                                                        action: App.href + "/api/score/approve/policeApprove/disAgree2?id=" + d.id,
+                                                        ajaxSubmit: true,
+                                                        ajaxSuccess: function () {
+                                                            mm.hide();
+                                                            modal.hide();
+                                                            grid.reload();
+                                                        },
+                                                        submitText: "提交",
+                                                        showReset: true,
+                                                        resetText: "重置",
+                                                        isValidate: true,
+                                                        labelInline: true,
+                                                        buttons: [{
+                                                            type: 'button',
+                                                            text: '关闭',
+                                                            handle: function () {
+                                                                modal.hide();
+                                                            }
+                                                        }],
+                                                        buttonsAlign: "center",
+                                                        items: [
+                                                            {
+                                                                type: 'textarea',
+                                                                name: 'rejectReason',
+                                                                label: '不通过原因'
+                                                            }
+                                                        ]
+                                                    });
+                                                    /*bootbox.confirm("确定该操作?", function (result) {
                                                         if (result) {
                                                             var requestUrl = App.href + "/api/score/approve/policeApprove/disAgree";
                                                             $.ajax({
@@ -863,7 +901,7 @@
                                                                 }
                                                             });
                                                         }
-                                                    });
+                                                    });*/
 
                                                 }
                                             },
