@@ -173,6 +173,12 @@
                     }
                     columns.push(
                         {
+                            title: '锁定人',
+                            field: 'lockUser1'
+                        }
+                    );
+                    columns.push(
+                        {
                             title: '审核人',
                             field: 'opuser3'
                         }
@@ -613,6 +619,30 @@
                                                     }
                                                 ]
                                             }).show().$body.html(data.data.html);
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            },{
+                                text: "锁定",
+                                cls: "btn-danger btn-sm",
+                                visible: function (i, d) {
+                                    return (d.lockUser1 == null || d.lockUser1 == '');
+                                },
+                                handle: function (index, d) {
+                                    var requestUrl = App.href + "/api/score/approve/policeApprove/lock?id=" + d.id;
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            if(data.code==500){
+                                                alert("已经被锁定了");
+                                            }else {
+                                                grid.reload();
+                                            }
                                         },
                                         error: function (e) {
                                             console.error("请求异常。");

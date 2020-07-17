@@ -315,7 +315,11 @@
                                         dataType: "json",
                                         url: requestUrl,
                                         success: function (data) {
-                                            grid.reload();
+                                            if(data.code==500){
+                                                alert("已经被锁定了");
+                                            }else {
+                                                grid.reload();
+                                            }
                                         },
                                         error: function (e) {
                                             console.error("请求异常。");
