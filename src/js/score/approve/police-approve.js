@@ -96,6 +96,13 @@
                     var policeApproveStatus = fd.data.policeApproveStatus;
                     if (searchItems == null)
                         searchItems = [];
+                    searchItems.push(
+                        {
+                            type: 'text',
+                            label: '公安落户编码',
+                            name: 'luohuNumber'
+                        }
+                    );
                     var columns = [];
                     columns.push(
                         {
