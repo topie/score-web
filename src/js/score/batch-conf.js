@@ -358,6 +358,7 @@
                     var formItems = fd.data.formItems;
                     var searchItems = fd.data.searchItems;
                     var addressMap = fd.data.addressMap;
+                    var isWorkingDayMap = fd.data.isWorkingDayMap;
                     if (searchItems == null)
                         searchItems = [];
                     var columns = [];
@@ -384,6 +385,13 @@
                         field: 'addressId',
                         format: function (iii, ddd) {
                             return addressMap[ddd.addressId];
+                        }
+                    });
+                    columns.push({
+                        title: '是否是工作日',
+                        field: 'isWorkingDay',
+                        format: function (iii, ddd) {
+                            return isWorkingDayMap[ddd.isWorkingDay];
                         }
                     });
                     columns.push({
