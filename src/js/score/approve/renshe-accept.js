@@ -306,7 +306,7 @@
                                 text: "锁定",
                                 cls: "btn-danger btn-sm",
                                 visible: function (i, d) {
-                                    return (d.lockUser2 == null || d.lockUser2 == '') && (d.rensheOrGongan == 4);
+                                    return (d.lockUser2 == null || d.lockUser2 == '');
                                 },
                                 handle: function (index, d) {
                                     var requestUrl = App.href + "/api/score/approve/renshePrevApprove/lock?id=" + d.id;
