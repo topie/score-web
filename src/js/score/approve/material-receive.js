@@ -690,6 +690,11 @@
                 sort: true
             },
             {
+                title: '补正日期',
+                field: 'supplyDateStr',
+                sort: true
+            },
+            {
                 title: '公安落户编号',
                 field: 'acceptNumber'
             }
