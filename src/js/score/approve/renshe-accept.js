@@ -727,7 +727,7 @@
                                                                         count--;
                                                                         if (count === 0) {
                                                                             printDiv.show();
-                                                                            printDiv.print({
+                                                                            printDiv.print2({
                                                                                 globalStyles: true,
                                                                                 mediaPrint: true,
                                                                                 stylesheet: null,
@@ -811,7 +811,7 @@
                                                                         count--;
                                                                         if (count === 0) {
                                                                             printDiv.show();
-                                                                            printDiv.print({
+                                                                            printDiv.print2({
                                                                                 globalStyles: true,
                                                                                 mediaPrint: true,
                                                                                 stylesheet: null,
@@ -895,7 +895,7 @@
                                                                         count--;
                                                                         if (count === 0) {
                                                                             printDiv.show();
-                                                                            printDiv.print({
+                                                                            printDiv.print2({
                                                                                 globalStyles: true,
                                                                                 mediaPrint: true,
                                                                                 stylesheet: null,
