@@ -47,6 +47,12 @@
                         if (dd.url != '')
                             dd.url = App.href + dd.url;
                     });
+                    columns.push(
+                        {
+                            title: '惩罚截止日期',
+                            field: 'recordDate'
+                        }
+                    );
                     var grid;
                     var options = {
                         url: App.href + "/api/score/fakeRecord/list",
