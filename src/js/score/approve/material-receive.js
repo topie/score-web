@@ -942,36 +942,39 @@
                                                                         dataType: "json",
                                                                         url: requestUrl,
                                                                         success: function (data) {
-                                                                            /*$.orangeModal({
-                                                                                title: "打印接收凭证",
-                                                                                destroy: true,
-                                                                                buttons: [
-                                                                                    {
-                                                                                        type: 'button',
-                                                                                        text: '关闭',
-                                                                                        cls: "btn btn-default",
-                                                                                        handle: function (m) {
-                                                                                            m.hide()
+                                                                            if(data.data.code==666){
+                                                                                $.orangeModal({
+                                                                                    title: "打印接收凭证",
+                                                                                    destroy: true,
+                                                                                    buttons: [
+                                                                                        {
+                                                                                            type: 'button',
+                                                                                            text: '关闭',
+                                                                                            cls: "btn btn-default",
+                                                                                            handle: function (m) {
+                                                                                                m.hide()
+                                                                                            }
+                                                                                        }, {
+                                                                                            text: '打印',
+                                                                                            cls: 'btn btn-primary',
+                                                                                            handle: function (m) {
+                                                                                                m.$body.print({
+                                                                                                    globalStyles: true,
+                                                                                                    mediaPrint: false,
+                                                                                                    stylesheet: null,
+                                                                                                    noPrintSelector: ".no-print",
+                                                                                                    iframe: true,
+                                                                                                    append: null,
+                                                                                                    prepend: null,
+                                                                                                    manuallyCopyFormValues: true,
+                                                                                                    deferred: $.Deferred()
+                                                                                                });
+                                                                                            }
                                                                                         }
-                                                                                    }, {
-                                                                                        text: '打印',
-                                                                                        cls: 'btn btn-primary',
-                                                                                        handle: function (m) {
-                                                                                            m.$body.print({
-                                                                                                globalStyles: true,
-                                                                                                mediaPrint: false,
-                                                                                                stylesheet: null,
-                                                                                                noPrintSelector: ".no-print",
-                                                                                                iframe: true,
-                                                                                                append: null,
-                                                                                                prepend: null,
-                                                                                                manuallyCopyFormValues: true,
-                                                                                                deferred: $.Deferred()
-                                                                                            });
-                                                                                        }
-                                                                                    }
-                                                                                ]
-                                                                            }).show().$body.html(data.data.html);*/
+                                                                                    ]
+                                                                                }).show().$body.html(data.data.html);
+                                                                            }
+
                                                                         },
                                                                         error: function (e) {
                                                                             console.error("请求异常。");
@@ -1003,36 +1006,39 @@
                                                                 dataType: "json",
                                                                 url: requestUrl,
                                                                 success: function (data) {
-                                                                    /*$.orangeModal({
-                                                                        title: "打印接收凭证",
-                                                                        destroy: true,
-                                                                        buttons: [
-                                                                            {
-                                                                                type: 'button',
-                                                                                text: '关闭',
-                                                                                cls: "btn btn-default",
-                                                                                handle: function (m) {
-                                                                                    m.hide()
+                                                                    if(data.data.code==666){
+                                                                        $.orangeModal({
+                                                                            title: "打印接收凭证",
+                                                                            destroy: true,
+                                                                            buttons: [
+                                                                                {
+                                                                                    type: 'button',
+                                                                                    text: '关闭',
+                                                                                    cls: "btn btn-default",
+                                                                                    handle: function (m) {
+                                                                                        m.hide()
+                                                                                    }
+                                                                                }, {
+                                                                                    text: '打印',
+                                                                                    cls: 'btn btn-primary',
+                                                                                    handle: function (m) {
+                                                                                        m.$body.print({
+                                                                                            globalStyles: true,
+                                                                                            mediaPrint: false,
+                                                                                            stylesheet: null,
+                                                                                            noPrintSelector: ".no-print",
+                                                                                            iframe: true,
+                                                                                            append: null,
+                                                                                            prepend: null,
+                                                                                            manuallyCopyFormValues: true,
+                                                                                            deferred: $.Deferred()
+                                                                                        });
+                                                                                    }
                                                                                 }
-                                                                            }, {
-                                                                                text: '打印',
-                                                                                cls: 'btn btn-primary',
-                                                                                handle: function (m) {
-                                                                                    m.$body.print({
-                                                                                        globalStyles: true,
-                                                                                        mediaPrint: false,
-                                                                                        stylesheet: null,
-                                                                                        noPrintSelector: ".no-print",
-                                                                                        iframe: true,
-                                                                                        append: null,
-                                                                                        prepend: null,
-                                                                                        manuallyCopyFormValues: true,
-                                                                                        deferred: $.Deferred()
-                                                                                    });
-                                                                                }
-                                                                            }
-                                                                        ]
-                                                                    }).show().$body.html(data.data.html);*/
+                                                                            ]
+                                                                        }).show().$body.html(data.data.html);
+                                                                    }
+
                                                                 },
                                                                 error: function (e) {
                                                                     console.error("请求异常。");
