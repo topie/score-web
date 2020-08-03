@@ -689,12 +689,12 @@
                                                                         loadImg = $(this);
                                                                         realWidth = this.width;
                                                                         realHeight = this.height;
-                                                                        if (realWidth > realHeight) {
+                                                                        /*if (realWidth > realHeight) {
                                                                             loadImg.css("transform", 'rotate(90deg)');
                                                                             realWidth = realWidth ^ realHeight;
                                                                             realHeight = realWidth ^ realHeight;
                                                                             realWidth = realWidth ^ realHeight;
-                                                                        }
+                                                                        }*/
 
                                                                         // 检查图片是否超宽
                                                                         if (realWidth > maxWidth) {
@@ -773,12 +773,12 @@
                                                                         loadImg = $(this);
                                                                         realWidth = this.width;
                                                                         realHeight = this.height;
-                                                                        if (realWidth > realHeight) {
+                                                                        /*if (realWidth > realHeight) {
                                                                             loadImg.css("transform", 'rotate(90deg)');
                                                                             realWidth = realWidth ^ realHeight;
                                                                             realHeight = realWidth ^ realHeight;
                                                                             realWidth = realWidth ^ realHeight;
-                                                                        }
+                                                                        }*/
 
                                                                         // 检查图片是否超宽
                                                                         if (realWidth > maxWidth) {
@@ -857,12 +857,12 @@
                                                                         loadImg = $(this);
                                                                         realWidth = this.width;
                                                                         realHeight = this.height;
-                                                                        if (realWidth > realHeight) {
+                                                                        /*if (realWidth > realHeight) {
                                                                             loadImg.css("transform", 'rotate(90deg)');
                                                                             realWidth = realWidth ^ realHeight;
                                                                             realHeight = realWidth ^ realHeight;
                                                                             realWidth = realWidth ^ realHeight;
-                                                                        }
+                                                                        }*/
 
                                                                         // 检查图片是否超宽
                                                                         if (realWidth > maxWidth) {
