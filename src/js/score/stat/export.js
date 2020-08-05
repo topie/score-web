@@ -9,6 +9,7 @@
         "/api/score/stat/export/list3": "exportList3",
         "/api/score/stat/export/list4": "exportList4",
         "/api/score/stat/export/list5": "exportList5",
+        "/api/score/stat/export/list6": "exportList6"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
     App.exportList1 = {
@@ -519,6 +520,127 @@
                             cls: "btn btn-danger btn-sm",
                             handle: function (g) {
                                 var downloadUrl = App.href + "/api/score/stat/export/export5?" + g.$searchForm.serialize();
+                                window.open(downloadUrl);
+                            }
+                        }
+                    ]
+                }
+            };
+            grid = window.App.content.find("#grid").orangeGrid(options);
+        }
+    };
+
+    App.exportList6 = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="panel panel-default" >' +
+                '<div class="panel-heading">列表6-是否具有国家职业资格</div>' +
+                '<div class="panel-body" id="grid"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            var columns = [
+                {
+                    title: '申请人姓名',
+                    field: 'PERSONNAME'
+                }, {
+                    title: '申请人身份证号',
+                    field: 'PERSONIDNUM'
+                }, {
+                    title: '申请审核日期',
+                    field: 'RESERVATIONDATE'
+                }, {
+                    title: '是否具有国家职业资格',
+                    field: 'PROFESSIONTYPE'
+                }
+            ];
+            var search = [
+                {
+                    type: 'text',
+                    name: 'personName',
+                    id: 'personName',
+                    label: '名字'
+                },{
+                    type: 'text',
+                    name: 'personIdNum',
+                    id: 'personIdNum',
+                    label: '身份证号'
+                },{
+                    type: 'select',
+                    name: 'flag',
+                    id: 'flag',
+                    label: '是否选择日期',
+                    items: [
+                        {
+                            text: '否',
+                            value: 2
+                        },{
+                            text: '是',
+                            value: 1
+                        }
+                    ]
+                },
+                {
+                    type: "datepicker",
+                    label: "申请审核日期",
+                    name: "reservationDate",
+                    single: true
+                },{
+                    type: 'select',
+                    name: 'professionType',
+                    id: 'professionType',
+                    label: '是否具有国家职业资格',
+                    items: [
+                        {
+                            text: '全部',
+                            value: ''
+                        }, {
+                            text: '无',
+                            value: 1
+                        }, {
+                            text: '具有专业技术人员职业资格',
+                            value: 2
+                        }, {
+                            text: '具有技能人员职业资格',
+                            value: 3
+                        }
+                    ]
+                }
+            ];
+            var grid;
+            var options = {
+                url: App.href + "/api/score/stat/export/list6",
+                contentType: "table",
+                contentTypeItems: "table,card,list",
+                pageNum: 1,//当前页码
+                pageSize: 15,//每页显示条数
+                idField: "id",//id域指定
+                headField: "id",
+                showCheck: true,//是否显示checkbox
+                checkboxWidth: "3%",
+                showIndexNum: false,
+                indexNumWidth: "5%",
+                pageSelect: [2, 15, 30, 50],
+                columns: columns,
+                actionColumnText: "操作",//操作列文本
+                actionColumnWidth: "20%",
+                search: {
+                    rowEleNum: 2,
+                    //搜索栏元素
+                    items: search,
+                    buttons: [
+                        {
+                            type: 'button',
+                            text: '导出',
+                            cls: "btn btn-danger btn-sm",
+                            handle: function (g) {
+                                var downloadUrl = App.href + "/api/score/stat/export/export6?" + g.$searchForm.serialize();
                                 window.open(downloadUrl);
                             }
                         }
