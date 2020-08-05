@@ -545,7 +545,7 @@
             }
             , {
                 type: 'select',
-                label: '配偶是否在天津就业且用人单位依法缴纳社会保险累计满24个月',
+                label: '配偶就业或现役军人',
                 name: 'inTianjin',
                 items: [
                     {
