@@ -552,7 +552,10 @@
                 }, {
                     title: '申请人身份证号',
                     field: 'PERSONIDNUM'
-                }, {
+                },{
+                    title: '申请单位名称',
+                    field: 'COMPANYNAME'
+                },  {
                     title: '申请审核日期',
                     field: 'RESERVATIONDATE'
                 }, {
