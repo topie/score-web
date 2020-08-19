@@ -1031,7 +1031,18 @@
                         search: {
                             rowEleNum: 2,
                             //搜索栏元素
-                            items: searchItems
+                            items: searchItems,
+                            buttons: [
+                                {
+                                    type: 'button',
+                                    text: '导出公安已通过名单',
+                                    cls: "btn btn-info btn-sm",
+                                    handle: function (g) {
+                                        var downloadUrl = App.href + "/api/score/stat/export/export7";
+                                        window.open(downloadUrl);
+                                    }
+                                }
+                            ]
                         }
                     };
                     grid = window.App.content.find("#grid").orangeGrid(options);
