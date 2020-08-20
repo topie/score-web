@@ -660,7 +660,7 @@
                                 text: "公安退回至待审核",
                                 cls: "btn-danger btn-sm",
                                 visible: function (i, d) {
-                                    return d.policeApproveStatus == 3 || d.policeApproveStatus == 4;
+                                    return d.policeApproveStatus != 1;
                                 },
                                 handle: function (index, d) {
                                     var requestUrl = App.href + "/api/score/approve/policeApprove/policeBackStar?id=" + d.id;

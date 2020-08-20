@@ -984,7 +984,8 @@
                                 text: "退回至受理待审核",
                                 cls: "btn-primary btn-sm",
                                 visible: function (i, d) {
-                                    return (d.rensheAcceptStatus == 3 || d.rensheAcceptStatus == 4) && (d.rensheOrGongan == 4);
+                                    return d.rensheAcceptStatus != 1;
+                                    //return (d.rensheAcceptStatus != 1 || d.rensheAcceptStatus == 3 || d.rensheAcceptStatus == 4) && (d.rensheOrGongan == 4);
                                 },
                                 handle: function (index, d) {
                                     bootbox.confirm("确定该操作？", function (result) {
