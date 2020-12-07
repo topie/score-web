@@ -68,6 +68,23 @@
                                     value: 1
                                 }
                             ]
+                        },{
+                            type: 'select',
+                            label: '市区用以区分规自局/住建委',
+                            name: 'guizijuOrZhujianwei',
+                            items: [
+                                {
+                                    text: '全部',
+                                    value: 0
+                                },
+                                {
+                                    text: '规自局',
+                                    value: 1
+                                }, {
+                                    text: '住建委',
+                                    value: 2
+                                }
+                            ]
                         }
                     );
                     var columns = [];
