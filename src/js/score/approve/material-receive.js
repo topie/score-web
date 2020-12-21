@@ -503,7 +503,7 @@
                 single: true
             }, {
                 type: 'select',
-                label: '房子合同/产权证（市区用、滨海新区不用）',
+                label: '房子合同/产权证（区分住建委、规自局）',
                 name: 'rightProperty',
                 items: [
                     {
