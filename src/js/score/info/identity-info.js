@@ -130,6 +130,27 @@
                             return cd.isPreviewd;
                         }
                     });
+                    columns.push({
+                        title: '公安审核',
+                        field: 'opuser3',
+                        format: function (i, cd) {
+                            return cd.opuser3;
+                        }
+                    });
+                    columns.push({
+                        title: '人社审核',
+                        field: 'opuser4',
+                        format: function (i, cd) {
+                            return cd.opuser4;
+                        }
+                    });
+                    columns.push({
+                        title: '不通过原因',
+                        field: 'rejectReason',
+                        format: function (i, cd) {
+                            return cd.rejectReason;
+                        }
+                    });
                     var grid;
                     var options = {
                         url: App.href + "/api/score/info/identityInfo/list",
