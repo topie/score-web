@@ -203,6 +203,12 @@
                     );
                     columns.push(
                         {
+                            title: '企业注册时间',
+                            field: 'rentHouseAddress'
+                        }
+                    );
+                    columns.push(
+                        {
                             title: '预约大厅状态',
                             field: 'hallStatus',
                             format: function (i, cd) {
@@ -318,6 +324,31 @@
                                             if(data.code==500){
                                                 alert("已经被锁定了");
                                             }else {
+                                                grid.reload();
+                                            }
+                                        },
+                                        error: function (e) {
+                                            console.error("请求异常。");
+                                        }
+                                    });
+                                }
+                            },{
+                                text: "更新单位信息",
+                                cls: "btn-danger btn-sm",
+                                visible: function (i, d) {
+                                    return d.rensheAcceptStatus == 1;
+                                },
+                                handle: function (index, d) {
+                                    var requestUrl = App.href + "/api/score/approve/renshePrevApprove/updateCompanyInfo?id=" + d.id;
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        url: requestUrl,
+                                        success: function (data) {
+                                            if(data.code!=200){
+                                                alert("企业信息更新失败，原因可能是市场委没有返回数据");
+                                            }else {
+                                                alert("企业信息已更新完毕，是最新的企业状态");
                                                 grid.reload();
                                             }
                                         },
