@@ -9,7 +9,8 @@
         "/api/score/stat/export/list3": "exportList3",
         "/api/score/stat/export/list4": "exportList4",
         "/api/score/stat/export/list5": "exportList5",
-        "/api/score/stat/export/list6": "exportList6"
+        "/api/score/stat/export/list6": "exportList6",
+        "/api/score/stat/export/list7": "exportList7"
     };
     App.requestMapping = $.extend({}, window.App.requestMapping, uploadMapping);
     App.exportList1 = {
@@ -652,6 +653,71 @@
             };
             grid = window.App.content.find("#grid").orangeGrid(options);
         }
+    };
+
+    App.exportList7 = {
+        page: function (title) {
+            window.App.content.empty();
+            window.App.title(title);
+            var content = $('<div class="panel-body" >' +
+                '<div class="row">' +
+                '<div class="col-md-12" >' +
+                '<div class="panel panel-default" >' +
+                '<div class="panel-heading">导出列表7-人社受理审核统计</div>' +
+                '<div class="panel-body" id="grid"></div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+            window.App.content.append(content);
+            var columns = [
+                {
+                    title: '状态',
+                    field: 'RENSHE_ACCEPT_STATUS'
+                }, {
+                    title: '统计',
+                    field: 'SUM'
+                }
+            ];
+            var search = [
+                {
+                    type: "datepicker",
+                    label: "选择开始注册日期",
+                    name: "startDate",
+                    single: true
+                },{
+                    type: "datepicker",
+                    label: "选择结束注册日期",
+                    name: "endDate",
+                    single: true
+                }
+            ];
+            var grid;
+            var options = {
+                url: App.href + "/api/score/stat/export/list7_1",
+                contentType: "table",
+                contentTypeItems: "table,card,list",
+                pageNum: 1,//当前页码
+                pageSize: 15,//每页显示条数
+                idField: "id",//id域指定
+                headField: "id",
+                showCheck: true,//是否显示checkbox
+                checkboxWidth: "3%",
+                showIndexNum: false,
+                indexNumWidth: "5%",
+                pageSelect: [2, 15, 30, 50],
+                columns: columns,
+                actionColumnText: "操作",//操作列文本
+                actionColumnWidth: "20%",
+                search: {
+                    rowEleNum: 2,
+                    //搜索栏元素
+                    items: search
+                }
+            };
+            grid = window.App.content.find("#grid").orangeGrid(options);
+        }
+
     };
 
 })(jQuery, window, document);
